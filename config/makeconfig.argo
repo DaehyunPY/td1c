@@ -1,0 +1,73 @@
+##### MPI COMMANDS #####
+TARGET = lin_icc
+MPICXX = icc
+MPIF90 = ifort
+
+# FLAGS for C++ and Fortran
+FLAG = -O3 -qopenmp
+#FLAG = -O2 -qopenmp
+#FLAG = -O1 -qopenmp
+#FLAG = -g -O0 -qopenmp -D_GLIBCXX_DEBUG
+
+# FLAGS for Fortran
+FLAG_F90 = -stand f03
+#FLAG_F90 = -stand f03 -check all -traceback -implicitnone #-fstack-protector -assume protect_parens #-warn all
+#FLAG_F90 = -check all -traceback -fstack-protector -assume protect_parens -implicitnone #-warn all
+#FLAG_F90 = -stand f03 -check all -traceback -fstack-protector -assume protect_parens -implicitnone
+#FLAG_F90 = -stand f03 -check all -traceback -warn all -fstack-protector -assume protect_parens -implicitnone
+
+### 8 byte integer ###
+#FLAG_F90 = -i8 -stand f03
+#FLAG_F90 = -i8 -stand f03 -check all -traceback -implicitnone #-fstack-protector -assume protect_parens #-warn all
+#FLAG_F90 = -i8 -check all -traceback -fstack-protector -assume protect_parens -implicitnone #-warn all
+#FLAG_F90 = -i8 -stand f03 -check all -traceback -fstack-protector -assume protect_parens -implicitnone
+#FLAG_F90 = -i8 -stand f03 -check all -traceback -warn all -fstack-protector -assume protect_parens -implicitnone
+
+# SHTOOLS
+SHT_INC = -I/opt/lab/SHTOOLS/modules
+SHT_LIB = -L/opt/lab/SHTOOLS/lib -lSHTOOLS
+
+# GSL
+GSL_INC = -I/opt/lab/gsl/include/fgsl -I/opt/lab/gsl/include
+GSL_LIB = -L/opt/lab/gsl/lib -lfgsl -lgsl
+
+# LibXC
+LibXC_INC = -I/opt/lab/libxc/include
+LibXC_LIB = -L/opt/lab/libxc/lib -lxcf03 -lxcf90 -lxc
+
+## FFTW, BLAS, and LAPACK
+FFT_INC = -I$(MKLROOT)/include/fftw
+LAP_INC = -I$(MKLROOT)/include
+MKL_LIB = -L$(MKLROOT)/lib/intel64 -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread -lm -ldl
+### 8 byte integer ###
+#LAP_INC = -DMKL_ILP64 -I$(MKLROOT)/include
+#MKL_LIB = -L$(MKLROOT)/lib/intel64 -lmkl_intel_ilp64 -lmkl_core -lmkl_sequential -lpthread -lm -ldl
+
+# alglib Library 
+ALGLIB_INC = -I/opt/lab/alglib/inc
+ALGLIB_LIB = /opt/lab/alglib/obj/*.o
+
+#========================================================================
+#INC = $(SHT_INC) $(EXP_INC) $(GSL_INC) $(LibXC_INC) $(FFT_INC) $(LAP_INC)
+#LIB = -lrt -ldl -shared-intel $(SHT_LIB) $(EXP_LIB) $(GSL_LIB) $(LibXC_LIB) $(MKL_LIB)
+INC = $(SHT_INC) $(GSL_INC) $(LibXC_INC) $(FFT_INC) $(LAP_INC) $(ALGLIB_INC)
+LIB = -lrt -ldl -shared-intel $(SHT_LIB) $(GSL_LIB) $(LibXC_LIB) $(MKL_LIB) $(ALGLIB_LIB)
+
+CFLAG = $(FLAG) $(INC)
+LFLAG = $(FLAG) $(INC) $(LIB) -lifcore
+
+
+### See the following page for LP64 and ILP64:
+### https://software.intel.com/en-us/forums/intel-math-kernel-library/topic/283403
+### Most users can choose some easy way to link with MKL. Check the article here on the steps.
+### Those who use less common interfaces or threading models may want to visit the Link Line Advisor 
+### to find the right set of libraries. At Intel 64 bit plat form, they need to choose LP64 interface, 
+### or ILP64 interface. The difference between them is integer type length. 
+### ILP64 interface uses the 64-bit integer type, while LP64 use the 32-bit integer.
+### By default, the compilers take integers ( 'int' for C or C++ / 'INTEGER' for Fortran) as 32-bit length. 
+### So most applications need link with LP64 MKL libraries.
+### In a few applications, users may choose MKL 64-bit integer interfaces for some particular purpose 
+### (for example, using large array index, which has more than 2^31- 1 elements). They could choose ILP64 MKL libraries. 
+### Please note compiling such application need add additional compiler options, for example:
+### >C or C++: icl /DMKL_ILP64/I\\include
+### >Fortran: ifort /4I8/I\\include

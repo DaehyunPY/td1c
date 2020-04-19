@@ -1,0 +1,44 @@
+include ../../config/makeconfig
+
+OBJ = \
+clh1prop.o \
+clh2prop.o \
+clcrk.o \
+clirk.o \
+clh1adi.o \
+clh1exp.o \
+clh1itr.o \
+cletdrk.o \
+cletdrb.o \
+cletdrk2.o \
+cletdrk4.o \
+cllawrk.o \
+cllawmul.o \
+clcrnic.o \
+cldpade.o \
+clh1rat.o \
+clexpab.o \
+cllawab.o \
+adi_gen_tadi.o \
+adi_t_explicit.o \
+adi_t_implicit.o \
+adi_laser_lgauge.o \
+adi_laser_vgauge.o \
+adi_v_cayley.o \
+h1exp_prop.o \
+h1exp_krylov.o \
+h1exp_exporb.o \
+h1itr_gen_cninv.o \
+h1itr_cninv.o \
+h1itr_prop.o \
+h1itr_prop2.o \
+dpade_gen.o \
+h1rat_gen.o \
+dpade_prod.o \
+h1rat_prod.o \
+h1rat_prodci.o \
+h1rat_prodci1.o \
+h1rat_prodci2.o \
+dpade_cnic.o \
+
+include $(TD1C_CON)/make.objcomp
