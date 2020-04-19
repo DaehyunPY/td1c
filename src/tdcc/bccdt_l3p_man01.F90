@@ -3,7 +3,6 @@ subroutine bccdt_l3p_man01(i0,work1,work2,work3)
 
 !1: i0 ( i j k a b c )_yv + = 1 * P( 9 ) * y ( i a )_y * v ( j k b c )_v 0
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact
   use mod_cc,only : fock,int2x,norb1,ncc3aaa,ncc3aab,t2inp,g1inp,t3inp
   use mod_cc,only : h1_cc3aaa,h2_cc3aaa,h3_cc3aaa,p1_cc3aaa,p2_cc3aaa,p3_cc3aaa
@@ -15,7 +14,7 @@ subroutine bccdt_l3p_man01(i0,work1,work2,work3)
        i0(1:norb1,1:norb1,1:norb1,(norb1+1):nact,(norb1+1):nact,(norb1+1):nact,1:2)
   complex(kind(0d0)) :: work1(1),work2(1),work3(1)
 
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   !##################################################
   !$omp parallel default(shared) private(a,b,c,i,j,k)

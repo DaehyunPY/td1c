@@ -22,8 +22,8 @@ cletdrk2::cletdrk2(const clmpi& MPIP, const clio& IO, const clbas& Bas,
 void cletdrk2::gen(const clmpi& MPIP, const clio& IO, const clbas& Bas,
 		   const clfield& Field, const clhprod& HPW)
 {
-  int icomp = Field.td_type;
-  int isplit = clcontrol::split_type;
+  long icomp = Field.td_type;
+  long isplit = clcontrol::split_type;
 
   Wfn0.gen(MPIP, IO, Bas);
   Wfn1.gen(MPIP, IO, Bas);

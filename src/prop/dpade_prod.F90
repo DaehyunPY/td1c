@@ -9,14 +9,14 @@ subroutine dpade_prod(isplit, igauge, icomp, iprojfc, lfield, dtime, alpha, &
   use mod_const, only : zero, half, czero, iunit, runit
 
   implicit none
-  integer(c_int), intent(in) :: isplit, igauge, icomp, iprojfc, maxcyc, tpiv(1:*)
+  integer(c_long), intent(in) :: isplit, igauge, icomp, iprojfc, maxcyc, tpiv(1:*)
   real(c_double), intent(in) :: lfield(9), dtime, thresh
   complex(c_double_complex), intent(in) :: alpha
   complex(c_double_complex), intent(in) :: tinv(1:*)
   complex(c_double_complex), intent(inout) :: wfn(1:nbas, 1:nfun)
 
   complex(c_double_complex) :: zfac, zfac2, tmp
-  integer(c_int) :: ncyc, icyc, ifun, size1, sized
+  integer(c_long) :: ncyc, icyc, ifun, size1, sized
   logical, parameter :: debug = .true.
   real(c_double) :: rmsres, maxres
   logical projfc
@@ -133,11 +133,11 @@ subroutine dpade_h0inv(tpiv, tinv, wfn)
   use mod_const, only : czero, runit
 
   implicit none
-  integer(c_int), intent(in) :: tpiv(1:(nrad-1), 0:lmax1)
+  integer(c_long), intent(in) :: tpiv(1:(nrad-1), 0:lmax1)
   complex(c_double_complex), intent(in) :: tinv(1:(3*ndvr+1), 1:(nrad-1), 0:lmax1)
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
 
-  integer(c_int) :: ifun, l, dim, ld, info, lll, ull
+  integer(c_long) :: ifun, l, dim, ld, info, lll, ull
   dim = nrad - 1
   ld = 3 * ndvr + 1
 
@@ -166,8 +166,8 @@ subroutine dpade_prod_fcore(orb, torb)
   complex(c_double_complex), intent(inout) :: torb(1:nbas, 1:nfun)
 
   complex(c_double_complex) :: tmp
-  integer(c_int) :: ndfun, info, ifun, jfun
-  integer(c_int), allocatable :: ipiv(:)
+  integer(c_long) :: ndfun, info, ifun, jfun
+  integer(c_long), allocatable :: ipiv(:)
   complex(c_double_complex), allocatable :: amat(:,:)
 
  if (nfcore == 0) return

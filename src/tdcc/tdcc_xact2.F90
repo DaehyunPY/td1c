@@ -1,8 +1,7 @@
 !################################################################################
 subroutine tdcc_xact2(dtime, int1e, int2e, den1, den2, cic, rmat, dcic)
 
-  use, intrinsic :: iso_c_binding
-  use mod_control, only : icomp, xact2_type, cionly
+  use mod_control, only : icomp
   use mod_const, only : one, czero, runit, iunit
   use mod_ormas, only : nfun,nact,ncore,ndetx
   use mod_cc, only : cc_rank,norb1,fock,int2x,optcc,bcc,optbcc
@@ -25,7 +24,7 @@ subroutine tdcc_xact2(dtime, int1e, int2e, den1, den2, cic, rmat, dcic)
   complex(kind(0d0)), allocatable :: bmat3(:,:)
   complex(kind(0d0)), allocatable :: soo(:,:), rsoo(:,:)
   complex(kind(0d0)), allocatable :: svv(:,:), rsvv(:,:)
-  integer(c_int) :: h1,h2,h3,p1,p2,p3,iact,jact
+  integer :: h1,h2,h3,p1,p2,p3,iact,jact
 
   allocate(bmat(1:nact, 1:nact))
   bmat(1:nact, 1:nact) = czero
@@ -48,29 +47,11 @@ subroutine tdcc_xact2(dtime, int1e, int2e, den1, den2, cic, rmat, dcic)
 
   call tdcc_hcc12(int1e,int2e,cic,dcic)
 
-  !debug
-  !write(6,"('tdcc_hcc12: hcc1')")
-  !call tdcc_print(dcic)
-  !call tdcc_hcc12(int1e,int2e,dcic,dcic)
-  !write(6,"('tdcc_hcc12: hcc2')")
-  !call tdcc_print(dcic)
-  !stop
-  !debug
-
   ! r.h.s of equations for a-a rotations
   if (optcc) then
-     ! OCCD/OCCDT
-     if (xact2_type == 0) then
-        call tdcc_mkbmat(int1e,int2e,den1,den2,cic,dcic,bmat)
-        call tdcc_xact2_solved(one, cic, den1, bmat)
-     else 
-        bmat = 0d0
-        fac1 = +1d0
-        fac2 = -1d0
-        call tdcc_mkbmat1(fac1,int1e,int2e,den1,den2,bmat)
-        call tdcc_mkbmat2(fac2,cic,dcic,bmat)
-        call tdcc_xact2_solved_itr(one, cic, den1, bmat)
-     end if
+     ! CCD/CCDT
+     call tdcc_mkbmat(int1e,int2e,den1,den2,cic,dcic,bmat)
+     call tdcc_xact2_solved(one, cic, den1, bmat)
   else if (optbcc) then
      ! OBCCD/OBCCDT
      allocate(bmat1(1:nact,1:nact))
@@ -106,7 +87,7 @@ subroutine tdcc_xact2(dtime, int1e, int2e, den1, den2, cic, rmat, dcic)
   dcic(1:ndetx,2) = dcic(1:ndetx,2) * fac2
 
   ! a-a-rot contributions to ci derivatives, only for OCCDT
-  if (cc_rank >= 3 .and. optcc .and. .not.cionly) then
+  if (cc_rank >= 3 .and. optcc) then
      allocate(xcic(1:ndetx,1:2))
      call tdcc_hcc1(bmat, cic, xcic)
      if (icomp == 1) then
@@ -121,7 +102,7 @@ subroutine tdcc_xact2(dtime, int1e, int2e, den1, den2, cic, rmat, dcic)
 
 !  if (iprint > 4) then
 !     write(6, "('# ORMAS: rmat-full')")
-!     call util_matoutc(nfun, rmat)
+!     call util_matoutc(6, nfun, rmat)
 !  end if
 
   deallocate(bmat)

@@ -32,7 +32,7 @@ void clh1itr::gen(const clmpi& MPIP, const clio& IO, const clbas& Bas,
   std::cout << "clh1itr::gen" << std::endl;
   clh1prop::gen_basic(MPIP, IO, Bas, Field, HPW);
 
-  IO.read_info("h1itr_maxcyc", 20, h1itr_maxcyc);
+  IO.read_info("h1itr_maxcyc", (long) 20, h1itr_maxcyc);
   IO.read_info("h1itr_thresh", 1.0E-10, h1itr_thresh);
 
   cnpiv.resize((Bas.GRad.nrad - 1) *  (Bas.GAng.lmax1 + 1));
@@ -59,7 +59,7 @@ void clh1itr::gen(const clmpi& MPIP, const clio& IO, const clbas& Bas,
 }
 ////////////////////////////////////////////////////////////////////////
 void clh1itr::prop(const clmpi& Proc, const clbas& Bas, const clfield& Field, 
-		   int STEP, clhprod& HPW, clwfn& Wfn)
+		   long STEP, clhprod& HPW, clwfn& Wfn)
 {
   if (clcontrol::split_type == 0) return;
 
@@ -72,7 +72,7 @@ void clh1itr::prop(const clmpi& Proc, const clbas& Bas, const clfield& Field,
     time = Field.time + Field.dtime * HALF;
   }
 
-  int iprojfc = 0;
+  long iprojfc = 0;
   if (projfc) iprojfc = 1;
 
 //  if (projfc && Field.vgauge) {
@@ -100,7 +100,7 @@ void clh1itr::prop(const clmpi& Proc, const clbas& Bas, const clfield& Field,
 
   double lfield[9];
 
-  int iprojfc = 0;
+  long iprojfc = 0;
   if (projfc) iprojfc = 1;
 
 //  if (projfc && Field.vgauge) {

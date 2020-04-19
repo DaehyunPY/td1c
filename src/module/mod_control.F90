@@ -8,37 +8,29 @@ module mod_control
 
   character(len = 256) :: name
   logical(c_bool), parameter :: fedvr_normalized = .true.
-  integer(c_int), pointer :: icomp
-  integer(c_int), pointer :: igauge
-  integer(c_int), pointer :: ioorot
-  integer(c_int), pointer :: isplit
-  integer(c_int), pointer :: iprojfc
-  integer(c_int), pointer :: type_dcx
+  integer(c_long), pointer :: icomp
+  integer(c_long), pointer :: igauge
+  integer(c_long), pointer :: ioorot
+  integer(c_long), pointer :: isplit
+  integer(c_long), pointer :: iprojfc
+  integer(c_long), pointer :: type_dcx
   logical(c_bool), pointer :: jfc_implicit
   logical(c_bool), pointer :: xfc_implicit
-  integer(c_int), pointer :: h1rat_maxcyc
+  integer(c_long), pointer :: h1rat_maxcyc
   real(c_double), pointer :: h1rat_thresh
 
   logical(c_bool), pointer :: DoCS1
   logical(c_bool), pointer :: DoCS2
   logical(c_bool), pointer :: SAE, PSP
-  integer(c_int), pointer :: PSP_Type
-  integer(c_int), pointer :: DFT_Type
+  integer(c_long), pointer :: PSP_Type
+  integer(c_long), pointer :: DFT_Type
 
-  integer(c_int), pointer :: reg_type
+  integer(c_long), pointer :: reg_type
   real(c_double), pointer :: throcc1 ! for 1/D
   real(c_double), pointer :: throcc2 ! for 1/(2-D)
   real(c_double), pointer :: throcc3 ! for 1/A
-  integer(c_int), pointer :: xact2_type ! 0:direct inverse of A, >=1:Jacob iteration of A.
-  integer(c_int), pointer :: xact2_maxitr ! maximum iteration number for iterative A solver
-  real(c_double), pointer :: xact2_thresh ! error threshold for iterative A solver
-  integer(c_int), pointer :: ncut_occ3
+  integer(c_long), pointer :: ncut_occ3
   logical(c_bool), pointer :: exact3j
-  logical(c_bool), pointer :: cionly
-! tdcis-teramura
-  logical(c_bool), pointer :: istdcis
-  logical(c_bool), pointer :: tdcis_rvg
-! tdcis-teramura
 
   !libxc
   TYPE(xc_f03_func_t), save :: xc_funcx, xc_funcc

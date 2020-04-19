@@ -9,8 +9,8 @@ subroutine ormas_mkden2x_old(cic, den2x)
   complex(c_double_complex), intent(in) :: cic(1:nstr_alph, 1:nstr_beta)
   complex(c_double_complex), intent(out) :: den2x(1:nact, 1:nact, 1:nact, 1:nact)
   complex(c_double_complex), allocatable :: den2xp(:,:,:,:,:)
-  integer(c_int) :: nproc,iproc,iact,jact,kact,lact
-  integer(c_int), external :: util_omp_nproc
+  integer(c_long) :: nproc,iproc,iact,jact,kact,lact
+  integer(c_long), external :: util_omp_nproc
 
   nproc = util_omp_nproc()
   allocate(den2xp(1:nact, 1:nact, 1:nact, 1:nact, 0:(nproc-1)))
@@ -66,12 +66,12 @@ subroutine ormas_mkden2x_old_bbp(nproc, cic, den2xp)
   use mod_ormas, only : n1x_m_beta, map1x_m_beta
 
   implicit none
-  integer(c_int), intent(in) :: nproc
+  integer(c_long), intent(in) :: nproc
   complex(c_double_complex), intent(in) :: cic(1:nstr_alph, 1:nstr_beta)
   complex(c_double_complex), intent(inout) :: den2xp(1:nact, 1:nact, 1:nact, 1:nact, 0:(nproc-1))
 
-  integer(c_int), external :: util_omp_iproc
-  integer(c_int) :: nsafe, idist, jdist, kdist, ldist, istr, jstr, kstr, lstr, &
+  integer(c_long), external :: util_omp_iproc
+  integer(c_long) :: nsafe, idist, jdist, kdist, ldist, istr, jstr, kstr, lstr, &
        & i1x, j1x, iact, jact, kact, lact, lla, ula, sgn, iproc, i1x_m, j1x_m
   complex(c_double_complex) :: tmp
   complex(c_double_complex), allocatable :: scic(:,:,:)
@@ -165,13 +165,13 @@ subroutine ormas_mkden2x_old_abp(nproc, cic, den2xp)
   use mod_ormas, only : n1x_m_beta, map1x_m_beta
 
   implicit none
-  integer(c_int), intent(in) :: nproc
+  integer(c_long), intent(in) :: nproc
   complex(c_double_complex), intent(in) :: cic(1:nstr_alph, 1:nstr_beta)
   complex(c_double_complex), intent(inout) :: den2xp(1:nact, 1:nact, 1:nact, 1:nact, 0:(nproc-1))
 
-  integer(c_int), external :: util_omp_iproc
-  integer(c_int) :: istr, jstr, kstr, lstr, i1x, j1x, iact, jact, kact, lact, i1x_m, j1x_m
-  integer(c_int) :: itype, lla, ula, llb, ulb, sgn1, sgn2, idist, jdist, kdist, iproc, m_ij, m_kl
+  integer(c_long), external :: util_omp_iproc
+  integer(c_long) :: istr, jstr, kstr, lstr, i1x, j1x, iact, jact, kact, lact, i1x_m, j1x_m
+  integer(c_long) :: itype, lla, ula, llb, ulb, sgn1, sgn2, idist, jdist, kdist, iproc, m_ij, m_kl
   complex(c_double_complex) :: tmp
 
   do idist = 1, ndist_alph

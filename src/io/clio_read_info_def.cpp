@@ -14,7 +14,7 @@ void clio::read_info(std::string key, const std::string def, std::string& val) c
   std::stringstream ioss;
 
   key.append(" ");
-  int ind_key;
+  long ind_key;
 
   //  while ( getline(_ifs, line) && line.find(key,0) == std::string::npos ) {}
   while ( getline(_ifs, line) && line.substr(0, key.length()) != key ) {}
@@ -45,7 +45,7 @@ void clio::read_info(std::string key, bool def, bool& val) const
   std::stringstream ioss;
 
   key.append(" ");
-  int ind_key;
+  long ind_key;
 
   //  while ( getline(_ifs, line) && line.find(key,0) == std::string::npos ) {}
   while ( getline(_ifs, line) && line.substr(0, key.length()) != key ) {}
@@ -78,7 +78,7 @@ void clio::read_info(std::string key, bool def, bool& val) const
   std::cout << "# input-opt " << key.c_str() << " = " << val_string << std::endl;
 }
 ////////////////////////////////////////////////////////////////////////
-void clio::read_info(std::string key, int def, int& val) const
+void clio::read_info(std::string key, long def, long& val) const
 {
   /* Read an integer val labeled by key from inp. */
 
@@ -89,7 +89,7 @@ void clio::read_info(std::string key, int def, int& val) const
   std::stringstream ioss;
 
   key.append(" ");
-  int ind_key;
+  long ind_key;
 
   //  while ( getline(_ifs, line) && line.find(key,0) == std::string::npos ) {}
   while ( getline(_ifs, line) && line.substr(0, key.length()) != key ) {}
@@ -119,7 +119,7 @@ void clio::read_info(std::string key, double def, double& val) const
   std::stringstream ioss;
 
   key.append(" ");
-  int ind_key;
+  long ind_key;
 
   //  while ( getline(_ifs, line) && line.find(key,0) == std::string::npos ) {}
   while ( getline(_ifs, line) && line.substr(0, key.length()) != key ) {}
@@ -149,7 +149,7 @@ void clio::read_info(std::string key, dcomplex def, dcomplex& val) const
   std::stringstream ioss;
 
   key.append(" ");
-  int ind_key;
+  long ind_key;
 
   //  while ( getline(_ifs, line) && line.find(key,0) == std::string::npos ) {}
   while ( getline(_ifs, line) && line.substr(0, key.length()) != key ) {}

@@ -89,11 +89,11 @@ void Surff::prop_trap(const clmpi& MPIP, const clbas& Bas, const clfield& Field,
   
 #pragma omp parallel default(shared)
   {
-    int ithr = omp_get_thread_num();
-    int llkang, ulkang;
+    long ithr = omp_get_thread_num();
+    long llkang, ulkang;
     MPIP.omp_divide(ithr, 0, num_kang, llkang, ulkang);
 
-    for(int iorb = 0; iorb < norb; ++iorb){
+    for(long iorb = 0; iorb < norb; ++iorb){
       ////////////////////////
       // omp parallelized
       ////////////////////////
@@ -109,12 +109,12 @@ void Surff::prop_trap(const clmpi& MPIP, const clbas& Bas, const clfield& Field,
 
 #pragma omp parallel default(shared)
   {
-    int ithr = omp_get_thread_num();
-    int llkang, ulkang;
+    long ithr = omp_get_thread_num();
+    long llkang, ulkang;
     MPIP.omp_divide(ithr, 0, num_kang, llkang, ulkang);
 
-    for(int iorb = 0; iorb < norb; ++iorb){
-      for(int jorb = 0; jorb < norb; ++jorb){
+    for(long iorb = 0; iorb < norb; ++iorb){
+      for(long jorb = 0; jorb < norb; ++jorb){
 	////////////////////////
 	// omp parallelized
 	////////////////////////
@@ -142,11 +142,11 @@ void Surff::prop_trap_remove_Q(const clmpi& MPIP, const clbas& Bas, const clfiel
   
 #pragma omp parallel default(shared)
   {
-    int ithr = omp_get_thread_num();
-    int llkang, ulkang;
+    long ithr = omp_get_thread_num();
+    long llkang, ulkang;
     MPIP.omp_divide(ithr, 0, num_kang, llkang, ulkang);
 
-    for(int iorb = 0; iorb < norb; ++iorb){
+    for(long iorb = 0; iorb < norb; ++iorb){
       ////////////////////////
       // omp parallelized
       ////////////////////////
@@ -181,17 +181,17 @@ void Surff::calc_dt(const clmpi& MPIP, const clwfn& Wfn, const clbas& Bas, const
 
 #pragma omp parallel default(shared)
   {
-    int mval;
+    long mval;
     dcomplex tmp = 0.0;
     dcomplex factl = 0.0;
     double legendre_ang = 0.0;
     dcomplex omega_rad;
 
-    int ithr = omp_get_thread_num();
-    int llkang, ulkang;
+    long ithr = omp_get_thread_num();
+    long llkang, ulkang;
     MPIP.omp_divide(ithr, 0, num_kang, llkang, ulkang);
     
-    for(int iorb = 0; iorb < norb; ++iorb){
+    for(long iorb = 0; iorb < norb; ++iorb){
       mval = std::abs(Bas.mval[iorb]);
       for(int orbl = mval; orbl < lnum; orbl++){
 	factl = fpi * ipow[orbl];
@@ -232,14 +232,14 @@ void Surff::calc_dt(const clmpi& MPIP, const clwfn& Wfn, const clbas& Bas, const
     double legendre_ang0;
     double legendre_ang1;
     dcomplex delta_rad0, delta_rad1;
-    int smval, mval, midx;
-    int mmax = Bas.GAng.mmax1;
+    long smval, mval, midx;
+    long mmax = Bas.GAng.mmax1;
 
-    int ithr = omp_get_thread_num();
-    int llkang, ulkang;
+    long ithr = omp_get_thread_num();
+    long llkang, ulkang;
     MPIP.omp_divide(ithr, 0, num_kang, llkang, ulkang);
 
-    for(int iorb = 0; iorb < norb; ++iorb){
+    for(long iorb = 0; iorb < norb; ++iorb){
       smval = Bas.mval[iorb];
       mval = std::abs(Bas.mval[iorb]);
       midx = mmax + smval;
@@ -277,11 +277,11 @@ void Surff::calc_dt(const clmpi& MPIP, const clwfn& Wfn, const clbas& Bas, const
     dcomplex dfact;
     double invpi = 1.0 / std::pow(2*PI, 1.5);
     
-    int ithr = omp_get_thread_num();
-    int llkang, ulkang;
+    long ithr = omp_get_thread_num();
+    long llkang, ulkang;
     MPIP.omp_divide(ithr, 0, num_kang, llkang, ulkang);
 
-    for(int iorb = 0; iorb < norb; ++iorb){
+    for(long iorb = 0; iorb < norb; ++iorb){
       ////////////////////////
       // omp parallelized
       ////////////////////////
@@ -305,8 +305,8 @@ void Surff::prop_trap_vphase(const clmpi& MPIP, double afield, double time, doub
 
 #pragma omp parallel default(shared)
   {
-    int ithr = omp_get_thread_num();
-    int llkang, ulkang;
+    long ithr = omp_get_thread_num();
+    long llkang, ulkang;
     MPIP.omp_divide(ithr, 0, num_kang, llkang, ulkang);
 
     ////////////////////////
@@ -329,7 +329,7 @@ void Surff::prop_trap_vphase(const clmpi& MPIP, double afield, double time, doub
 }
 //////////////////////////////////////////////////////////////////////////
 void Surff::calc_orb(const clbas &Bas, const clwfn &Wfn, 
-		     int sirad, std::vector<dcomplex> &norb, std::vector<dcomplex> &dorb)
+		     long sirad, std::vector<dcomplex> &norb, std::vector<dcomplex> &dorb)
 {
   calc_orb_(&sirad, &Wfn.wfn[0], &norb[0], &dorb[0]);
   return;

@@ -18,7 +18,7 @@ subroutine wfn_get_nradfc(orb)
 ! real(c_double), parameter :: thrtail = 1.0D-12
 ! real(c_double), parameter :: thrtail = 1.0D-10
 
-  integer(c_int) :: iorb, irad, l, nradmax, lradmax, nradtmp, max_irad
+  integer(c_long) :: iorb, irad, l, nradmax, lradmax, nradtmp, max_irad
 
 ! Sato_ECS
   if (ecs_flag == 0) then
@@ -59,23 +59,4 @@ subroutine wfn_get_nradfc(orb)
   write(6, "('wfn_get_nradfc: radfc = ', i5, F20.10, E20.10)") nradfc, xrad(nradfc), thradfc
   
 end subroutine wfn_get_nradfc
-! tdcis-teramura
 !######################################################################
-subroutine wfn_set_nradgs(nrad0, lmax10, lmax20)
-
-  use, intrinsic :: iso_c_binding
-  use mod_rad, only : nradgs
-  use mod_sph, only : lmax1gs, lmax2gs, lmax2
-
-  implicit none
-  integer(c_int), intent(in) :: nrad0, lmax10, lmax20
-
-  nradgs = nrad0
-  lmax1gs = lmax10
-  lmax2gs = min(lmax20, lmax2)
-  ! write(6, "('wfn_set_nradgs: nradgs, lmax1gs, lmax2gs ')") 
-  ! write(6, "('wfn_set_nradgs: nradgs, lmax1gs, lmax2gs = 'i5, i5, i5)") nradgs, lmax1gs, lmax2gs
-  
-end subroutine wfn_set_nradgs
-!######################################################################
-! tdcis-teramura

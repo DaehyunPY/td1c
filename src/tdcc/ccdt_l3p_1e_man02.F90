@@ -4,7 +4,6 @@ subroutine ccdt_l3p_1e_man02(i0)
 ! i0 ( i j k a b c )_yf + = -1 * P( 3 ) * Sum ( l ) 
 !  * y ( i j l a b c )_y * f ( k l )_f 0
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact
   use mod_cc,only : fock,int2x,norb1,ncc3aaa,ncc3aab,t2inp,g2inp,t3inp,g3inp
   use mod_cc,only : h1_cc3aaa,h2_cc3aaa,h3_cc3aaa,p1_cc3aaa,p2_cc3aaa,p3_cc3aaa
@@ -15,7 +14,7 @@ subroutine ccdt_l3p_1e_man02(i0)
   complex(kind(0d0)),intent(inout) :: &
        i0(1:norb1,1:norb1,1:norb1,(norb1+1):nact,(norb1+1):nact,(norb1+1):nact,1:2)
 
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   !##################################################
   !$omp parallel default(shared) private(a,b,c,i,j,k)

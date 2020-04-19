@@ -11,7 +11,7 @@ subroutine hprod_projhigh(wfn)
   implicit none
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex) :: tmp
-  integer(c_int) :: lll,ull,ifun,l,jcut,irad
+  integer(c_long) :: lll,ull,ifun,l,jcut,irad
 
   if (.not. projhigh) return
 

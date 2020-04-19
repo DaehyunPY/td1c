@@ -54,7 +54,7 @@ subroutine hprod_mkv2mf_poisson_ecs(v2_type, rho2, v2sph)
   character(len=*), intent(in) :: v2_type
   complex(c_double_complex), intent(in) ::     rho2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(inout) :: v2sph(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
-  integer(c_int) :: dim, ifun_ll, ifun_ul, jfun_ll, jfun_ul, lll, ull
+  integer(c_long) :: dim, ifun_ll, ifun_ul, jfun_ll, jfun_ul, lll, ull
 
   if (trim(v2_type) == 'tot') then
      dim = nrad - 1
@@ -131,18 +131,18 @@ subroutine hprod_mkv2mf_poissonp_ecs(rho2, v2sph, dim, lll, ull, ifun_ll, ifun_u
   use mod_bas, only : mval, d2ll, bas_d2fac1, bas_d2fac2, bas_d2invr, bas_d2rpl0, bas_d2rpl1, bas_d2crpl1
 
   implicit none
-  integer(c_int), intent(in) :: dim, lll, ull, ifun_ll, ifun_ul, jfun_ll, jfun_ul
+  integer(c_long), intent(in) :: dim, lll, ull, ifun_ll, ifun_ul, jfun_ll, jfun_ul
   complex(c_double_complex), intent(in) ::     rho2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(inout) :: v2sph(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
 
   real(c_double) :: tmpr, tmpi
   real(c_double), allocatable :: rrho2(:,:)
-  integer(c_int) :: ifun, jfun, l, m, irad, ld, info
+  integer(c_long) :: ifun, jfun, l, m, irad, ld, info
 
   !------------------------------------------------------------
   !NEW orimo
   complex(c_double_complex) :: charge
-  integer(c_int) :: dimbc
+  integer(c_long) :: dimbc
   dimbc = min(dim, irad_ecs-1)
   !------------------------------------------------------------
 
@@ -229,8 +229,8 @@ subroutine hprod_mkv2mf_herm_ecs(v2_type, v2sph, v2ang)
   complex(c_double_complex), intent(inout) :: v2sph(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(inout) :: v2ang(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
 
-  integer(c_int) :: l, ilat, ifun, jfun, irad
-  integer(c_int) :: dim, ifun_ll, ifun_ul, jfun_ll, jfun_ul, llr, ulr
+  integer(c_long) :: l, ilat, ifun, jfun, irad
+  integer(c_long) :: dim, ifun_ll, ifun_ul, jfun_ll, jfun_ul, llr, ulr
 
   if (trim(v2_type) == 'tot') then
      dim = nrad - 1

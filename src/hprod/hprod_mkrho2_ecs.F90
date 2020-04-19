@@ -24,7 +24,7 @@ subroutine hprod_mkrho2p_ecs(v2_type, orbg, rho2g)
   character(len=*), intent(in) :: v2_type
   complex(c_double_complex), intent(in) :: orbg(1:(nrad-1), 1:nlat, 1:nfun)
   complex(c_double_complex), intent(out) :: rho2g(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
-  integer(c_int) :: dim, ifun_ll, ifun_ul, jfun_ll, jfun_ul, llr, ulr, ifun, jfun, ilat, irad
+  integer(c_long) :: dim, ifun_ll, ifun_ul, jfun_ll, jfun_ul, llr, ulr, ifun, jfun, ilat, irad
 
   if (trim(v2_type) == 'tot') then
      dim = nrad - 1

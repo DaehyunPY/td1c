@@ -4,12 +4,12 @@ subroutine util_zexpax(n, a, x, expax)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   complex(c_double_complex), intent(in) :: a
   complex(c_double_complex), intent(inout) :: x(1:n, 1:n)
   complex(c_double_complex), intent(out) :: expax(1:n, 1:n)
 
-  integer(c_int) :: i, j, k
+  integer(c_long) :: i, j, k
   complex(c_double_complex) :: fac
   complex(c_double_complex), allocatable :: u(:,:)
   complex(c_double_complex), parameter :: czero = (0.d+0, 0.d+0)

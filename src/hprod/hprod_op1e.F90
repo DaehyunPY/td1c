@@ -11,8 +11,8 @@ subroutine hprod_op1e(rfac, int1e, den1, op1e)
   complex(c_double_complex), intent(in) :: den1(1:nact, 1:nact)
   real(c_double), intent(out) :: op1e
 
-  integer(c_int) :: iact, jact
-  integer(c_int) :: ifun, jfun
+  integer(c_long) :: iact, jact
+  integer(c_long) :: ifun, jfun
   complex(c_double_complex) :: tmp
   complex(c_double_complex), parameter :: czero = (0.d+0, 0.d+0)
   

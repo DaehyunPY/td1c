@@ -12,9 +12,9 @@ subroutine hprod_mkint2_sph(rho2, v2sph)
   complex(c_double_complex), intent(in) :: rho2 (1:nbas2, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(in) :: v2sph(1:nbas2, 1:nfun, 1:nfun)
 
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
-  integer(c_int) :: nproc, iproc, ifun, jfun, kfun, lfun, iact, jact, kact, lact, ibas, llb, ulb
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
+  integer(c_long) :: nproc, iproc, ifun, jfun, kfun, lfun, iact, jact, kact, lact, ibas, llb, ulb
   complex(c_double_complex) :: tmp
   complex(c_double_complex), allocatable :: int2p(:,:,:,:,:)
   complex(c_double_complex), external :: zdotu
@@ -113,14 +113,14 @@ subroutine hprod_mkint2_sph_ecs(rho2, v2sph)
   complex(c_double_complex), intent(in) :: rho2 (1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(in) :: v2sph(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
 
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
-  integer(c_int) :: nproc, iproc, ifun, jfun, kfun, lfun, iact, jact, kact, lact, ibas, llb, ulb
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
+  integer(c_long) :: nproc, iproc, ifun, jfun, kfun, lfun, iact, jact, kact, lact, ibas, llb, ulb
   complex(c_double_complex) :: tmp
   complex(c_double_complex), allocatable :: int2p(:,:,:,:,:)
   complex(c_double_complex), external :: zdotu
 
-  integer(c_int) :: irad, l, llr, ulr
+  integer(c_long) :: irad, l, llr, ulr
 
 
   int2e(1:nact, 1:nact, 1:nact, 1:nact) = czero
@@ -218,14 +218,14 @@ subroutine hprod_mkint2_sph_ecs2(rho2, v2sph)
   complex(c_double_complex), intent(in) :: rho2 (1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(in) :: v2sph(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
 
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
-  integer(c_int) :: nproc, iproc, ifun, jfun, kfun, lfun, iact, jact, kact, lact, ibas, llb, ulb
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
+  integer(c_long) :: nproc, iproc, ifun, jfun, kfun, lfun, iact, jact, kact, lact, ibas, llb, ulb
   complex(c_double_complex) :: tmp
   complex(c_double_complex), allocatable :: int2p(:,:,:,:,:)
   complex(c_double_complex), external :: zdotu
 
-  integer(c_int) :: irad, l, llr, ulr
+  integer(c_long) :: irad, l, llr, ulr
 
 
   int2e(1:nact, 1:nact, 1:nact, 1:nact) = czero

@@ -40,8 +40,8 @@ subroutine hprod_mkrho2p_x3j(v2_type, orb, rho2)
   character(len=*), intent(in) :: v2_type
   complex(c_double_complex), intent(in) :: orb(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: rho2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
-  integer(c_int) :: dim,ifun_ll,ifun_ul,jfun_ll,jfun_ul,llr,ulr,ifun,jfun,irad
-  integer(c_int) :: li,lj,lij,mij,mfac,lllij,ullij
+  integer(c_long) :: dim,ifun_ll,ifun_ul,jfun_ll,jfun_ul,llr,ulr,ifun,jfun,irad
+  integer(c_long) :: li,lj,lij,mij,mfac,lllij,ullij
   complex(c_double_complex) :: rhoji(1:(nrad-1))
 
   if (trim(v2_type) == 'tot') then

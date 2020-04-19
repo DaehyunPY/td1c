@@ -19,12 +19,12 @@ subroutine hprod_htot_mkxmat_fc_ecs(dtime, orb, h0orb, h1orb, gorb, v2orb)
   complex(c_double_complex), intent(in) ::  gorb(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(in) :: v2orb(1:(nrad-1), 0:lmax1, 1:nfun)
 
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
   complex(c_double_complex) :: tmp, h01, h2, tfac
   complex(c_double_complex), allocatable :: xmatp(:,:,:)
 
-  integer(c_int) :: nproc, iproc, ifun, jfun, l, llr, ulr, irad ! <<<<<<< changed
+  integer(c_long) :: nproc, iproc, ifun, jfun, l, llr, ulr, irad ! <<<<<<< changed
 
   if (nfcore == 0) return
   xmat(1:nfcore, (nfcore+1):nfun) = czero
@@ -113,11 +113,11 @@ subroutine hprod_htot_mkxmat_cc_ecs(dtime, orb, h0orb, h1orb, gorb, v2orb)
   complex(c_double_complex), intent(in) ::  gorb(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(in) :: v2orb(1:(nrad-1), 0:lmax1, 1:nfun)
 
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
   complex(c_double_complex) :: tmp, h012, tfac
   complex(c_double_complex), allocatable :: xmatp(:,:,:)
-  integer(c_int) :: nproc, iproc, ifun, jfun, l, irad, llr, ulr
+  integer(c_long) :: nproc, iproc, ifun, jfun, l, irad, llr, ulr
 
   if (ncore == 0) return
   if (ncore == nfcore) return
@@ -219,11 +219,11 @@ subroutine hprod_htot_mkxmat_aa1_ecs(dtime, orb, h0orb, h1orb, gorb, v2orb)
   complex(c_double_complex), intent(in) ::  gorb(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(in) :: v2orb(1:(nrad-1), 0:lmax1, 1:nfun)
 
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
   complex(c_double_complex) :: tmp, h012, tfac
   complex(c_double_complex), allocatable :: xmatp(:,:,:)
-  integer(c_int) :: nproc, iproc, ifun, jfun, l, llr, ulr, irad, jrad, isub, iact, jact ! <<<<<<< changed
+  integer(c_long) :: nproc, iproc, ifun, jfun, l, llr, ulr, irad, jrad, isub, iact, jact ! <<<<<<< changed
 
 
   if (nact == 0) return
@@ -353,11 +353,11 @@ subroutine hprod_htot_mkxmat_aa2_ecs(dtime, orb, h0orb, h1orb, gorb, v2orb, cic,
   complex(c_double_complex), intent(in) :: cic(1:*)
   complex(c_double_complex), intent(inout) :: dcic(1:*)
 
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
   complex(c_double_complex) :: tmp1, tmp2, tfac
   complex(c_double_complex), allocatable :: xmatp(:,:,:)
-  integer(c_int) :: nproc, iproc, ifun, jfun, kfun, l, irad, llr, ulr, isub, jsub, iact, jact, kact
+  integer(c_long) :: nproc, iproc, ifun, jfun, kfun, l, irad, llr, ulr, isub, jsub, iact, jact, kact
 
   if (nact == 0) return
 
@@ -531,11 +531,11 @@ subroutine hprod_htot_mkxmat_ca_ecs(dtime, orb, h0orb, h1orb, gorb, v2orb)
   complex(c_double_complex), intent(in) ::  gorb(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(in) :: v2orb(1:(nrad-1), 0:lmax1, 1:nfun)
 
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
   complex(c_double_complex) :: h012C, h012A, tmpAC, tmpCA, tfac
   complex(c_double_complex), allocatable :: fmatp(:,:,:)
-  integer(c_int) :: nproc, iproc, ifun, jfun, kfun, jact, kact, l, irad, llr, ulr
+  integer(c_long) :: nproc, iproc, ifun, jfun, kfun, jact, kact, l, irad, llr, ulr
 
   ! trivial case
   if (nact * 2 == nelact(3)) then
@@ -560,10 +560,10 @@ subroutine hprod_htot_mkxmat_ca_ecs(dtime, orb, h0orb, h1orb, gorb, v2orb)
   nproc = util_omp_nproc()
   allocate(fmatp(1:nfun, 1:nfun, 0:(nproc-1)))
 
-!  if (ndcore > 0 .and. icomp == 1) then
-!     write(6,"('hprod_htot_mkxmat_ca: hermitian part is included.')")
-!!     write(6,"('hprod_htot_mkxmat_ca: hermitian part is excluded.')")
-!  end if
+  if (ndcore > 0 .and. icomp == 1) then
+     write(6,"('hprod_htot_mkxmat_ca: hermitian part is included.')")
+!     write(6,"('hprod_htot_mkxmat_ca: hermitian part is excluded.')")
+  end if
 
   !$omp parallel default(shared) private(iproc, llr, ulr, h012C, h012A, tmpAC, tmpCA)
   !###########################
@@ -729,11 +729,11 @@ subroutine hprod_htot_mkxmat_ca0_ecs(dtime, orb, h0orb, h1orb, gorb, v2orb)
   complex(c_double_complex), intent(in) ::  gorb(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(in) :: v2orb(1:(nrad-1), 0:lmax1, 1:nfun)
 
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
   complex(c_double_complex) :: h012C, h012A, tmpAC, tmpCA, tfac
   complex(c_double_complex), allocatable :: xmatp(:,:,:)
-  integer(c_int) :: nproc, iproc, ifun, jfun, kfun, jact, kact, l, irad, llr, ulr
+  integer(c_long) :: nproc, iproc, ifun, jfun, kfun, jact, kact, l, irad, llr, ulr
 
   if (ncore == nfcore) return
   if (ncore == 0) return

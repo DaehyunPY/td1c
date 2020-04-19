@@ -5,18 +5,18 @@ subroutine util_diag_comp(dsc, n, a, u)
 
   implicit none
   logical(c_bool), intent(in) :: dsc
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   complex(c_double_complex), intent(inout) :: a(1:n, 1:n)
   complex(c_double_complex), intent(out) :: u(1:n, 1:n)
 
-  integer(c_int) :: info, lwork, i, len
+  integer(c_long) :: info, lwork, i, len
   complex(c_double_complex) :: clwork
 
   complex(c_double_complex), allocatable :: tmpa(:, :)
   complex(c_double_complex), allocatable :: work(:)
   real(c_double), allocatable :: eig(:), rwork(:)
 !debug
-!debug  integer(c_int) :: j, k
+!debug  integer(c_long) :: j, k
 !debug
 
   len = max(n*n, 3*n-2)
@@ -85,19 +85,19 @@ subroutine util_diag_comp2(dsc, n, s, a, u)
 
   implicit none
   logical(c_bool), intent(in) :: dsc
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   complex(c_double_complex), intent(in) :: s(1:n, 1:n)
   complex(c_double_complex), intent(inout) :: a(1:n, 1:n)
   complex(c_double_complex), intent(out) :: u(1:n, 1:n)
 
-  integer(c_int) :: info, lwork, i, len
+  integer(c_long) :: info, lwork, i, len
   complex(c_double_complex) :: clwork
 
   complex(c_double_complex), allocatable :: tmpa(:, :)
   complex(c_double_complex), allocatable :: work(:)
   real(c_double), allocatable :: eig(:), rwork(:)
 !debug
-!debug  integer(c_int) :: j, k
+!debug  integer(c_long) :: j, k
 !debug
 
   len = max(n*n, 3*n-2)
@@ -167,11 +167,11 @@ subroutine util_diag_real(dsc, n, a, u)
 
   implicit none
   logical(c_bool), intent(in) :: dsc
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   real(c_double), intent(inout) :: a(1:n, 1:n)
   real(c_double), intent(out) :: u(1:n, 1:n)
 
-  integer(c_int) :: info, lwork, i, len
+  integer(c_long) :: info, lwork, i, len
   real(c_double) :: rlwork
 
   real(c_double), allocatable :: tmpa(:, :)
@@ -221,12 +221,12 @@ subroutine util_diag_real2(dsc, n, s, a, u)
 
   implicit none
   logical(c_bool), intent(in) :: dsc
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   real(c_double), intent(in) :: s(1:n, 1:n)
   real(c_double), intent(inout) :: a(1:n, 1:n)
   real(c_double), intent(out) :: u(1:n, 1:n)
 
-  integer(c_int) :: info, lwork, i, len
+  integer(c_long) :: info, lwork, i, len
   real(c_double) :: rlwork
 
   real(c_double), allocatable :: tmpa(:, :)

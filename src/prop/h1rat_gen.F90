@@ -14,13 +14,13 @@ subroutine h1rat_gen(dimd, cd0, cd1, tinv, tpiv)
   use mod_control, only : fedvr_normalized, h1rat_thresh
 
   implicit none
-  integer(c_int), intent(in) :: dimd
+  integer(c_long), intent(in) :: dimd
   complex(c_double_complex), intent(in) :: cd0(1:dimd)
   complex(c_double_complex), intent(in) :: cd1(1:dimd)
   complex(c_double_complex), intent(out) :: tinv(1:(3*ndvr+1), 1:(nrad-1), 0:lmax1, 1:dimd)
-  integer(c_int), intent(out) :: tpiv(1:(nrad-1), 0:lmax1, 1:dimd)
+  integer(c_long), intent(out) :: tpiv(1:(nrad-1), 0:lmax1, 1:dimd)
 
-  integer(c_int) :: idim, irad, jrad, l, jll, jul, jb1, jb2, dim, ld2, info
+  integer(c_long) :: idim, irad, jrad, l, jll, jul, jb1, jb2, dim, ld2, info
   complex(c_double_complex) :: fac
 
   dim = nrad - 1

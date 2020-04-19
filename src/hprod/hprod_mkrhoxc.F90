@@ -16,7 +16,7 @@ subroutine hprod_mkrhoxc(rho1, rhoxc)
   real(c_double), intent(out) :: rhoxc(1:(nrad-1), 1:nlat)
 
   real(c_double) :: nume
-  integer(c_int) :: llr, ulr, ifun, l, ilat, irad
+  integer(c_long) :: llr, ulr, ifun, l, ilat, irad
   complex(c_double_complex), allocatable :: rhog(:,:)
   complex(c_double_complex), allocatable :: rhos(:,:)
 
@@ -65,26 +65,28 @@ subroutine hprod_mkrhoxc(rho1, rhoxc)
 !     end do
 !  end do
 !  write(6, "('hprod_mkrhoxc: number of electrons from rhog  = ', f20.10, i10)") nume, neltot(3)
-!  nume = zero
-!  do ilat = 1, nlat
-!     do irad = 1, nrad - 1
-!        nume = nume + rhoxc(irad, ilat) * wlat(ilat) * xrad(irad) * xrad(irad) * wrad(irad) * (two * pi)
-!     end do
-!  end do
-!  write(6, "('hprod_mkrhoxc: number of electrons from rhoxc = ', f20.10, i10)") nume, neltot(3)
+  nume = zero
+  do ilat = 1, nlat
+     do irad = 1, nrad - 1
+        nume = nume + rhoxc(irad, ilat) * wlat(ilat) * xrad(irad) * xrad(irad) * wrad(irad) * (two * pi)
+!        write(6, "(2i5,f20.10)") ilat, irad, rhoxc(irad, ilat)
+     end do
+  end do
+  write(6, "('hprod_mkrhoxc: number of electrons from rhoxc = ', f20.10, i10)") nume, neltot(3)
 !debug
 
   call bas_ang2sph2one(0, rhog, rhos)
   rho1(1:(nrad-1), 0:lmax2) = rhos(1:(nrad-1), 0:lmax2)
 
 !debug
-!  nume = zero
-!  do l = 0, lmax2
-!     do irad = 1, nrad - 1
-!        nume = nume + dble(rho1(irad, l)) * sqrt(two)
-!     end do
-!  end do
-!  write(6, "('hprod_mkrhoxc: number of electrons from rho1  = ', f20.10, i10)") nume, nelact(3)
+  nume = zero
+  do l = 0, lmax2
+     do irad = 1, nrad - 1
+!       nume = nume + dble(rho1(irad, l))
+        nume = nume + dble(rho1(irad, l)) * sqrt(two)
+     end do
+  end do
+  write(6, "('hprod_mkrhoxc: number of electrons from rho1  = ', f20.10, i10)") nume, nelact(3)
 
 !  nume = zero
 !  do l = 0, lmax1

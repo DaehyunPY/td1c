@@ -4,9 +4,9 @@ real(c_double) function util_3j000(l1, l2, l3)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: l1, l2, l3
+  integer(c_long), intent(in) :: l1, l2, l3
 
-  integer(c_int) :: g, j, tmp
+  integer(c_long) :: g, j, tmp
   real(c_long_double) :: w3j
   real(c_long_double), external :: util_fact
 

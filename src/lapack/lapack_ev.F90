@@ -4,11 +4,11 @@ subroutine lapack_dsyev(n, a, u)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   real(c_double), intent(inout) :: a(1:n, 1:n)
   real(c_double), intent(out) :: u(1:n, 1:n)
 
-  integer(c_int) :: nf90, info, i, len, lwork
+  integer(c_long) :: nf90, info, i, len, lwork
   real(c_double) :: rlwork
 
   logical, parameter :: dsc = .false.
@@ -82,11 +82,11 @@ subroutine lapack_zheev(n, a, u)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   complex(c_double_complex), intent(inout) :: a(1:n, 1:n)
   complex(c_double_complex), intent(out) :: u(1:n, 1:n)
 
-  integer(c_int) :: nf90, info, lwork, i, len
+  integer(c_long) :: nf90, info, lwork, i, len
   complex(c_double_complex) :: clwork
 
   logical, parameter :: dsc = .false.
@@ -95,7 +95,7 @@ subroutine lapack_zheev(n, a, u)
   real(c_double), allocatable :: eig(:)
   real(c_double), allocatable :: rwork(:)
 !debug
-!debug  integer(c_int) :: j, k
+!debug  integer(c_long) :: j, k
 !debug
 
   nf90 = n
@@ -163,11 +163,11 @@ subroutine lapack_zheev_dsc(n, a, u)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   complex(c_double_complex), intent(inout) :: a(1:n, 1:n)
   complex(c_double_complex), intent(out) :: u(1:n, 1:n)
 
-  integer(c_int) :: nf90, info, lwork, i, len
+  integer(c_long) :: nf90, info, lwork, i, len
   complex(c_double_complex) :: clwork
 
   logical, parameter :: dsc = .true.
@@ -176,7 +176,7 @@ subroutine lapack_zheev_dsc(n, a, u)
   real(c_double), allocatable :: eig(:)
   real(c_double), allocatable :: rwork(:)
 !debug
-!debug  integer(c_int) :: j, k
+!debug  integer(c_long) :: j, k
 !debug
 
   nf90 = n

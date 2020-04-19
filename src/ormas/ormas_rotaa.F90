@@ -6,7 +6,7 @@ subroutine ormas_rotaa()
   use mod_ormas, only : ncore, nact, nfun, mval, nsub, norb_sub, lorb_sub, nrotaa, rotaa_mapf, rotaa_mapb
 
   implicit none
-  integer(c_int) :: isub, jsub, iact, jact, irot, npair, check
+  integer(c_long) :: isub, jsub, iact, jact, irot, npair, check
 
   ! number of inter-subactive space rotatins
   nrotaa = 0

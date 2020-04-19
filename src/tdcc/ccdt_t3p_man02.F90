@@ -4,7 +4,6 @@ subroutine ccdt_t3p_man02(i0,work1,work2,work3)
 ! i0 ( a b c i j k )_vt + = -1 * P( 9 ) * Sum ( d ) 
 !  * t ( a d i j )_t * i1 ( b c k d )_v 4
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas, only : nact
   use mod_cc, only : t2inp,ncc3aaa,ncc3aab,norb1
   use mod_cc, only : h1_cc3aaa,h2_cc3aaa,h3_cc3aaa,p1_cc3aaa,p2_cc3aaa,p3_cc3aaa 
@@ -18,7 +17,7 @@ subroutine ccdt_t3p_man02(i0,work1,work2,work3)
        work1((norb1+1):nact,(norb1+1):nact,1:norb1,(norb1+1):nact), &
        work2((norb1+1):nact,(norb1+1):nact,1:norb1,(norb1+1):nact),work3(1)
 
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   work1 = 0d0
   work2 = 0d0
@@ -84,8 +83,7 @@ subroutine ccdt_t3p_man02_1(i1aa,i1ab)
 ! i1 ( a b i c )_vt + = 1 * P( 2 ) * Sum ( j d ) * t ( a d i j )_t * v ( j b d c )_v 0
 ! i1 ( a b i c )_vt + = 1/2 * Sum ( l m d ) * t ( a b d i l m )_t * v ( l m d c )_v 0
 
-  use, intrinsic :: iso_c_binding
-  use mod_ormas,only : nact,act1_ll,act1_ul
+  use mod_ormas,only : nact
   use mod_cc,only : norb1,t2inp,t3inp,int2x
   use mod_cc2
 
@@ -94,7 +92,7 @@ subroutine ccdt_t3p_man02_1(i1aa,i1ab)
        i1aa((norb1+1):nact,(norb1+1):nact,1:norb1,(norb1+1):nact), &
        i1ab((norb1+1):nact,(norb1+1):nact,1:norb1,(norb1+1):nact)
 
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   !$omp parallel default(shared) private(icc,i,j,k,l,m,a,b,c,d,e)
   !$omp do
@@ -126,16 +124,16 @@ subroutine ccdt_t3p_man02_1(i1aa,i1ab)
      end do
 
      !i1-4
-     do d = norb1+1,act1_ul
-     do l = act1_ll,norb1
-     do m = act1_ll,l-1
+     do d = norb1+1,nact
+     do l = 1,norb1
+     do m = 1,l-1
         i1aa(a,b,i,c) = i1aa(a,b,i,c) + t3inp(a,b,d,i,l,m,spin_t3aaa)*int2x(l,m,d,c,spin_int2aa)
      end do
      end do
      end do
-     do d = norb1+1,act1_ul
-     do l = act1_ll,norb1
-     do m = act1_ll,norb1
+     do d = norb1+1,nact
+     do l = 1,norb1
+     do m = 1,norb1
         i1aa(a,b,i,c) = i1aa(a,b,i,c) - t3inp(a,b,d,i,l,m,spin_t3aab)*int2x(l,m,c,d,spin_int2ab)
      end do
      end do
@@ -170,16 +168,16 @@ subroutine ccdt_t3p_man02_1(i1aa,i1ab)
      end do
 
      !i1-4
-     do d = norb1+1,act1_ul
-     do l = act1_ll,norb1
-     do m = act1_ll,l-1
+     do d = norb1+1,nact
+     do l = 1,norb1
+     do m = 1,l-1
         i1ab(a,b,i,c) = i1ab(a,b,i,c) + t3inp(b,d,a,l,m,i,spin_t3aab)*int2x(l,m,d,c,spin_int2aa)
      end do
      end do
      end do
-     do d = norb1+1,act1_ul
-     do l = act1_ll,norb1
-     do m = act1_ll,norb1
+     do d = norb1+1,nact
+     do l = 1,norb1
+     do m = 1,norb1
         i1ab(a,b,i,c) = i1ab(a,b,i,c) - t3inp(a,d,b,i,l,m,spin_t3aab)*int2x(l,m,d,c,spin_int2ab)
      end do
      end do

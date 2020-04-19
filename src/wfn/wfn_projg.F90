@@ -10,14 +10,14 @@ subroutine wfn_projg(porb, orb)
   complex(c_double_complex), intent(in) :: porb(1:ngrid, 1:nfun)
   complex(c_double_complex), intent(inout) :: orb(1:ngrid, 1:nfun)
 
-  integer(c_int), external :: omp_get_num_threads
-  integer(c_int), external :: util_omp_iproc
-  integer(c_int) :: nproc, iproc, llg, ulg
+  integer, external :: omp_get_num_threads
+  integer(c_long), external :: util_omp_iproc
+  integer(c_long) :: nproc, iproc, llg, ulg
 
   complex(c_double_complex) :: tmp1, fac
   complex(c_double_complex), allocatable :: s2(:,:,:)
-  integer(c_int) :: ifun, jfun, igrid
-  integer(c_int), external :: util_omp_nproc
+  integer(c_long) :: ifun, jfun, igrid
+  integer(c_long), external :: util_omp_nproc
 
   nproc = util_omp_nproc()
   allocate(s2(1:nfun, 1:nfun, 0:(nproc-1)))

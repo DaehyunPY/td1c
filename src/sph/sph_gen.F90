@@ -8,14 +8,14 @@ subroutine sph_gen(lmax1, lmax2, mmax1, mmax2, nlat, nphi, &
   use shtools
 
   implicit none
-  integer(c_int), intent(in) :: lmax1, lmax2, mmax1, mmax2, nlat, nphi
+  integer(c_long), intent(in) :: lmax1, lmax2, mmax1, mmax2, nlat, nphi
   real(c_double),  intent(out) :: wlat(1:nlat), wphi, wang(1:nlat, 1:nphi), cost(1:nlat), sint(1:nlat)
   real(c_double),  intent(out) :: legf1(0:lmax1, 1:nlat, -mmax1:mmax1)
   real(c_double),  intent(out) :: legb1(1:nlat, 0:lmax1, -mmax1:mmax1)
   real(c_double),  intent(out) :: legf2(0:lmax2, 1:nlat, -mmax2:mmax2)
   real(c_double),  intent(out) :: legb2(1:nlat, 0:lmax2, -mmax2:mmax2)
   real(c_double), allocatable :: SHT_p1x(:,:)
-  integer(c_int) :: ilat, iphi, l, m, lm
+  integer(c_long) :: ilat, iphi, l, m, lm
   !hack for SHTOOLS
   integer(4) :: lmax2_int4, i0, i1, i4
   !hack for SHTOOLS
@@ -175,14 +175,14 @@ subroutine sph_gen_x3j(lmax1, lmax2, mmax1, mmax2, nlat, nphi, &
   use shtools
 
   implicit none
-  integer(c_int), intent(in) :: lmax1, lmax2, mmax1, mmax2, nlat, nphi
+  integer(c_long), intent(in) :: lmax1, lmax2, mmax1, mmax2, nlat, nphi
   real(c_double),  intent(out) :: wlat(1:nlat), wphi, wang(1:nlat, 1:nphi), cost(1:nlat), sint(1:nlat)
   real(c_double),  intent(out) :: legf1(0:lmax1, 1:nlat, -mmax1:mmax1)
   real(c_double),  intent(out) :: legb1(1:nlat, 0:lmax1, -mmax1:mmax1)
   real(c_double),  intent(out) :: legf2(0:lmax2, 1:nlat, -mmax2:mmax2)
   real(c_double),  intent(out) :: legb2(1:nlat, 0:lmax2, -mmax2:mmax2)
   real(c_double), allocatable :: SHT_p1x(:,:)
-  integer(c_int) :: ilat, iphi, l, m, lm
+  integer(c_long) :: ilat, iphi, l, m, lm
   !hack for SHTOOLS
   integer(4) :: lmax2_int4, i0, i1, i4
   !hack for SHTOOLS

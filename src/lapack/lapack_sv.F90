@@ -4,13 +4,13 @@ subroutine lapack_zhesv(n, nrhs, amat, bvec)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n, nrhs
+  integer(c_long), intent(in) :: n, nrhs
   complex(c_double_complex), intent(inout) :: amat(1:n, 1:n)
   complex(c_double_complex), intent(out) :: bvec(1:n, 1:nrhs)
 
-  integer(c_int) :: info, lwork, i
+  integer(c_long) :: info, lwork, i
   complex(c_double_complex) :: clwork
-  integer(c_int), allocatable :: ipiv(:)
+  integer(c_long), allocatable :: ipiv(:)
   complex(c_double_complex), allocatable :: work(:)
 
   allocate(ipiv(1:n))
@@ -34,12 +34,12 @@ subroutine lapack_zgesv(n, nrhs, amat, bvec)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n, nrhs
+  integer(c_long), intent(in) :: n, nrhs
   complex(c_double_complex), intent(inout) :: amat(1:n, 1:n)
   complex(c_double_complex), intent(out) :: bvec(1:n, 1:nrhs)
 
-  integer(c_int) :: info, i
-  integer(c_int), allocatable :: ipiv(:)
+  integer(c_long) :: info, i
+  integer(c_long), allocatable :: ipiv(:)
 
   allocate(ipiv(1:n))
   call zgesv(n, nrhs, amat, n, ipiv, bvec, n, info)

@@ -6,13 +6,13 @@ subroutine util_arnoldi(dtime, dim, maxcyc, thresh, ntot, hmat, vec, get_hvec)
 
   implicit none
   real(c_double), intent(in) :: dtime, thresh
-  integer(c_int), intent(in) :: dim, maxcyc
-  integer(c_int), intent(out) :: ntot
+  integer(c_long), intent(in) :: dim, maxcyc
+  integer(c_long), intent(out) :: ntot
   complex(c_double_complex), intent(out) :: hmat(1:maxcyc, 1:maxcyc)
   complex(c_double_complex), intent(inout) :: vec(1:dim, 1:*)
   external get_hvec
 
-  integer(c_int) :: icyc, jcyc
+  integer(c_long) :: icyc, jcyc
   real(c_double) :: error, beta, rbeta
   complex(c_double_complex) :: tmp
   complex(c_double_complex), allocatable :: hvec(:)
@@ -83,11 +83,11 @@ real(c_double) function util_arnoldi_error(maxcyc, nsub, hmat, beta, dtime)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: maxcyc, nsub
+  integer(c_long), intent(in) :: maxcyc, nsub
   complex(c_double_complex), intent(in) :: hmat(1:maxcyc, 1:maxcyc)
   real(c_double), intent(in) :: beta, dtime
 
-  integer(c_int) :: isub
+  integer(c_long) :: isub
   real(c_double) :: error
 
   error = (nsub - 1) * log(dtime)

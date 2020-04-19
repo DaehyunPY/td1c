@@ -12,7 +12,7 @@ subroutine bas_ang2sph2(fun1, fun2)
   complex(c_double_complex), intent(in) :: fun1(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(out) :: fun2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
 
-  integer(c_int) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
+  integer(c_long) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
 
   !$omp parallel default(shared) private(mji, llr, ulr)
   call util_omp_disp(1, nrad - 1, llr, ulr)
@@ -57,7 +57,7 @@ subroutine bas_ang2sph2_fc(fun1, fun2)
   implicit none
   complex(c_double_complex), intent(in) :: fun1(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(out) :: fun2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
-  integer(c_int) :: ifun, irad, ilat, l, mji, llr, ulr
+  integer(c_long) :: ifun, irad, ilat, l, mji, llr, ulr
 
   !$omp parallel default(shared) private(mji, llr, ulr)
   call util_omp_disp(1, nrad - 1, llr, ulr)
@@ -91,7 +91,7 @@ subroutine bas_ang2sph2_fc1(fun1, fun2)
   implicit none
   complex(c_double_complex), intent(in) :: fun1(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(out) :: fun2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
-  integer(c_int) :: ifun, irad, ilat, l, mji, llr, ulr
+  integer(c_long) :: ifun, irad, ilat, l, mji, llr, ulr
 
   !$omp parallel default(shared) private(mji, llr, ulr)
   call util_omp_disp(1, nrad - 1, llr, ulr)
@@ -125,7 +125,7 @@ subroutine bas_ang2sph2_fc2(fun1, fun2)
   implicit none
   complex(c_double_complex), intent(in) :: fun1(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(out) :: fun2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
-  integer(c_int) :: ifun, irad, ilat, l, mji, llr, ulr
+  integer(c_long) :: ifun, irad, ilat, l, mji, llr, ulr
 
   !$omp parallel default(shared) private(mji, llr, ulr)
   call util_omp_disp(1, nrad - 1, llr, ulr)
@@ -159,7 +159,7 @@ subroutine bas_ang2sph2_fcfc(fun1, fun2)
   implicit none
   complex(c_double_complex), intent(in) :: fun1(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(out) :: fun2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
-  integer(c_int) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
+  integer(c_long) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
 
   !$omp parallel default(shared) private(mji, llr, ulr)
   call util_omp_disp(1, nrad - 1, llr, ulr)
@@ -204,7 +204,7 @@ subroutine bas_ang2sph2_fc1fc1(fun1, fun2)
   implicit none
   complex(c_double_complex), intent(in) :: fun1(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(out) :: fun2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
-  integer(c_int) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
+  integer(c_long) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
 
   !$omp parallel default(shared) private(mji, llr, ulr)
   call util_omp_disp(1, nrad - 1, llr, ulr)
@@ -249,7 +249,7 @@ subroutine bas_ang2sph2_fc2fc2(fun1, fun2)
   implicit none
   complex(c_double_complex), intent(in) :: fun1(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(out) :: fun2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
-  integer(c_int) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
+  integer(c_long) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
 
   !$omp parallel default(shared) private(mji, llr, ulr)
   call util_omp_disp(1, nrad - 1, llr, ulr)
@@ -294,7 +294,7 @@ subroutine bas_ang2sph2_fc2fc1(fun1, fun2)
   implicit none
   complex(c_double_complex), intent(in) :: fun1(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(out) :: fun2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
-  integer(c_int) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
+  integer(c_long) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
 
   !$omp parallel default(shared) private(mji, llr, ulr)
   call util_omp_disp(1, nrad - 1, llr, ulr)
@@ -339,8 +339,8 @@ subroutine bas_ang2sph2_dyn(fun1, fun2)
   implicit none
   complex(c_double_complex), intent(in) :: fun1(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(out) :: fun2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
-  integer(c_int) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
-  integer(c_int) :: ijl, nijl, mapijl(1:3, 1:nfun*nfun*(lmax2+1))
+  integer(c_long) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
+  integer(c_long) :: ijl, nijl, mapijl(1:3, 1:nfun*nfun*(lmax2+1))
 !  real(c_double) :: xvec(1:(nrad-1), 1:2, 0:lmax2), yvec(1:(nrad-1), 1:2, 0:lmax2)
 
   nijl = 0
@@ -406,7 +406,7 @@ subroutine bas_ang2sph2_dyn(fun1, fun2)
   !$omp end do
   !$omp end parallel
 
-!DEBUG2  integer(c_int) :: ipair, npair, mappair(1:2, 1:nfun*nfun)
+!DEBUG2  integer(c_long) :: ipair, npair, mappair(1:2, 1:nfun*nfun)
 !DEBUG2  npair = 0
 !DEBUG2  do ifun = nfcore + 1, nfun
 !DEBUG2     do jfun = ifun, nfun
@@ -494,8 +494,8 @@ subroutine bas_ang2sph2_dyn3j(fun1e, fun1o, fun2)
   complex(c_double_complex), intent(in) :: fun1e(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(in) :: fun1o(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(out) :: fun2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
-  integer(c_int) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
-  integer(c_int) :: ijl, nijl, mapijl(1:3, 1:nfun*nfun*(lmax2+1))
+  integer(c_long) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
+  integer(c_long) :: ijl, nijl, mapijl(1:3, 1:nfun*nfun*(lmax2+1))
 !  real(c_double) :: xvec(1:(nrad-1), 1:2, 0:lmax2), yvec(1:(nrad-1), 1:2, 0:lmax2)
 
   nijl = 0
@@ -554,7 +554,7 @@ subroutine bas_ang2sph2_fcdyn(fun1, fun2)
   complex(c_double_complex), intent(in) :: fun1(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(out) :: fun2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
 
-  integer(c_int) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
+  integer(c_long) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
 
   !$omp parallel default(shared) private(mji, llr, ulr)
   call util_omp_disp(1, nradfc, llr, ulr)
@@ -600,7 +600,7 @@ subroutine bas_ang2sph2_fc1dyn(fun1, fun2)
   complex(c_double_complex), intent(in) :: fun1(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(out) :: fun2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
 
-  integer(c_int) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
+  integer(c_long) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
 
   !$omp parallel default(shared) private(mji, llr, ulr)
   call util_omp_disp(1, nradfc, llr, ulr)
@@ -647,7 +647,7 @@ subroutine bas_ang2sph2_fc1dyn3j(fun1e, fun1o, fun2)
   complex(c_double_complex), intent(in) :: fun1o(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(out) :: fun2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
 
-  integer(c_int) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
+  integer(c_long) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
 
   !$omp parallel default(shared) private(mji, llr, ulr)
   call util_omp_disp(1, nradfc, llr, ulr)
@@ -691,7 +691,7 @@ subroutine bas_ang2sph2_fc2dyn(fun1, fun2)
   complex(c_double_complex), intent(in) :: fun1(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(out) :: fun2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
 
-  integer(c_int) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
+  integer(c_long) :: ifun, jfun, irad, ilat, l, mji, llr, ulr
 
   !$omp parallel default(shared) private(mji, llr, ulr)
   call util_omp_disp(1, nradfc, llr, ulr)
@@ -732,11 +732,11 @@ subroutine bas_ang2sph2one(valm, fun1, fun2)
   use mod_sph, only : lmax2, nlat, legb2
 
   implicit none
-  integer(c_int), intent(in) :: valm
+  integer(c_long), intent(in) :: valm
   complex(c_double_complex), intent(in) :: fun1(1:(nrad-1), 1:nlat)
   complex(c_double_complex), intent(out) :: fun2(1:(nrad-1), 0:lmax2)
 
-  integer(c_int) :: irad, ilat, l, llr, ulr
+  integer(c_long) :: irad, ilat, l, llr, ulr
 
   !$omp parallel default(shared) private(llr, ulr)
   call util_omp_disp(1, nrad - 1, llr, ulr)

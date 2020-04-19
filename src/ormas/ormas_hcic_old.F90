@@ -57,12 +57,12 @@ end subroutine ormas_hcic_old
 !OLD  complex(c_double_complex), intent(inout) :: hcic(1:nstr_alph, 1:nstr_beta)
 !OLD
 !OLD  complex(c_double_complex), allocatable :: sint(:,:)
-!OLD  integer(c_int) :: istr, jstr, kstr, lstr, i1x, j1x, ifun, jfun, kfun, lfun, &
+!OLD  integer(c_long) :: istr, jstr, kstr, lstr, i1x, j1x, ifun, jfun, kfun, lfun, &
 !OLD       & iord, jord, idist, jdist, kdist, ii, lla, ula, llb, ulb, iproc, nproc, &
 !OLD       & i1x_m, j1x_m, m_ij, m_kl
 !OLD  complex(c_double_complex) :: tsgn
-!OLD  integer(c_int), external :: util_omp_nproc
-!OLD  integer(c_int), external :: util_omp_iproc
+!OLD  integer(c_long), external :: util_omp_nproc
+!OLD  integer(c_long), external :: util_omp_iproc
 !OLD
 !OLD  nproc = util_omp_nproc()
 !OLD  allocate(sint(1:nstr_beta, 0:(nproc-1)))
@@ -164,11 +164,11 @@ end subroutine ormas_hcic_old
 !OLD  complex(c_double_complex), intent(inout) :: hcic(1:nstr_alph, 1:nstr_beta)
 !OLD
 !OLD  complex(c_double_complex), allocatable :: sint(:,:)
-!OLD  integer(c_int) :: istr, jstr, kstr, lstr, i1x, j1x, ifun, jfun, kfun, lfun, &
+!OLD  integer(c_long) :: istr, jstr, kstr, lstr, i1x, j1x, ifun, jfun, kfun, lfun, &
 !OLD       & iord, jord, idist, jdist, kdist, ii, lla, ula, llb, ulb, iproc, nproc
 !OLD  complex(c_double_complex) :: tsgn
-!OLD  integer(c_int), external :: util_omp_nproc
-!OLD  integer(c_int), external :: util_omp_iproc
+!OLD  integer(c_long), external :: util_omp_nproc
+!OLD  integer(c_long), external :: util_omp_iproc
 !OLD
 !OLD  nproc = util_omp_nproc()
 !OLD
@@ -268,10 +268,10 @@ end subroutine ormas_hcic_old
 !OLD  complex(c_double_complex), allocatable :: sint(:,:)
 !OLD  complex(c_double_complex), allocatable :: scic(:,:)
 !OLD  complex(c_double_complex), allocatable :: hscic(:,:)
-!OLD  integer(c_int) :: istr, jstr, kstr, j1x, ifun, jfun, kfun, lfun, &
+!OLD  integer(c_long) :: istr, jstr, kstr, j1x, ifun, jfun, kfun, lfun, &
 !OLD       & idist, jdist, kdist, ii, n1xra, iproc, nproc, j1x_m, m_ij, m_kl
-!OLD  integer(c_int), external :: util_omp_nproc
-!OLD  integer(c_int), external :: util_omp_iproc
+!OLD  integer(c_long), external :: util_omp_nproc
+!OLD  integer(c_long), external :: util_omp_iproc
 !OLD
 !OLD  nproc = util_omp_nproc()
 !OLD  allocate(scic(1:nstr_alph, 1:nstr_beta))
@@ -367,7 +367,7 @@ end subroutine ormas_hcic_old
 !OLD  complex(c_double_complex), intent(in) :: int2e(1:nact, 1:nact, 1:nact, 1:nact)
 !OLD  complex(c_double_complex), intent(out) :: eff1e(1:nact, 1:nact)
 !OLD
-!OLD  integer(c_int) :: iact, jact, kact
+!OLD  integer(c_long) :: iact, jact, kact
 !OLD  complex(c_double_complex) :: tmp
 !OLD
 !OLD  do iact = 1, nact
@@ -398,7 +398,7 @@ end subroutine ormas_hcic_old
 !OLD  complex(c_double_complex), intent(in) :: int2e(1:nact, 1:nact, 1:nact, 1:nact)
 !OLD  complex(c_double_complex), intent(out) :: eff2e(1:nact, 1:nact, 1:nact, 1:nact)
 !OLD
-!OLD  integer(c_int) :: iact, jact
+!OLD  integer(c_long) :: iact, jact
 !OLD
 !OLD  eff2e(1:nact, 1:nact, 1:nact, 1:nact) = int2e(1:nact, 1:nact, 1:nact, 1:nact)
 !OLD  do iact = 1, nact

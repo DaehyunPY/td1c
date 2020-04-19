@@ -69,8 +69,8 @@ void clfedvr::clear()
 ////////////////////////////////////////////////////////////////////////
 void clfedvr::print() const
 {
-  int i, m;
-  int iB0, iB;
+  long i, m;
+  long iB0, iB;
   double DVRX, DVRW, RADW, DMSK;
   std::string flag;
 
@@ -126,15 +126,15 @@ void clfedvr::print() const
 //DEBUG  }
 
   //old  std::cout << "# FE-DVR: kinetic energy matrix:" << std::endl;
-  //old  for (int ife = 0; ife < nfe; ife ++) {
-  //old    int iB0 = mapf[ife];
-  //old    printf("# element %5d: n = %5d, %10.5f <= x <= %10.5f\n", 
+  //old  for (long ife = 0; ife < nfe; ife ++) {
+  //old    long iB0 = mapf[ife];
+  //old    printf("# element %5ld: n = %5ld, %10.5f <= x <= %10.5f\n", 
   //old	   ife, ndvr[ife], x0[ife], x1[ife]);
-  //old    for (int m = 0; m <= ndvr[ife]; m ++) {
-  //old      int mB = iB0 + m;
-  //old      printf("%10d", m);
-  //old      for (int k = 0; k <= ndvr[ife]; k ++) {
-  //old	int kB = iB0 + k;
+  //old    for (long m = 0; m <= ndvr[ife]; m ++) {
+  //old      long mB = iB0 + m;
+  //old      printf("%10ld", m);
+  //old      for (long k = 0; k <= ndvr[ife]; k ++) {
+  //old	long kB = iB0 + k;
   //old	printf("%13.5E", kinetic(kB, mB));
   //old      }
   //old      printf("\n");
@@ -142,15 +142,15 @@ void clfedvr::print() const
   //old  }
   //old
   //old  std::cout << "# FE-DVR: nabla operator:" << std::endl;
-  //old  for (int ife = 0; ife < nfe; ife ++) {
-  //old    int iB0 = mapf[ife];
-  //old    printf("# element %5d: n = %5d, %10.5f <= x <= %10.5f\n", 
+  //old  for (long ife = 0; ife < nfe; ife ++) {
+  //old    long iB0 = mapf[ife];
+  //old    printf("# element %5ld: n = %5ld, %10.5f <= x <= %10.5f\n", 
   //old	   ife, ndvr[ife], x0[ife], x1[ife]);
-  //old    for (int m = 0; m <= ndvr[ife]; m ++) {
-  //old      int mB = iB0 + m;
-  //old      printf("%10d", m);
-  //old      for (int k = 0; k <= ndvr[ife]; k ++) {
-  //old	int kB = iB0 + k;
+  //old    for (long m = 0; m <= ndvr[ife]; m ++) {
+  //old      long mB = iB0 + m;
+  //old      printf("%10ld", m);
+  //old      for (long k = 0; k <= ndvr[ife]; k ++) {
+  //old	long kB = iB0 + k;
   //old	printf("%13.5E", nabla(kB, mB));
   //old      }
   //old      printf("\n");
@@ -158,17 +158,17 @@ void clfedvr::print() const
   //old  }
 
 //DEBUG  std::cout << "# FE-DVR: radk operator:" << std::endl;
-//DEBUG  for (int ife = 0; ife < nfe; ife ++) {
-//DEBUG    int iB0 = mapf[ife];
-//DEBUG    printf("# element %5d: n = %5d, %10.5f <= x <= %10.5f\n", 
+//DEBUG  for (long ife = 0; ife < nfe; ife ++) {
+//DEBUG    long iB0 = mapf[ife];
+//DEBUG    printf("# element %5ld: n = %5ld, %10.5f <= x <= %10.5f\n", 
 //DEBUG	   ife, ndvr[ife], x0[ife], x1[ife]);
-//DEBUG    for (int m = 0; m <= ndvr[ife]; m ++) {
-//DEBUG      int mB = iB0 + m;
-//DEBUG      printf("%10d", m);
-//DEBUG      for (int k = 0; k <= ndvr[ife]; k ++) {
-//DEBUG	int kB = iB0 + k;
-//DEBUG	int kB_B = nmax + kB - mB;
-//DEBUG	int kmB = (2 * nmax + 1) * mB + kB_B;
+//DEBUG    for (long m = 0; m <= ndvr[ife]; m ++) {
+//DEBUG      long mB = iB0 + m;
+//DEBUG      printf("%10ld", m);
+//DEBUG      for (long k = 0; k <= ndvr[ife]; k ++) {
+//DEBUG	long kB = iB0 + k;
+//DEBUG	long kB_B = nmax + kB - mB;
+//DEBUG	long kmB = (2 * nmax + 1) * mB + kB_B;
 //DEBUG	printf("%13.5E", radk[kmB]);
 //DEBUG      }
 //DEBUG      printf("\n");
@@ -176,17 +176,17 @@ void clfedvr::print() const
 //DEBUG  }
 //DEBUG
 //DEBUG  std::cout << "# FE-DVR: radp operator:" << std::endl;
-//DEBUG  for (int ife = 0; ife < nfe; ife ++) {
-//DEBUG    int iB0 = mapf[ife];
-//DEBUG    printf("# element %5d: n = %5d, %10.5f <= x <= %10.5f\n", 
+//DEBUG  for (long ife = 0; ife < nfe; ife ++) {
+//DEBUG    long iB0 = mapf[ife];
+//DEBUG    printf("# element %5ld: n = %5ld, %10.5f <= x <= %10.5f\n", 
 //DEBUG	   ife, ndvr[ife], x0[ife], x1[ife]);
-//DEBUG    for (int m = 0; m <= ndvr[ife]; m ++) {
-//DEBUG      int mB = iB0 + m;
-//DEBUG      printf("%10d", m);
-//DEBUG      for (int k = 0; k <= ndvr[ife]; k ++) {
-//DEBUG	int kB = iB0 + k;
-//DEBUG	int kB_B = nmax + kB - mB;
-//DEBUG	int kmB = (2 * nmax + 1) * mB + kB_B;
+//DEBUG    for (long m = 0; m <= ndvr[ife]; m ++) {
+//DEBUG      long mB = iB0 + m;
+//DEBUG      printf("%10ld", m);
+//DEBUG      for (long k = 0; k <= ndvr[ife]; k ++) {
+//DEBUG	long kB = iB0 + k;
+//DEBUG	long kB_B = nmax + kB - mB;
+//DEBUG	long kmB = (2 * nmax + 1) * mB + kB_B;
 //DEBUG	printf("%13.5E", radp[kmB]);
 //DEBUG      }
 //DEBUG      printf("\n");
@@ -227,8 +227,8 @@ void clfedvr::gen(const clmpi& MPIP, const clio& IO)
   radp.resize((2 * nmax + 1) * (nrad + 1));
 
   // debug
-  printf("clfedvr nrad  = %10d\n", nrad);   // 0 <= irad <= nrad
-  printf("clfedvr nmax  = %10d\n", nmax); 
+  printf("clfedvr nrad  = %10ld\n", nrad);   // 0 <= irad <= nrad
+  printf("clfedvr nmax  = %10ld\n", nmax); 
   // debug
 
 // Orimo_ECS
@@ -265,9 +265,9 @@ void clfedvr::read_x(const clio& IO)
 
     nrad = 0;
 
-    int ife = 0;
-    int ndvr_tmp;
-    int nfe_tmp;
+    long ife = 0;
+    long ndvr_tmp;
+    long nfe_tmp;
     double x0_tmp;
     double x1_tmp;
     double dfe_tmp;
@@ -281,7 +281,7 @@ void clfedvr::read_x(const clio& IO)
 	   >> ndvr_tmp
 	   >> nfe_tmp;
       dfe_tmp = (x1_tmp - x0_tmp) / nfe_tmp;
-      for (int ife_tmp = 0; ife_tmp < nfe_tmp; ife_tmp ++) {
+      for (long ife_tmp = 0; ife_tmp < nfe_tmp; ife_tmp ++) {
 	x0[ife + ife_tmp] = x0_tmp + dfe_tmp * ife_tmp;
 	x1[ife + ife_tmp] = x0[ife + ife_tmp] + dfe_tmp;
 	ndvr[ife + ife_tmp] = ndvr_tmp;
@@ -295,8 +295,8 @@ void clfedvr::read_x(const clio& IO)
 
     std::cout << "# grid:" << std::endl;
     std::cout << "# " << "nfe  = " << nfe << std::endl;
-    for ( int ife = 0; ife < nfe; ife ++ ) {
-      printf( "#%10d %20.10f%20.10f%20.10f%20d\n",
+    for ( long ife = 0; ife < nfe; ife ++ ) {
+      printf( "#%10ld %20.10f%20.10f%20.10f%20ld\n",
 	      ife, x0[ ife ], x1[ ife ], dfe[ ife ], ndvr[ ife ] );
     }
 
@@ -315,12 +315,12 @@ void clfedvr::gen_map()
 // Conversion map between local and global bases.
 //
 {
-  int NB = 0;
+  long NB = 0;
 
-  for (int ife = 0; ife < nfe; ife ++) {
+  for (long ife = 0; ife < nfe; ife ++) {
     mapf[ife] = NB;
-    //    for (int m = m0[ife]; m < ndvr[ife]; m ++) {
-    for (int m = 0; m < ndvr[ife]; m ++) {
+    //    for (long m = m0[ife]; m < ndvr[ife]; m ++) {
+    for (long m = 0; m < ndvr[ife]; m ++) {
       mapb[NB] = ife;
       NB ++;
     }
@@ -344,7 +344,7 @@ void clfedvr::gen_x()
 {
   double xp = rll;
 
-  for ( int i = 0; i < nfe; i ++ ) {
+  for ( long i = 0; i < nfe; i ++ ) {
     x0[ i ] = xp;
     x1[ i ] = x0[ i ] + dfe[ i ];
     xp = x1[ i ];
@@ -352,8 +352,8 @@ void clfedvr::gen_x()
 
   // debug
   std::cout << "# x0 and x1 for each element:" << std::endl;
-  for ( int i = 0; i < nfe; i ++ ) {
-    printf( "%10d %20.10f %20.10f\n", i, x0[ i ], x1[ i ] );      
+  for ( long i = 0; i < nfe; i ++ ) {
+    printf( "%10ld %20.10f %20.10f\n", i, x0[ i ], x1[ i ] );      
   }
   // debug
 }
@@ -363,7 +363,7 @@ void clfedvr::gen_mask()
 // mask function of cos type.
 //
 {
-  int i, m;
+  long i, m;
   const double pih = PI * HALF;
   const double oo4 = ONE / FOUR;
   const double oo8 = oo4 * HALF;;
@@ -380,7 +380,7 @@ void clfedvr::gen_mask()
   //  printf("# clfedvr::gen_mask. order = %20.10f\n", order);
   //DEBUG
 
-  for (int iB = 1; iB < nrad; iB ++) {
+  for (long iB = 1; iB < nrad; iB ++) {
     i = mapb[iB];
     m = iB - mapf[i];
     absx = sqrt(DVR[i].xpt[m] * DVR[i].xpt[m]);
@@ -392,7 +392,7 @@ void clfedvr::gen_mask()
       mask[iB] = pow(tmp, order);
     }
     //DEBUG
-    //    printf( " %5d absx = %20.10f, mask = %20.10f\n", iB, absx, mask[ iB ] );
+    //    printf( " %5ld absx = %20.10f, mask = %20.10f\n", iB, absx, mask[ iB ] );
     //DEBUG
   }
 }
@@ -407,15 +407,15 @@ void clfedvr::gen_grid()
 // are included here.
 {
   // Orimo_ECS
-  // for (int i = 0; i < nfe; i ++) {
+  // for (long i = 0; i < nfe; i ++) {
   //   DVR[i].gen(ndvr[i], 0, ndvr[i], x0[i], x1[i]);
   // }
   if (!inf_range) {
-    for (int i = 0; i < nfe; i ++) {
+    for (long i = 0; i < nfe; i ++) {
       DVR[i].gen(ndvr[i], 0, ndvr[i], x0[i], x1[i]);
     }
   } else if(inf_range){
-    for (int i = 0; i < nfe - 1; i ++) {
+    for (long i = 0; i < nfe - 1; i ++) {
       DVR[i].gen(ndvr[i], 0, ndvr[i], x0[i], x1[i]);
     }
     int lfe = nfe -1;
@@ -424,9 +424,9 @@ void clfedvr::gen_grid()
   // Orimo_ECS
 
   // Global arrays
-  int i, m;
-  //BUG  for (int iB = 0; iB < nrad; iB ++) {
-  for (int iB = 0; iB <= nrad; iB ++) {
+  long i, m;
+  //BUG  for (long iB = 0; iB < nrad; iB ++) {
+  for (long iB = 0; iB <= nrad; iB ++) {
     i = mapb[iB];
     m = iB - mapf[i];
     xrad[iB] = DVR[i].xpt[m];
@@ -445,8 +445,8 @@ void clfedvr::gen_grid()
   // w^i_m = w^i_m, if (i|m) is not a bridge ( 1 <= m <= n-1 ), 
   // w^i_0 = w^(i-1)_n + w^i_0 = w^(i-1)_n
   //         ^^^^^^^^^^^^^^^^^
-  for (int i = 1; i < nfe; i ++) {
-    int iB = mapf[i];
+  for (long i = 1; i < nfe; i ++) {
+    long iB = mapf[i];
     wrad[iB] += DVR[i - 1].wpt[ndvr[i - 1]];
     if(xrad[iB] > recs) 
       cwrad[iB] += DVR[i - 1].wpt[ndvr[i - 1]] * exp(IUNIT * theta);
@@ -455,7 +455,7 @@ void clfedvr::gen_grid()
   }
 
 // Orimo_ECS
-//old  for(int irad = 0; irad < nrad + 1; irad++){
+//old  for(long irad = 0; irad < nrad + 1; irad++){
 //old    bra_wrad[irad] = wrad[irad] / real(sqrt(std::conj(cwrad[irad]) * cwrad[irad]));
 //old  }
 //old
@@ -472,7 +472,7 @@ void clfedvr::gen_grid()
   rdr[0] = 1;
   wdw[0] = 1;
   bra_wrad[0] = 1;
-  for(int irad = 1; irad < nrad + 1; irad++){
+  for(long irad = 1; irad < nrad + 1; irad++){
     bra_wrad[irad] = wrad[irad] / real(sqrt(std::conj(cwrad[irad]) * cwrad[irad]));
     rdr[irad] = cxrad[irad] / std::conj(cxrad[irad]);
     wdw[irad] = std::sqrt(cwrad[irad] / std::conj(cwrad[irad]));
@@ -515,13 +515,13 @@ void clfedvr::gen_grid()
 //old  kinetic.clear();
 //old
 //old  double tmp;
-//old  for (int i = 0; i < nfe; i ++) {
-//old    int iB0 = mapf[i];
-//old    for (int m = 0; m <= ndvr[i]; m ++) {
-//old      int mB = iB0 + m;
-//old      for (int k = 0; k <= ndvr[i]; k ++) {
-//old	int kB = iB0 + k;
-//old	int kmi = (ndvr[0] + 1) * (ndvr[0] + 1) * i
+//old  for (long i = 0; i < nfe; i ++) {
+//old    long iB0 = mapf[i];
+//old    for (long m = 0; m <= ndvr[i]; m ++) {
+//old      long mB = iB0 + m;
+//old      for (long k = 0; k <= ndvr[i]; k ++) {
+//old	long kB = iB0 + k;
+//old	long kmi = (ndvr[0] + 1) * (ndvr[0] + 1) * i
 //old                                 + (ndvr[0] + 1) * m
 //old                                                 + k;
 //old	if (i == 0 && (m == 0 || k == 0)) {
@@ -532,7 +532,7 @@ void clfedvr::gen_grid()
 //old	  kloc[kmi] = ZERO;
 //old	} else {
 //old	  tmp = ZERO;
-//old	  for (int l = 0; l <= ndvr[i]; l ++) {
+//old	  for (long l = 0; l <= ndvr[i]; l ++) {
 //old	    tmp += DVR[i].wpt[ l ] * DVR[i].dshape(l, m) 
 //old                                   * DVR[i].dshape(l, k);
 //old	  }
@@ -552,12 +552,12 @@ void clfedvr::gen_grid()
 //old  nabla.clear();
 //old
 //old  double tmp;
-//old  for (int i = 0; i < nfe; i ++) {
-//old    int iB0 = mapf[i];
-//old    for (int m = 0; m <= ndvr[i]; m ++) {
-//old      int mB = iB0 + m;
-//old      for (int k = 0; k <= ndvr[i]; k ++) {
-//old	int kB = iB0 + k;
+//old  for (long i = 0; i < nfe; i ++) {
+//old    long iB0 = mapf[i];
+//old    for (long m = 0; m <= ndvr[i]; m ++) {
+//old      long mB = iB0 + m;
+//old      for (long k = 0; k <= ndvr[i]; k ++) {
+//old	long kB = iB0 + k;
 //old	if (i == 0 && (m == 0 || k == 0)) {
 //old	  nabla(kB, mB) = ZERO;
 //old	} else if (i == nfe - 1 && (m == ndvr[i] || k == ndvr[i])) {
@@ -576,13 +576,13 @@ void clfedvr::gen_grid()
 //old  nabla_new.clear();
 //old  //  fedvr_gen_nabla_new();
 //old  double tmp;
-//old  int kB_B, kmB;
-//old  for (int i = 0; i < nfe; i ++) {
-//old    int iB0 = mapf[i];
-//old    for (int m = 0; m <= ndvr[i]; m ++) {
-//old      int mB = iB0 + m;
-//old      for (int k = 0; k <= ndvr[i]; k ++) {
-//old	int kB = iB0 + k;
+//old  long kB_B, kmB;
+//old  for (long i = 0; i < nfe; i ++) {
+//old    long iB0 = mapf[i];
+//old    for (long m = 0; m <= ndvr[i]; m ++) {
+//old      long mB = iB0 + m;
+//old      for (long k = 0; k <= ndvr[i]; k ++) {
+//old	long kB = iB0 + k;
 //old	kB_B = nmax + kB - mB;
 //old//bug	kmB = (2 * nmax + 1) * kB + kB_B;
 //old	kmB = (2 * nmax + 1) * mB + kB_B;
@@ -600,9 +600,9 @@ void clfedvr::gen_grid()
 //old  }
 //old}
 ////////////////////////////////////////////////////////////////////////
-int clfedvr::get_irad(double rad) const
+long clfedvr::get_irad(double rad) const
 {
-  int irad;
+  long irad;
   double small = 1.E-10;
 
   irad = 1;
@@ -611,25 +611,25 @@ int clfedvr::get_irad(double rad) const
     if (irad == nrad - 1) break;
   }
 
-  //  printf("get_irad: irad = %d", irad);
+  //  printf("get_irad: irad = %ld", irad);
   return irad;
 }
 ////////////////////////////////////////////////////////////////////////
-int clfedvr::get_irad(int ife, int m) const
+long clfedvr::get_irad(long ife, long m) const
 {
   return mapf[ife] + m;
 }
 //////////////////////////////////////////////////////////////////////////
-int clfedvr::get_ndvr(int ife) const
+long clfedvr::get_ndvr(long ife) const
 {
   return ndvr[ife];
 }
 //////////////////////////////////////////////////////////////////////////
-int clfedvr::get_ife(double rval) const
+long clfedvr::get_ife(double rval) const
 {
-  int ife = -1;
+  long ife = -1;
   double small = 1.E-10;
-  for (int i = 0; i < nfe; i ++) {
+  for (long i = 0; i < nfe; i ++) {
     if (rval + small < x1[i]) {
       ife = i;
       break;
@@ -638,37 +638,37 @@ int clfedvr::get_ife(double rval) const
   return ife;
 }
 ////////////////////////////////////////////////////////////////////////
-double clfedvr::get_x0(int ife) const
+double clfedvr::get_x0(long ife) const
 {
   return xrad[mapf[ife]];
 }
 ////////////////////////////////////////////////////////////////////////
-double clfedvr::get_x1(int ife) const
+double clfedvr::get_x1(long ife) const
 {
   return xrad[mapf[ife]+ndvr[ife]];
 }
 //////////////////////////////////////////////////////////////////////////
-double clfedvr::get_val(int irad, double rval) const
+double clfedvr::get_val(long irad, double rval) const
 {
-  int ife = mapb[irad];
-  int m = irad - mapf[ife];
-//  printf("%10d%20.10f%10d%10d%20.10f%20.10f%20.10f\n", irad, rval, ife, m, 
+  long ife = mapb[irad];
+  long m = irad - mapf[ife];
+//  printf("%10ld%20.10f%10ld%10ld%20.10f%20.10f%20.10f\n", irad, rval, ife, m, 
 //	 DVR[ife].get_val(m, rval), sqrt(wrad[irad]),
 //	 DVR[ife].get_val(m, rval) / sqrt(wrad[irad]));
 //return DVR[ife].get_val(m, rval) / sqrt(wrad[irad]);
   return DVR[ife].get_val(m, rval);
 }
 //////////////////////////////////////////////////////////////////////////
-double clfedvr::get_val(int ife, int idvr, double rval) const
+double clfedvr::get_val(long ife, long idvr, double rval) const
 {
-  int irad = mapf[ife] + idvr;
+  long irad = mapf[ife] + idvr;
 //return DVR[ife].get_val(idvr, rval) / sqrt(wrad[irad]);
   return DVR[ife].get_val(idvr, rval);
 }
 //////////////////////////////////////////////////////////////////////////
-double clfedvr::get_val0(int ife, double rval) const
+double clfedvr::get_val0(long ife, double rval) const
 {
-  int irad = mapf[ife + 1];
+  long irad = mapf[ife + 1];
 //return DVR[ife].get_val(ndvr[ife], rval) / sqrt(wrad[irad]);
   return DVR[ife].get_val(ndvr[ife], rval);
 }
@@ -680,13 +680,13 @@ void clfedvr::gen_radk()
   radk0.assign(radk0.size(), ZERO);
 
   double tmp, tmp0;
-  int lm, lk, iB0, mB, kB, kB_B, kmB;
+  long lm, lk, iB0, mB, kB, kB_B, kmB;
 
-  for (int i = 0; i < nfe; i ++) {
+  for (long i = 0; i < nfe; i ++) {
     iB0 = mapf[i];
-    for (int m = 0; m <= ndvr[i]; m ++) {
+    for (long m = 0; m <= ndvr[i]; m ++) {
       mB = iB0 + m;
-      for (int k = 0; k <= ndvr[i]; k ++) {
+      for (long k = 0; k <= ndvr[i]; k ++) {
 	kB = iB0 + k;
 	kB_B = nmax + kB - mB;
 	kmB = (2 * nmax + 1) * mB + kB_B;
@@ -701,21 +701,21 @@ void clfedvr::gen_radk()
 	  tmp = ZERO;
 	  tmp0 = ZERO;
 	  if (i == 0) {
-	    for (int l = 1; l <= ndvr[i]; l ++) {
+	    for (long l = 1; l <= ndvr[i]; l ++) {
 	      lm = (ndvr[i] + 1) * m + l;
 	      lk = (ndvr[i] + 1) * k + l;
 	      tmp0 += DVR[i].wpt[ l ] * DVR[i].dshape[lm] 
                                       * DVR[i].dshape[lk];
 	    }
 	  } else {
-	    for (int l = 0; l <= ndvr[i]; l ++) {
+	    for (long l = 0; l <= ndvr[i]; l ++) {
 	      lm = (ndvr[i] + 1) * m + l;
 	      lk = (ndvr[i] + 1) * k + l;
 	      tmp0 += DVR[i].wpt[ l ] * DVR[i].dshape[lm] 
                                       * DVR[i].dshape[lk];
 	    }
 	  }
-	  for (int l = 0; l <= ndvr[i]; l ++) {
+	  for (long l = 0; l <= ndvr[i]; l ++) {
 	    lm = (ndvr[i] + 1) * m + l;
 	    lk = (ndvr[i] + 1) * k + l;
 	    tmp += DVR[i].wpt[ l ] * DVR[i].dshape[lm] 
@@ -725,7 +725,7 @@ void clfedvr::gen_radk()
 	  // for radkI_ecs, when r <= R0 = recs 
 	  if(xrad[mB] == recs && xrad[kB] == recs && xrad[iB0] < recs){
 	    radkI_ecs = 0; // initialization
-	    for (int l = 0; l <= ndvr[i]; l ++) {
+	    for (long l = 0; l <= ndvr[i]; l ++) {
 	      lm = (ndvr[i] + 1) * m + l;
 	      lk = (ndvr[i] + 1) * k + l;
 	      radkI_ecs += DVR[i].wpt[ l ] * DVR[i].dshape[lm] 
@@ -734,7 +734,7 @@ void clfedvr::gen_radk()
 	  }
 	  // for radkI_ecs, when r >= Ro = recs
 	  if(xrad[mB] == recs && xrad[kB] == recs && xrad[iB0] >= recs){
-	    for (int l = 0; l <= ndvr[i]; l ++) {
+	    for (long l = 0; l <= ndvr[i]; l ++) {
 	      lm = (ndvr[i] + 1) * m + l;
 	      lk = (ndvr[i] + 1) * k + l;
 	      radkI_ecs += DVR[i].wpt[ l ] * exp(IUNIT * theta) 
@@ -762,13 +762,13 @@ void clfedvr::gen_radp()
   radp.assign(radp.size(), ZERO);
 
   double tmp;
-  int iB0, mB, kB, kB_B, kmB, mk;
+  long iB0, mB, kB, kB_B, kmB, mk;
 
-  for (int i = 0; i < nfe; i ++) {
+  for (long i = 0; i < nfe; i ++) {
     iB0 = mapf[i];
-    for (int m = 0; m <= ndvr[i]; m ++) {
+    for (long m = 0; m <= ndvr[i]; m ++) {
       mB = iB0 + m;
-      for (int k = 0; k <= ndvr[i]; k ++) {
+      for (long k = 0; k <= ndvr[i]; k ++) {
 	kB = iB0 + k;
 	kB_B = nmax + kB - mB;
 	kmB = (2 * nmax + 1) * mB + kB_B;

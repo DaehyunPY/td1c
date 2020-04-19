@@ -12,7 +12,7 @@ subroutine pes_spec1_kz(wfn, cic)
   complex(c_double_complex), intent(in) :: wfn(*)
   complex(c_double_complex), intent(in) :: cic(*)
   complex(c_double_complex), allocatable :: dens(:,:), ovlp(:,:)
-  integer(c_int) :: ifun, iact, jact
+  integer(c_long) :: ifun, iact, jact
 
   allocate(ovlp(1:nfun, 1:nfun))
   allocate(dens(1:nfun, 1:nfun))
@@ -60,9 +60,9 @@ subroutine pes_spec1_k_rhok_z(psik, rhok)
   complex(c_double_complex), intent(in) :: psik(0:pes_numk, 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: rhok(0:pes_numk, 1:nfun, 1:nfun)
 
-  integer(c_int) :: ifun, jfun, ik, l
-  integer(c_int) :: iproc, llk, ulk
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long) :: ifun, jfun, ik, l
+  integer(c_long) :: iproc, llk, ulk
+  integer(c_long), external :: util_omp_iproc
   complex(c_double_complex) :: psizk(0:pes_numk, 1:nfun)
   complex(c_double_complex) :: temp
 

@@ -2,7 +2,6 @@
 subroutine hprod_final()
 
   use, intrinsic :: iso_c_binding
-  use mod_control, only : istdcis, tdcis_rvg
   use mod_hprod, only : orb, torb, h0orb, h1orb, v2orb, gorb
   use mod_hprod, only : orbg, torbg, h0orbg, h1orbg, v2orbg, gorbg
   use mod_hprod, only : orb0, rhofc, v2jfc, v2xfc, rho1, rho2, v2sph, v2ang, cic, dcic, cic0
@@ -13,10 +12,6 @@ subroutine hprod_final()
   use mod_rad, only : ecs_flag
   use mod_hprod, only : h0orb_out, h1orb_out
 ! Sato_ECS
-  !!tdcis
-  use mod_hprod, only : tdcis_eig, h1orb0, orb0rot, orb0rotg, &
-       v2ang0, ridm_tdcis, ezphi, h0orb0
-  !!tdcis
 
   implicit none
 
@@ -50,21 +45,6 @@ subroutine hprod_final()
      deallocate(h1orb_out)
   end if
 ! Sato_ECS
-
-! tdcis-teramura
-  if(istdcis) then
-     deallocate(tdcis_eig)
-     deallocate(h0orb0)
-     deallocate(h1orb0)
-     deallocate(orb0rot)
-     deallocate(orb0rotg)
-     deallocate(v2ang0)
-     deallocate(ridm_tdcis)
-     if(tdcis_rvg) then
-        deallocate(ezphi)
-     end if
-  end if
-! tdcis-teramura
 
   if (projhigh) then
      deallocate(projhigh_orbs)

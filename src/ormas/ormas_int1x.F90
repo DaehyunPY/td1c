@@ -3,7 +3,7 @@ subroutine ormas_int1x()
 
   use, intrinsic :: iso_c_binding
   use mod_ormas, only : iprint
-  use mod_ormas, only : nelact, nact, dplus
+  use mod_ormas, only : nelact, nact
   use mod_ormas, only : nstr_alph, ndist_alph, min_sub_alph, max_sub_alph, &
        & arc_alph, onv_alph, dist_alph, nstr_alph_dist, nstr_alph_dist_sub, dist_str_alph, &
        & n1x_alph, p1x_alph, h1x_alph, eq1x_alph, sgn1x_alph
@@ -13,7 +13,7 @@ subroutine ormas_int1x()
   use mod_ormas, only : n1x_m_alph, map1x_m_alph, n1x_m_beta, map1x_m_beta
 
   implicit none
-  integer(c_int) :: na2
+  integer(c_long) :: na2
 
   na2 = nact * nact
   allocate(n1x_alph(-3:1, 1:nstr_alph))
@@ -28,21 +28,12 @@ subroutine ormas_int1x()
   allocate(eq1x_beta(1:na2, 1:nstr_beta))
   allocate(sgn1x_beta(1:na2, 1:nstr_beta))
 
-  if (.not. dplus) then
-     call ormas_int1x_spin(nelact(1), min_sub_alph, max_sub_alph, ndist_alph, dist_alph, &
-          & nstr_alph, nstr_alph_dist, nstr_alph_dist_sub, dist_str_alph, arc_alph, onv_alph, n1x_alph, &
-          & p1x_alph, h1x_alph, eq1x_alph, sgn1x_alph)
-     call ormas_int1x_spin(nelact(2), min_sub_beta, max_sub_beta, ndist_beta, dist_beta, &
-          & nstr_beta, nstr_beta_dist, nstr_beta_dist_sub, dist_str_beta, arc_beta, onv_beta, n1x_beta, &
-          & p1x_beta, h1x_beta, eq1x_beta, sgn1x_beta)
-  else 
-     call ormas_int1x_dplus_spin(nelact(1), min_sub_alph, max_sub_alph, ndist_alph, dist_alph, &
-          & nstr_alph, nstr_alph_dist, nstr_alph_dist_sub, dist_str_alph, arc_alph, onv_alph, n1x_alph, &
-          & p1x_alph, h1x_alph, eq1x_alph, sgn1x_alph)
-     call ormas_int1x_dplus_spin(nelact(2), min_sub_beta, max_sub_beta, ndist_beta, dist_beta, &
-          & nstr_beta, nstr_beta_dist, nstr_beta_dist_sub, dist_str_beta, arc_beta, onv_beta, n1x_beta, &
-          & p1x_beta, h1x_beta, eq1x_beta, sgn1x_beta)
-  end if
+  call ormas_int1x_spin(nelact(1), min_sub_alph, max_sub_alph, ndist_alph, dist_alph, &
+       & nstr_alph, nstr_alph_dist, nstr_alph_dist_sub, dist_str_alph, arc_alph, onv_alph, n1x_alph, &
+       & p1x_alph, h1x_alph, eq1x_alph, sgn1x_alph)
+  call ormas_int1x_spin(nelact(2), min_sub_beta, max_sub_beta, ndist_beta, dist_beta, &
+       & nstr_beta, nstr_beta_dist, nstr_beta_dist_sub, dist_str_beta, arc_beta, onv_beta, n1x_beta, &
+       & p1x_beta, h1x_beta, eq1x_beta, sgn1x_beta)
 
   if (iprint > 2) then
      call ormas_int1x_print()
@@ -59,25 +50,25 @@ subroutine ormas_int1x_spin(nel, min_sub, max_sub, ndist, dist, &
   use mod_ormas, only : ncore, nact, nsub, lorb_sub
 
   implicit none
-  integer(c_int), intent(in) :: nel, nstr, ndist
-  integer(c_int), intent(in) :: min_sub(1:*)
-  integer(c_int), intent(in) :: max_sub(1:*)
-  integer(c_int), intent(in) :: arc(1:nact, 1:*)
-  integer(c_int), intent(in) :: onv(1:nact, 1:*)
-  integer(c_int), intent(in) :: dist(1:nsub, 1:*)
-  integer(c_int), intent(in) :: nstr_dist(1:*)
-  integer(c_int), intent(in) :: nstr_dist_sub(1:nsub, 1:*)
-  integer(c_int), intent(in) :: dist_str(1:2, 1:*)
-  integer(c_int), intent(out) :: n1x(-3:1, 1:*)
-  integer(c_int), intent(out) :: p1x(1:nact*nact, 1:*)
-  integer(c_int), intent(out) :: h1x(1:nact*nact, 1:*)
-  integer(c_int), intent(out) :: eq1x(1:nact*nact, 1:*)
-  integer(c_int), intent(out) :: sgn1x(1:nact*nact, 1:*)
+  integer(c_long), intent(in) :: nel, nstr, ndist
+  integer(c_long), intent(in) :: min_sub(1:*)
+  integer(c_long), intent(in) :: max_sub(1:*)
+  integer(c_long), intent(in) :: arc(1:nact, 1:*)
+  integer(c_long), intent(in) :: onv(1:nact, 1:*)
+  integer(c_long), intent(in) :: dist(1:nsub, 1:*)
+  integer(c_long), intent(in) :: nstr_dist(1:*)
+  integer(c_long), intent(in) :: nstr_dist_sub(1:nsub, 1:*)
+  integer(c_long), intent(in) :: dist_str(1:2, 1:*)
+  integer(c_long), intent(out) :: n1x(-3:1, 1:*)
+  integer(c_long), intent(out) :: p1x(1:nact*nact, 1:*)
+  integer(c_long), intent(out) :: h1x(1:nact*nact, 1:*)
+  integer(c_long), intent(out) :: eq1x(1:nact*nact, 1:*)
+  integer(c_long), intent(out) :: sgn1x(1:nact*nact, 1:*)
 
-  integer(c_int), external :: ormas_map1x, ormas_sgn1x
-  integer(c_int), allocatable :: tocc(:)
-  integer(c_int) :: istr, ifun, jfun, idist
-  integer(c_int) :: isub, jsub, neli, nelj, lli, uli, llj, ulj, tmp
+  integer(c_long), external :: ormas_map1x, ormas_sgn1x
+  integer(c_long), allocatable :: tocc(:)
+  integer(c_long) :: istr, ifun, jfun, idist
+  integer(c_long) :: isub, jsub, neli, nelj, lli, uli, llj, ulj, tmp
 
   allocate(tocc(1:nact))
 
@@ -145,121 +136,6 @@ subroutine ormas_int1x_spin(nel, min_sub, max_sub, ndist, dist, &
 
 end subroutine ormas_int1x_spin
 !################################################################################
-subroutine ormas_int1x_dplus_spin(nel, min_sub, max_sub, ndist, dist, &
-     & nstr, nstr_dist, nstr_dist_sub, dist_str, arc, onv, n1x, p1x, h1x, eq1x, sgn1x)
-
-  use, intrinsic :: iso_c_binding
-  use mod_ormas, only : iprint
-  use mod_ormas, only : ncore, nact, nsub, lorb_sub
-
-  implicit none
-  integer(c_int), intent(in) :: nel, nstr, ndist
-  integer(c_int), intent(in) :: min_sub(1:*)
-  integer(c_int), intent(in) :: max_sub(1:*)
-  integer(c_int), intent(in) :: arc(1:nact, 1:*)
-  integer(c_int), intent(in) :: onv(1:nact, 1:*)
-  integer(c_int), intent(in) :: dist(1:nsub, 1:*)
-  integer(c_int), intent(in) :: nstr_dist(1:*)
-  integer(c_int), intent(in) :: nstr_dist_sub(1:nsub, 1:*)
-  integer(c_int), intent(in) :: dist_str(1:2, 1:*)
-  integer(c_int), intent(out) :: n1x(-3:1, 1:*)
-  integer(c_int), intent(out) :: p1x(1:nact*nact, 1:*)
-  integer(c_int), intent(out) :: h1x(1:nact*nact, 1:*)
-  integer(c_int), intent(out) :: eq1x(1:nact*nact, 1:*)
-  integer(c_int), intent(out) :: sgn1x(1:nact*nact, 1:*)
-
-  integer(c_int), external :: ormas_map1x, ormas_sgn1x
-  integer(c_int), allocatable :: tocc(:)
-  integer(c_int), allocatable :: dist1(:)
-  integer(c_int) :: istr, ifun, jfun, idist, dist_type
-  integer(c_int) :: isub, jsub, neli, nelj, lli, uli, llj, ulj, tmp
-  integer(c_int), external :: ormas_dist_type_dplus
-  logical(c_bool), external :: ormas_dist_chk_dplus
-
-  allocate(tocc(1:nact))
-  allocate(dist1(1:nsub))
-
-  do istr = 1, nstr
-     n1x(-3:1, istr) = 0
-     idist = dist_str(1, istr)
-     dist_type = ormas_dist_type_dplus(nel,min_sub,max_sub,dist(1,istr))
-     do jsub = 1, nsub ! hole
-        nelj = dist(jsub, idist)
-        llj = lorb_sub(1, jsub)
-        ulj = lorb_sub(2, jsub)
-
-        do isub = 1, nsub ! particle
-           neli = dist(isub, idist)
-           lli = lorb_sub(1, isub)
-           uli = lorb_sub(2, isub)
-
-           dist1 = dist(:,idist)
-           dist1(jsub) = dist1(jsub) - 1
-           dist1(isub) = dist1(isub) + 1
-
-           if (jsub == isub) then
-              tmp = 0
-           else if (nelj == min_sub(jsub) .and. neli == max_sub(isub)) then
-              tmp = -3
-           else if (neli == max_sub(isub)) then
-              tmp = -2
-           else if (nelj == min_sub(jsub)) then
-              tmp = -1
-           !Dplus
-           else if (.not.ormas_dist_chk_dplus(nel,min_sub,max_sub,dist1)) then
-              tmp = -1
-           !Dplus
-           else
-              tmp = 0
-           end if
-
-!debugif (tmp == 0) then
-!debug   write(6,"('###',4i5,': ')",advance='no') istr,idist,jsub,isub
-!debug   write(6,"(3i5,' -> ')",advance='no') dist(1:3,idist)
-!debug   write(6,"(3i5)") dist1(1:3)
-!debugend if
-
-           do jfun = llj, ulj ! hole
-              if(onv(jfun, istr) == 0) cycle
-
-              do ifun = lli, uli ! particle
-                 if(ifun /= jfun .and. onv(ifun, istr) /= 0) cycle
-                 !M-adapt
-                 !if(mval(ncore+ifun) /= mval(ncore+jfun)) cycle
-                 !M-adapt
-
-                 tocc(1:nact) = onv(1:nact, istr)
-                 tocc(ifun) = 1
-                 if (ifun /= jfun) tocc(jfun) = 0
-
-                 n1x(1,   istr) = n1x(1,   istr) + 1
-                 n1x(tmp, istr) = n1x(tmp, istr) + 1
-
-                 p1x(n1x(1, istr), istr) = ifun
-                 h1x(n1x(1, istr), istr) = jfun
-                 if (tmp == 0) then
-                    eq1x (n1x(1, istr), istr) = ormas_map1x(nel, nact, ndist, dist, &
-                         &  nstr_dist, nstr_dist_sub, arc, tocc)
-                    sgn1x(n1x(1, istr), istr) = ormas_sgn1x(nact, ifun, jfun, onv(1,istr))
-                 else
-                    eq1x (n1x(1, istr), istr) = tmp
-                    sgn1x(n1x(1, istr), istr) = ormas_sgn1x(nact, ifun, jfun, onv(1,istr))
-                 end if
-              end do
-           end do
-        end do
-     end do
-
-     call ormas_int1x_order(n1x(-3, istr), p1x(1, istr), h1x(1, istr), &
-          &  eq1x(1, istr), sgn1x(1, istr))
-
-  end do
-
-  deallocate(dist1)
-  deallocate(tocc)
-
-end subroutine ormas_int1x_dplus_spin
-!################################################################################
 !################################################################################
 subroutine ormas_int1x_order(n1x, p1x, h1x, eq1x, sgn1x)
 
@@ -267,14 +143,14 @@ subroutine ormas_int1x_order(n1x, p1x, h1x, eq1x, sgn1x)
   use mod_ormas, only : nact
 
   implicit none
-  integer(c_int), intent(in) :: n1x(-3:1)
-  integer(c_int), intent(inout) :: p1x(1:nact*nact)
-  integer(c_int), intent(inout) :: h1x(1:nact*nact)
-  integer(c_int), intent(inout) :: eq1x(1:nact*nact)
-  integer(c_int), intent(inout) :: sgn1x(1:nact*nact)
+  integer(c_long), intent(in) :: n1x(-3:1)
+  integer(c_long), intent(inout) :: p1x(1:nact*nact)
+  integer(c_long), intent(inout) :: h1x(1:nact*nact)
+  integer(c_long), intent(inout) :: eq1x(1:nact*nact)
+  integer(c_long), intent(inout) :: sgn1x(1:nact*nact)
 
-  integer(c_int) :: offs(-3:0), n1x_type(-3:0), na2, i1x, type
-  integer(c_int), allocatable :: p1x_tmp(:), h1x_tmp(:), eq1x_tmp(:), sgn1x_tmp(:)
+  integer(c_long) :: offs(-3:0), n1x_type(-3:0), na2, i1x, type
+  integer(c_long), allocatable :: p1x_tmp(:), h1x_tmp(:), eq1x_tmp(:), sgn1x_tmp(:)
 
   offs(0) = 0
   offs(-1) = offs(0) + n1x(0)
@@ -341,16 +217,16 @@ subroutine ormas_int1x_print_spin(nact, nstr, onv, n1x, p1x, h1x, &
   use mod_ormas, only : iprint
 
   implicit none
-  integer(c_int), intent(in) :: nact, nstr
-  integer(c_int), intent(in) :: onv(1:nact, 1:*)
-  integer(c_int), intent(in) :: n1x(-3:1, 1:*)
-  integer(c_int), intent(in) :: p1x(1:nact*nact, 1:*)
-  integer(c_int), intent(in) :: h1x(1:nact*nact, 1:*)
-  integer(c_int), intent(in) :: eq1x(1:nact*nact, 1:*)
-  integer(c_int), intent(in) :: sgn1x(1:nact*nact, 1:*)
+  integer(c_long), intent(in) :: nact, nstr
+  integer(c_long), intent(in) :: onv(1:nact, 1:*)
+  integer(c_long), intent(in) :: n1x(-3:1, 1:*)
+  integer(c_long), intent(in) :: p1x(1:nact*nact, 1:*)
+  integer(c_long), intent(in) :: h1x(1:nact*nact, 1:*)
+  integer(c_long), intent(in) :: eq1x(1:nact*nact, 1:*)
+  integer(c_long), intent(in) :: sgn1x(1:nact*nact, 1:*)
 
-  integer(c_int), allocatable :: tocc(:)
-  integer(c_int) :: istr, i1x, ifun, jfun
+  integer(c_long), allocatable :: tocc(:)
+  integer(c_long) :: istr, i1x, ifun, jfun
 
   allocate(tocc(1:nact))
 

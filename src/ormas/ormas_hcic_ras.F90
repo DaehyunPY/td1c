@@ -10,7 +10,7 @@ subroutine ormas_hcic_ras(int1e, int2e, cic, hcic)
   complex(c_double_complex), intent(in) :: int2e(1:nact, 1:nact, 1:nact, 1:nact)
   complex(c_double_complex), intent(in) :: cic(1:ndetx)
   complex(c_double_complex), intent(inout) :: hcic(1:ndetx)
-  integer(c_int) :: istr,jstr
+  integer(c_long) :: istr,jstr
   complex(c_double_complex), allocatable :: eff1e(:,:), eff2e(:,:,:,:)
 
   if (nact == 0) return
@@ -21,9 +21,7 @@ subroutine ormas_hcic_ras(int1e, int2e, cic, hcic)
   call ormas_hcic_ras_effint1e(int1e, int2e, eff1e)
   call ormas_hcic_ras_effint2e(int2e, eff2e)
 
-!stop "stop-1."
   if (nelact(2) >= 1) call ormas_hcic_ras_bbp(eff1e, eff2e, cic, hcic)
-!stop "stop-2."
   if (nelact(1) >= 1) call ormas_hcic_ras_aap(eff1e, eff2e, cic, hcic)
   if (nelact(1) >= 1 .and. nelact(2) >= 1) call ormas_hcic_ras_abp(int2e, cic, hcic)
 
@@ -61,11 +59,11 @@ subroutine ormas_hcic_ras_bbp(int1e, int2e, cic, hcic)
   complex(c_double_complex), intent(inout) :: hcic(1:ndetx)
 
   complex(c_double_complex), allocatable :: sint(:,:)
-  integer(c_int) :: istr, jstr, kstr, lstr, i1x, j1x, ifun, jfun, kfun, lfun, &
+  integer(c_long) :: istr, jstr, kstr, lstr, i1x, j1x, ifun, jfun, kfun, lfun, &
        & iord, jord, idist, jdist, kdist, ii, lla, ula, llb, ulb, iproc, nproc, &
        & i1x_m, j1x_m, m_ij, m_kl, tsgn, mvala
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
 
   nproc = util_omp_nproc()
   allocate(sint(1:nstr_beta, 0:(nproc-1)))
@@ -111,12 +109,8 @@ subroutine ormas_hcic_ras_bbp(int1e, int2e, cic, hcic)
         do jdist = 1, ndist_alph
            if (det_allowed(jdist,kdist) == 0 .or. &
                det_allowed(jdist,idist) == 0) cycle
-!##########
            lla = llstr_dist_m_alph(jdist,mvala)
            ula =  nstr_dist_m_alph(jdist,mvala) + lla - 1
-!new           lla = 1
-!new           ula = nstr_dist_m_alph(jdist,mvala)
-!##########
            do jstr = llb, ulb
               if (abs(sint(jstr,iproc)) > thrcic) then
                  do ii = lla, ula
@@ -124,13 +118,9 @@ subroutine ormas_hcic_ras_bbp(int1e, int2e, cic, hcic)
 !2                    hcic(mapf_detx(ii,istr)) = &
 !2                    hcic(mapf_detx(ii,istr)) + sint(jstr,iproc) * &
 !2                     cic(mapf_detx(ii,jstr))
-!
-! ##### 
-! BUG for DPLUS with nonvanishing H2 in H2H1|P1P2
                     hcic(ntot_alph_beta(istr)+ii) = &
                     hcic(ntot_alph_beta(istr)+ii) + sint(jstr,iproc) * &
                      cic(ntot_alph_beta(jstr)+ii)
-! #####
                  end do
               end if
            end do
@@ -143,158 +133,6 @@ subroutine ormas_hcic_ras_bbp(int1e, int2e, cic, hcic)
   deallocate(sint)
 
 end subroutine ormas_hcic_ras_bbp
-!######################################################################
-!nyi subroutine ormas_hcic_ras_bbp_new(int1e, int2e, cic, hcic)
-!nyi 
-!nyi   use, intrinsic :: iso_c_binding
-!nyi   use mod_ormas, only : thrcic
-!nyi   use mod_const, only : czero
-!nyi   use mod_sph, only : mmax2
-!nyi   use mod_bas, only : mtot
-!nyi   use mod_ormas, only : nact, det_allowed, nelact, ndetx, ntot_alph_beta
-!nyi   use mod_ormas, only : ndist_alph, nstr_alph, lstr_alph_dist
-!nyi   use mod_ormas, only : ndist_beta, nstr_beta, lstr_beta_dist, &
-!nyi        & dist_str_beta, n1x_beta, p1x_beta, h1x_beta, eq1x_beta, sgn1x_beta
-!nyi   use mod_ormas, only : n1x_m_alph, map1x_m_alph
-!nyi   use mod_ormas, only : n1x_m_beta, map1x_m_beta
-!nyi   use mod_ormas, only : nstr_dist_m_alph, llstr_dist_m_alph, mval_alph
-!nyi   use mod_ormas, only : nstr_dist_m_beta, llstr_dist_m_beta, mval_beta,mmin_alph,mmax_alph
-!nyi 
-!nyi   implicit none
-!nyi   complex(c_double_complex), intent(in) :: int1e(1:nact, 1:nact)
-!nyi   complex(c_double_complex), intent(in) :: int2e(1:nact, 1:nact, 1:nact, 1:nact)
-!nyi   complex(c_double_complex), intent(in) :: cic(1:ndetx)
-!nyi   complex(c_double_complex), intent(inout) :: hcic(1:ndetx)
-!nyi 
-!nyi   complex(c_double_complex), allocatable :: sint(:,:)
-!nyi   integer(c_int) :: istr, jstr, kstr, lstr, i1x, j1x, ifun, jfun, kfun, lfun, &
-!nyi        & iord, jord, idist, jdist, kdist, ii, lla, ula, llb, ulb, iproc, nproc, &
-!nyi        & i1x_m, j1x_m, m_ij, m_kl, tsgn, mvala
-!nyi   integer(c_int), external :: util_omp_nproc
-!nyi   integer(c_int), external :: util_omp_iproc
-!nyi 
-!nyi   nproc = util_omp_nproc()
-!nyi   allocate(sint(1:nstr_beta, 0:(nproc-1)))
-!nyi 
-!nyi   !$omp parallel default(shared) private(jstr,istr,m_kl,i1x,ifun,jfun,j1x,kfun,lfun,kstr,lstr,tmp)
-!nyi   !$omp do
-!nyi   do istr = 1, nstr_beta
-!nyi      mvala = mtot-mval_beta(istr)
-!nyi      if (mvala>mmax_alph .or. mvala<mmin_alph) cycle
-!nyi      sint(1:nstr_beta, iproc) = 0.0;
-!nyi      do m_ij = -mmax2, mmax2
-!nyi         m_kl = -m_ij
-!nyi         do i1x_m = 1, n1x_m_beta(m_ij,istr)
-!nyi            i1x = map1x_m_beta(i1x_m,m_ij,istr)
-!nyi            ifun = h1x_beta  (i1x,istr)
-!nyi            jfun = p1x_beta  (i1x,istr)
-!nyi            kstr = eq1x_beta (i1x,istr)
-!nyi            tmp = czero
-!nyi            if (m_ij == 0) sint(kstr,iproc) = sint(kstr,iproc) + tsgn * int1e(ifun,jfun)
-!nyi            do j1x_m = 1, n1x_m_beta(m_kl, kstr)
-!nyi               j1x = map1x_m_beta(j1x_m, m_kl, kstr)
-!nyi               kfun = h1x_beta (j1x, kstr)
-!nyi               lfun = p1x_beta (j1x, kstr)
-!nyi               lstr = eq1x_beta(j1x, kstr)
-!nyi               if (jord <= iord) then
-!nyi                  sint(lstr,iproc) = sint(lstr,iproc) &
-!nyi                       + tsgn * sgn1x_beta(j1x,kstr) * int2e(ifun,jfun,kfun,lfun)
-!nyi               end if
-!nyi            end do
-!nyi 
-!nyi            do i_a = 1, nstr_alph_beta(istr)
-!nyi               idst_a = dist_str_alph(1,i_a)
-!nyi               if (det_allowed(dist_str_alph(1,kstr),dist_str_beta(1,lstr)) == 0) cycle
-!nyi 
-!nyi         end do
-!nyi 
-!nyi      end do
-!nyi               !################################################
-!nyi               !##########
-!nyi               tmp = tmp + sgn1x_alph(j1x,jstr)*int2e(ifun,jfun,kfun,lfun)*cic(ntot_alph_beta(lstr)+kstr)
-!nyi               !new tmp = tmp + sgn1x_alph(j1x,jstr)*int2e(ifun,jfun,kfun,lfun)*cic(ntot_alph_beta(lstr)+kstr-llstr_alph_beta(lstr))
-!nyi               !##########
-!nyi            end do
-!nyi            hcic(idet) = hcic(idet) + tmp * sgn1x_beta(i1x,istr)
-!nyi         end do
-!nyi      end do
-!nyi   end do
-!nyi   !$omp end do
-!nyi   !$omp end parallel
-!nyi 
-!nyi   !$omp parallel default(shared) &
-!nyi   !$omp private(iproc,idist,kstr,lstr,ifun,jfun,kfun,lfun, &
-!nyi   !$omp & iord,jord,lla,ula,llb,ulb,tsgn,i1x,j1x,m_ij,m_kl,mvala)
-!nyi   iproc = util_omp_iproc()
-!nyi   !$omp do
-!nyi   do istr = 1, nstr_beta
-!nyi      mvala = mtot-mval_beta(istr)
-!nyi      if (mvala>mmax_alph .or. mvala<mmin_alph) cycle
-!nyi 
-!nyi      idist = dist_str_beta(1, istr)
-!nyi      call util_zcopy(nstr_beta, czero, 0, sint(1,iproc), 1)
-!nyi      do m_ij = -mmax2, mmax2
-!nyi         m_kl = -m_ij
-!nyi         do i1x_m = 1, n1x_m_beta(m_ij, istr)
-!nyi            i1x = map1x_m_beta(i1x_m, m_ij, istr)
-!nyi            ifun = h1x_beta  (i1x, istr)
-!nyi            jfun = p1x_beta  (i1x, istr)
-!nyi            kstr = eq1x_beta (i1x, istr)
-!nyi            tsgn = sgn1x_beta(i1x, istr)
-!nyi            iord = nact * (ifun - 1) + jfun
-!nyi            if (m_ij == 0) sint(kstr,iproc) = sint(kstr,iproc) + tsgn * int1e(ifun,jfun)
-!nyi            do j1x_m = 1, n1x_m_beta(m_kl,kstr)
-!nyi               j1x = map1x_m_beta(j1x_m,m_kl,kstr)
-!nyi               kfun = h1x_beta (j1x,kstr)
-!nyi               lfun = p1x_beta (j1x,kstr)
-!nyi               lstr = eq1x_beta(j1x,kstr)
-!nyi               jord = nact * (kfun - 1) + lfun
-!nyi               if (jord <= iord) then
-!nyi                  sint(lstr,iproc) = sint(lstr,iproc) &
-!nyi                       + tsgn * sgn1x_beta(j1x,kstr) * int2e(ifun,jfun,kfun,lfun)
-!nyi               end if
-!nyi            end do
-!nyi         end do
-!nyi      end do
-!nyi 
-!nyi      do kdist = 1, ndist_beta
-!nyi         llb = llstr_dist_m_beta(kdist,mval_beta(istr))
-!nyi         ulb =  nstr_dist_m_beta(kdist,mval_beta(istr)) + llb - 1
-!nyi         do jdist = 1, ndist_alph
-!nyi            if (det_allowed(jdist,kdist) == 0 .or. &
-!nyi                det_allowed(jdist,idist) == 0) cycle
-!nyi !##########
-!nyi            lla = llstr_dist_m_alph(jdist,mvala)
-!nyi            ula =  nstr_dist_m_alph(jdist,mvala) + lla - 1
-!nyi !new           lla = 1
-!nyi !new           ula = nstr_dist_m_alph(jdist,mvala)
-!nyi !##########
-!nyi            do jstr = llb, ulb
-!nyi               if (abs(sint(jstr,iproc)) > thrcic) then
-!nyi                  do ii = lla, ula
-!nyi !1                    hcic(ii,istr) = hcic(ii,istr) + sint(jstr,iproc) * cic(ii,jstr)
-!nyi !2                    hcic(mapf_detx(ii,istr)) = &
-!nyi !2                    hcic(mapf_detx(ii,istr)) + sint(jstr,iproc) * &
-!nyi !2                     cic(mapf_detx(ii,jstr))
-!nyi !
-!nyi ! ##### 
-!nyi ! BUG for DPLUS with nonvanishing H2 in H2H1|P1P2
-!nyi                     hcic(ntot_alph_beta(istr)+ii) = &
-!nyi                     hcic(ntot_alph_beta(istr)+ii) + sint(jstr,iproc) * &
-!nyi                      cic(ntot_alph_beta(jstr)+ii)
-!nyi ! #####
-!nyi                  end do
-!nyi               end if
-!nyi            end do
-!nyi         end do
-!nyi      end do
-!nyi   end do
-!nyi   !$omp end do
-!nyi   !$omp end parallel
-!nyi 
-!nyi   deallocate(sint)
-!nyi 
-!nyi end subroutine ormas_hcic_ras_bbp_new
 !######################################################################
 !######################################################################
 subroutine ormas_hcic_ras_aap(int1e, int2e, cic, hcic)
@@ -319,21 +157,16 @@ subroutine ormas_hcic_ras_aap(int1e, int2e, cic, hcic)
   complex(c_double_complex), intent(inout) :: hcic(1:ndetx)
 
   complex(c_double_complex), allocatable :: sint(:,:), dcic(:)
-  integer(c_int) :: istr, jstr, kstr, lstr, i1x, j1x, ifun, jfun, kfun, lfun, &
+  integer(c_long) :: istr, jstr, kstr, lstr, i1x, j1x, ifun, jfun, kfun, lfun, &
        & iord, jord, idist, jdist, kdist, ii, lla, ula, llb, ulb, iproc, nproc, &
        & i1x_m, j1x_m, m_ij, m_kl, tsgn, idet, jdet, mvalb
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
 
   !##### Applying the following up-down spin symmetry #####
   !##### leads to LESS stable propagation ! Why ??    #####
 !  if (smul == 1 .and. nelact(1) == nelact(2)) then
   if (.false.) then
-!##########
-!2019/06/14
-     stop 'ormas_hcic_ras_aap: THIS PART INCLUDES SERIOUS BUG.'
-!##########
-
      allocate(dcic(1:ndetx))
      dcic = hcic
      !$omp parallel default(shared)
@@ -403,12 +236,8 @@ subroutine ormas_hcic_ras_aap(int1e, int2e, cic, hcic)
      end do
 
      do kdist = 1, ndist_alph
-!##########
         lla = llstr_dist_m_alph(kdist,mval_alph(istr))
         ula =  nstr_dist_m_alph(kdist,mval_alph(istr)) + lla - 1
-!new        lla = 1
-!new        ula = nstr_dist_m_alph(kdist,mval_alph(istr))
-!##########
         do jdist = 1, ndist_beta
            if (det_allowed(kdist,jdist) == 0 .or. &
                det_allowed(idist,jdist) == 0) cycle
@@ -421,14 +250,9 @@ subroutine ormas_hcic_ras_aap(int1e, int2e, cic, hcic)
 !2                    hcic(mapf_detx(istr,ii)) = &
 !2                    hcic(mapf_detx(istr,ii)) + sint(jstr,iproc) * &
 !2                     cic(mapf_detx(jstr,ii))
-!##########
                     hcic(ntot_alph_beta(ii)+istr) = &
                     hcic(ntot_alph_beta(ii)+istr) + sint(jstr,iproc) * &
                      cic(ntot_alph_beta(ii)+jstr)
-!new                    hcic(ntot_alph_beta(ii)+istr-llstr_dist_m_alph(idist,mval_alph(istr))) = &
-!new                    hcic(ntot_alph_beta(ii)+istr-llstr_dist_m_alph(idist,mval_alph(istr))) + sint(jstr,iproc) * &
-!new                     cic(ntot_alph_beta(ii)+jstr)
-!##########
                  end do
               end if
            end do
@@ -455,14 +279,14 @@ subroutine ormas_hcic_ras_abp(int2e, cic, hcic)
   use mod_ormas, only : n1x_m_beta, map1x_m_beta, dist_str_alph, dist_str_beta
   use mod_ormas, only : nstr_dist_m_alph, llstr_dist_m_alph, mval_alph
   use mod_ormas, only : nstr_dist_m_beta, llstr_dist_m_beta, mval_beta
-  use mod_ormas, only : lstr_alph_dist, ntot_alph_beta
+  use mod_ormas, only : lstr_alph_dist, ntot_alph_beta, ntot_beta_alph
 
   implicit none
   complex(c_double_complex), intent(in) :: int2e(1:nact, 1:nact, 1:nact, 1:nact)
   complex(c_double_complex), intent(in) :: cic(1:ndetx)
   complex(c_double_complex), intent(inout) :: hcic(1:ndetx)
-  integer(c_int) :: istr,jstr,kstr,lstr,ifun,jfun,kfun,lfun,i1x_m,i1x,j1x_m,j1x,m_ij,m_kl
-  integer(c_int) :: idist,jdist,kdist,ldist,lla,ula,idet
+  integer(c_long) :: istr,jstr,kstr,lstr,ifun,jfun,kfun,lfun,i1x_m,i1x,j1x_m,j1x,m_ij,m_kl
+  integer(c_long) :: idist,jdist,kdist,ldist,lla,ula,idet
   complex(c_double_complex) :: tmp
 
   !$omp parallel default(shared) private(jstr,istr,m_kl,i1x,ifun,jfun,j1x,kfun,lfun,kstr,lstr,tmp)
@@ -491,11 +315,8 @@ subroutine ormas_hcic_ras_abp(int2e, cic, hcic)
               !### n1x_dist_m_aplh/beta should be developed ######
               if (det_allowed(dist_str_alph(1,kstr),dist_str_beta(1,lstr)) == 0) cycle
               !################################################
-!##########
-!oldold         tmp = tmp + sgn1x_alph(j1x,jstr)*int2e(ifun,jfun,kfun,lfun)*cic(mapf_detx(kstr,lstr))
+!2              tmp = tmp + sgn1x_alph(j1x,jstr)*int2e(ifun,jfun,kfun,lfun)*cic(mapf_detx(kstr,lstr))
               tmp = tmp + sgn1x_alph(j1x,jstr)*int2e(ifun,jfun,kfun,lfun)*cic(ntot_alph_beta(lstr)+kstr)
-!new              tmp = tmp + sgn1x_alph(j1x,jstr)*int2e(ifun,jfun,kfun,lfun)*cic(ntot_alph_beta(lstr)+kstr-llstr_alph_beta(lstr))
-!##########
            end do
            hcic(idet) = hcic(idet) + tmp * sgn1x_beta(i1x,istr)
         end do
@@ -641,7 +462,7 @@ subroutine ormas_hcic_ras_effint1e(int1e, int2e, eff1e)
   complex(c_double_complex), intent(in) :: int2e(1:nact, 1:nact, 1:nact, 1:nact)
   complex(c_double_complex), intent(out) :: eff1e(1:nact, 1:nact)
 
-  integer(c_int) :: iact, jact, kact
+  integer(c_long) :: iact, jact, kact
   complex(c_double_complex) :: tmp
 
   do iact = 1, nact
@@ -672,7 +493,7 @@ subroutine ormas_hcic_ras_effint2e(int2e, eff2e)
   complex(c_double_complex), intent(in) :: int2e(1:nact, 1:nact, 1:nact, 1:nact)
   complex(c_double_complex), intent(out) :: eff2e(1:nact, 1:nact, 1:nact, 1:nact)
 
-  integer(c_int) :: iact, jact
+  integer(c_long) :: iact, jact
 
   eff2e(1:nact, 1:nact, 1:nact, 1:nact) = int2e(1:nact, 1:nact, 1:nact, 1:nact)
   do iact = 1, nact

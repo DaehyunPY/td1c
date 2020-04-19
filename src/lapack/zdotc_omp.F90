@@ -4,12 +4,12 @@ subroutine zdotc_omp(n, x, y, val)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   complex(c_double_complex), intent(in) :: x(1:n)
   complex(c_double_complex), intent(in) :: y(1:n)
   complex(c_double_complex), intent(out) :: val
 
-  integer(c_int) :: i
+  integer(c_long) :: i
   complex(c_double_complex) :: tmp
   complex(c_double_complex) :: sum
 

@@ -1,15 +1,13 @@
 !###################################################################################
-integer(c_int) function tdcc_spin_g1inp(sh1, sp2)
-
-  use, intrinsic :: iso_c_binding
+integer function tdcc_spin_g1inp(sh1, sp2)
 
 !  1 : g(i1,a1)
 !  2 : g(i2,a2)
 !  0 : others
 
   implicit none
-  integer(c_int), intent(in) :: sh1, sp2
-  integer(c_int) :: spin_type
+  integer, intent(in) :: sh1, sp2
+  integer :: spin_type
 
   if (sh1 .ne. sp2) then
      spin_type = 0

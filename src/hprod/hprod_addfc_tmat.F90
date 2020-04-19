@@ -11,7 +11,7 @@ subroutine hprod_addfc_tmat()
   use mod_control, only : jfc_implicit, exact3j
 
   implicit none
-  integer(c_int) :: irad, l
+  integer(c_long) :: irad, l
 
   if (nfcore == 0) return
 

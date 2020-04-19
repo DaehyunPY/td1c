@@ -9,13 +9,13 @@ subroutine ormas_ipx_old(max_ipx, ovlp, cic, ipx)
 
   implicit none
   !--------------------------------------------------------------------
-  integer(c_int), intent(in) :: max_ipx
+  integer(c_long), intent(in) :: max_ipx
   complex(c_double_complex), intent(in) :: ovlp(1:nfun, 1:nfun)
   complex(c_double_complex), intent(in) :: cic(1:nstr_alph, 1:nstr_beta)
   real(c_double), intent(out) :: ipx(0:*)
   !--------------------------------------------------------------------
   complex(c_double_complex) :: dets
-  integer(c_int), external :: util_bicoeff
+  integer(c_long), external :: util_bicoeff
   complex(c_double_complex), external :: util_zdotu, util_zdotup
   complex(c_double_complex), external :: ormas_dets0, ormas_dets1, ormas_dett, ormas_dett_1
   complex(c_double_complex), allocatable :: sa0(:,:)     ! windowed ovlp for alpha strings
@@ -26,9 +26,9 @@ subroutine ormas_ipx_old(max_ipx, ovlp, cic, ipx)
   complex(c_double_complex), allocatable :: detbc(:,:,:) ! detbc(j, k) = sum_i det(sa(j, i)) * cic(k, i) 
   complex(c_double_complex), allocatable :: ccic(:,:)    ! ccic(i, j) = conjg(cic(j, i))
 
-  integer(c_int) :: ndet, iipx, jipx, iipx_a, iipx_b, istr, jstr, ii, ne2a, ne2b, iproc, nproc
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long) :: ndet, iipx, jipx, iipx_a, iipx_b, istr, jstr, ii, ne2a, ne2b, iproc, nproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
 
   if (max_ipx < 0 .or. max_ipx > 8) then
      stop 'bad max_ipx in ormas_ipx_old.'

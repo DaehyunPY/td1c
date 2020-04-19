@@ -6,15 +6,15 @@
 clmpi::clmpi()
 {
 //nyi  mpi_init();
-//nyi  nrank = MPI::COMM_WORLD.Get_size();
-//nyi  myrank = MPI::COMM_WORLD.Get_rank();
+//nyi  nrank = (long) MPI::COMM_WORLD.Get_size();
+//nyi  myrank = (long) MPI::COMM_WORLD.Get_rank();
 //nyi  MPI_Get_processor_name(hostname, &hostname_len);
 
-  int ithr;
+  long ithr;
   #pragma omp parallel default(shared) private(ithr)
   {
-    ithr = omp_get_thread_num();
-    if (ithr == 0) nthr = omp_get_num_threads();
+    ithr = (long) omp_get_thread_num();
+    if (ithr == 0) nthr = (long) omp_get_num_threads();
   }
 
   print();
@@ -41,14 +41,14 @@ void clmpi::clear()
 ////////////////////////////////////////////////////////////////////////
 void clmpi::print() const
 {
-//nyi  printf("# %s: rank %10d of %10d: with %10d threads\n",
+//nyi  printf("# %s: rank %10ld of %10ld: with %10ld threads\n",
 //nyi	 hostname, myrank, nrank, nthr);
 }
 ////////////////////////////////////////////////////////////////////////
-void clmpi::omp_divide(int ithr, int ll0, int ul0, int& ll1, int& ul1) const
+void clmpi::omp_divide(long ithr, long ll0, long ul0, long& ll1, long& ul1) const
 {
-  int ntot = ul0 - ll0 + 1;
-  int npp = ntot / nthr;
+  long ntot = ul0 - ll0 + 1;
+  long npp = ntot / nthr;
 
   if (ithr == nthr - 1) {
     ll1 = npp * ithr + ll0;
@@ -64,8 +64,8 @@ void clmpi::omp_divide(int ithr, int ll0, int ul0, int& ll1, int& ul1) const
 ////////////////////////////////////////////////////////////////////////
 void clmpi::mpi_init()
 {
-//nyi  int required = MPI_THREAD_FUNNELED;
-//nyi  int provided = MPI::Init_thread(required);
+//nyi  long required = MPI_THREAD_FUNNELED;
+//nyi  long provided = MPI::Init_thread(required);
 //nyi  if (provided != required) abort();
 }
 ////////////////////////////////////////////////////////////////////////

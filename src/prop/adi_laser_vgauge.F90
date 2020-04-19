@@ -7,12 +7,12 @@ subroutine adi_laser_vgauge(icomp, istag, dtime, lfield, wfn)
   use mod_ormas, only : nfun
 
   implicit none
-  integer(c_int), intent(in) :: icomp, istag
+  integer(c_long), intent(in) :: icomp, istag
   real(c_double), intent(in) :: dtime, lfield(1:3)
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
 
-  integer(c_int) :: eve_odd
-  integer(c_int) :: lmaxh, lllo2, ullo2, lo2, lval
+  integer(c_long) :: eve_odd
+  integer(c_long) :: lmaxh, lllo2, ullo2, lo2, lval
 
   lmaxh = lmax1 / 2
   if (istag == 0) then
@@ -57,11 +57,11 @@ subroutine adi_laser_vgauge_angp(icomp, dtime, lfield, wfn, lval)
   use mod_const, only : one, two, three, half, runit, iunit
 
   implicit none
-  integer(c_int), intent(in) :: icomp, lval
+  integer(c_long), intent(in) :: icomp, lval
   real(c_double), intent(in) :: dtime, lfield(1:3)
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
 
-  integer(c_int) :: ifun, irad
+  integer(c_long) :: ifun, irad
   complex(c_double_complex) :: facd, facl, beta, ombd, opbd, gammp, gammm, tmp
   complex(c_double_complex) :: wfn0, wfn1, yp, ym
 
@@ -103,18 +103,18 @@ subroutine adi_laser_vgauge_mixp(icomp, dtime, lfield, wfn, lval)
   use mod_const, only : one, two, three, half, czero, runit, iunit
 
   implicit none
-  integer(c_int), intent(in) :: icomp, lval
+  integer(c_long), intent(in) :: icomp, lval
   real(c_double), intent(in) :: dtime, lfield(1:3)
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
 
-  integer(c_int) :: info1, info2
-  integer(c_int) :: dim, ld1, ld2, ib1, ib2, jll, jul
-  integer(c_int) :: ifun, mlim, m, irad, jrad, ij
+  integer(c_long) :: info1, info2
+  integer(c_long) :: dim, ld1, ld2, ib1, ib2, jll, jul
+  integer(c_long) :: ifun, mlim, m, irad, jrad, ij
   complex(c_double_complex) :: facd, facl, beta, tmp
 
   complex(c_double_complex), allocatable :: pwfn(:), hpwfn(:)
   complex(c_double_complex), allocatable :: mwfn(:), hmwfn(:)
-  integer(c_int), allocatable :: tpiv1(:,:), tpiv2(:,:)
+  integer(c_long), allocatable :: tpiv1(:,:), tpiv2(:,:)
   complex(c_double_complex), allocatable :: tnum1(:,:,:), tnum2(:,:,:)
   complex(c_double_complex), allocatable :: tden1(:,:,:), tden2(:,:,:)
 

@@ -58,12 +58,6 @@ void guess(const clmpi& Proc, const clio& IO, const clbas& Bas, clwfn& Wfn)
   // smaller box for frozen-core orbitals
   Wfn.get_nradfc(Proc, IO, Bas);
 
-// tdcis-teramura
-  if (guess_type.compare("card") != 0){
-    Wfn.read_nradgs(Proc, IO, Bas);
-  }
-// tdcis-teramura
-
   // save
   Wfn.write(Proc, IO, Bas);
 
@@ -71,7 +65,7 @@ void guess(const clmpi& Proc, const clio& IO, const clbas& Bas, clwfn& Wfn)
   Wfn.print_wang(Bas);
 
   bool print_orb;
-  int print_orb_nstep;
+  long print_orb_nstep;
   std::string fname = IO.name + "_guess.orbital";
   IO.read_info("print_orb", false, print_orb);
   if (print_orb) {
@@ -83,7 +77,7 @@ void guess(const clmpi& Proc, const clio& IO, const clbas& Bas, clwfn& Wfn)
   std::cout << "# guess:" << (double)(time1 - time0) / CLOCKS_PER_SEC << std::endl;
 }
 ////////////////////////////////////////////////////////////////////////
-double guess_rfun_hlike(int n, int l, const int& znuc, const double& xrad, const double& wrad)
+double guess_rfun_hlike(long n, long l, const long& znuc, const double& xrad, const double& wrad)
 {
   double rval = xrad * znuc;
   double polr, expr;
@@ -144,7 +138,7 @@ double guess_rfun_hlike(int n, int l, const int& znuc, const double& xrad, const
   return rfun;
 }
 ////////////////////////////////////////////////////////////////////////
-dcomplex guess_rfun_hlike_ecs(int n, int l, const int& znuc, const double& xrad,
+dcomplex guess_rfun_hlike_ecs(long n, long l, const long& znuc, const double& xrad,
 			      const dcomplex& cwrad, const clbas& Bas)
 {
   dcomplex rval;
@@ -252,13 +246,13 @@ dcomplex guess_rfun_slater_ecs(double neff, double xi, double xrad, dcomplex cwr
 void guess_card(const clmpi& Proc, const clio& IO, const clbas& Bas, clwfn& Wfn)
 {
   double neff, xi, faccs;
-  int n0, l0, m0, ind;
-  int nel = Bas.ORMAS.neltot[2];
+  long n0, l0, m0, ind;
+  long nel = Bas.ORMAS.neltot[2];
 
   std::string guess_rad_type;
   IO.read_info("guess_rad_type", "slater", guess_rad_type);
 
-  for (int ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
+  for (long ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
 
     guess_card_getnlm(IO, ifun, n0, l0, m0);
     if (m0 != Bas.mval[ifun]) {
@@ -274,7 +268,7 @@ void guess_card(const clmpi& Proc, const clio& IO, const clbas& Bas, clwfn& Wfn)
       printf("guess_card: ifun = %3ld n = %3ld l = %3ld m = %3ld\n", ifun, n0, l0, m0);
       if (guess_rad_type.compare("slater") == 0) {
 	guess_aufbau_getneff(n0, l0, m0, nel, Bas.znuc, neff, xi);
-	for (int irad = 1; irad < Bas.GRad.nrad; irad ++) {
+	for (long irad = 1; irad < Bas.GRad.nrad; irad ++) {
 	  ind = ifun * Bas.GAng.nsph1 * (Bas.GRad.nrad - 1) 
          	                + l0 * (Bas.GRad.nrad - 1) + irad - 1;
 	  Wfn.wfn[ind] = guess_rfun_slater(neff, xi, Bas.GRad.xrad[irad], Bas.GRad.wrad[irad]);
@@ -282,7 +276,7 @@ void guess_card(const clmpi& Proc, const clio& IO, const clbas& Bas, clwfn& Wfn)
 	  Wfn.wfn[ind] = Wfn.wfn[ind] * faccs;
 	}
       } else if (guess_rad_type.compare("hlike") == 0) {
-	for (int irad = 1; irad < Bas.GRad.nrad; irad ++) {
+	for (long irad = 1; irad < Bas.GRad.nrad; irad ++) {
 	  ind = ifun * Bas.GAng.nsph1 * (Bas.GRad.nrad - 1) 
          	               +  l0 * (Bas.GRad.nrad - 1) + irad - 1;
 	  Wfn.wfn[ind] = guess_rfun_hlike(n0, l0, Bas.znuc, Bas.GRad.xrad[irad], Bas.GRad.wrad[irad]);
@@ -290,7 +284,7 @@ void guess_card(const clmpi& Proc, const clio& IO, const clbas& Bas, clwfn& Wfn)
 	  Wfn.wfn[ind] = Wfn.wfn[ind] * faccs;
 	}
       } else if (guess_rad_type.compare("hlike_ecs") == 0) {
-	for (int irad = 1; irad < Bas.GRad.nrad; irad ++) {
+	for (long irad = 1; irad < Bas.GRad.nrad; irad ++) {
 	  ind = ifun * Bas.GAng.nsph1 * (Bas.GRad.nrad - 1) 
 	    +  l0 * (Bas.GRad.nrad - 1) + irad - 1;
 	  Wfn.wfn[ind] = guess_rfun_hlike_ecs(n0, l0, Bas.znuc, Bas.GRad.xrad[irad], Bas.GRad.cwrad[irad], Bas);
@@ -299,7 +293,7 @@ void guess_card(const clmpi& Proc, const clio& IO, const clbas& Bas, clwfn& Wfn)
 	}
       } else if (guess_rad_type.compare("slater_ecs") == 0) {
 	guess_aufbau_getneff(n0, l0, m0, nel, Bas.znuc, neff, xi);
-	for (int irad = 1; irad < Bas.GRad.nrad; irad ++) {
+	for (long irad = 1; irad < Bas.GRad.nrad; irad ++) {
 	  ind = ifun * Bas.GAng.nsph1 * (Bas.GRad.nrad - 1) 
 	    + l0 * (Bas.GRad.nrad - 1) + irad - 1;
 	  Wfn.wfn[ind] = guess_rfun_slater_ecs(neff, xi, Bas.GRad.xrad[irad], Bas.GRad.cwrad[irad], Bas);
@@ -314,7 +308,7 @@ void guess_card(const clmpi& Proc, const clio& IO, const clbas& Bas, clwfn& Wfn)
   }
 }
 ////////////////////////////////////////////////////////////////////////
-void guess_card_getnlm(const clio& IO, int ifun, int& n, int& l, int& m)
+void guess_card_getnlm(const clio& IO, long ifun, long& n, long& l, long& m)
 // Read guess information
 {
   std::string key = "orbital:";
@@ -326,7 +320,7 @@ void guess_card_getnlm(const clio& IO, int ifun, int& n, int& l, int& m)
 
   while (getline(ifs, line) && line.find(key,0) == std::string::npos) {}
   if(! ifs.eof()) {
-    int jfun = 0;
+    long jfun = 0;
     while (jfun < ifun) {
       getline(ifs, line);
       jfun ++;
@@ -347,7 +341,7 @@ void guess_card_getnlm(const clio& IO, int ifun, int& n, int& l, int& m)
   }
 }
 ////////////////////////////////////////////////////////////////////////
-void guess_aufbau_getneff(int n, int l, int m, int nel, double znuc, double& neff, double& xi)
+void guess_aufbau_getneff(long n, long l, long m, long nel, double znuc, double& neff, double& xi)
 {
   double scon;
 
@@ -363,7 +357,7 @@ void guess_aufbau_getneff(int n, int l, int m, int nel, double znuc, double& nef
     } else if (nel == 2) {
       scon = 0.85 * 2;
     } else {
-      scon = 0.85 * 2 + 0.35 * (std::min(nel - 2, 8) - 1);
+      scon = 0.85 * 2 + 0.35 * (std::min(nel - 2, (long) 8) - 1);
     }
   } else if (n == 3) {
     if (l == 0 || l == 1) {
@@ -374,7 +368,7 @@ void guess_aufbau_getneff(int n, int l, int m, int nel, double znuc, double& nef
       } else if (nel <= 10) {
 	scon = 2.0 + (nel - 2) * 0.85;
       } else {
-	scon = 2.0 + 8 * 0.85 + 0.35 * (std::min(nel - 10, 8) - 1);
+	scon = 2.0 + 8 * 0.85 + 0.35 * (std::min(nel - 10, (long) 8) - 1);
       }
     } else if (l == 2) {
       if (nel == 1) {
@@ -384,7 +378,7 @@ void guess_aufbau_getneff(int n, int l, int m, int nel, double znuc, double& nef
       } else if (nel <= 20) {
 	scon = 18.0;
       } else {
-	scon = 18.0 + 0.35 * (std::min(nel - 20, 10) - 1);
+	scon = 18.0 + 0.35 * (std::min(nel - 20, (long) 10) - 1);
       }
     }
   } else if (n == 4) {
@@ -400,7 +394,7 @@ void guess_aufbau_getneff(int n, int l, int m, int nel, double znuc, double& nef
       } else if (nel <= 30) {
 	scon = 18.0 + 2 * 0.35 + (nel - 20) * 0.85;
       } else {
-	scon = 18.0 + 2 * 0.35 + 10 * 0.85 + 0.35 * (std::min(nel - 30, 6) - 1);
+	scon = 18.0 + 2 * 0.35 + 10 * 0.85 + 0.35 * (std::min(nel - 30, (long) 6) - 1);
       }
     } else if (l == 2) {
       if (nel == 1) {
@@ -410,7 +404,7 @@ void guess_aufbau_getneff(int n, int l, int m, int nel, double znuc, double& nef
       } else if (nel <= 38) {
 	scon = 36.0;
       } else {
-	scon = 36.0 + 0.35 * (std::min(nel - 38, 10) - 1);
+	scon = 36.0 + 0.35 * (std::min(nel - 38, (long) 10) - 1);
       }
     } else {
       printf("guess_aufbau_getneff: l > 2 nyi.\n");
@@ -433,7 +427,7 @@ void guess_aufbau_getneff(int n, int l, int m, int nel, double znuc, double& nef
       } else if (nel <= 48) {
 	scon = 10.0 + 2 * 0.85 + 10.0 + 6 * 0.85 + 2 * 0.35 + (nel - 38) * 0.85;
       }	else if (nel <= 54) {
-	scon = 10.0 + 2 * 0.85 + 10.0 + 6 * 0.85 + 2 * 0.35 + 10 * 0.85 + 0.35 * (std::min(nel - 48, 6) - 1);
+	scon = 10.0 + 2 * 0.85 + 10.0 + 6 * 0.85 + 2 * 0.35 + 10 * 0.85 + 0.35 * (std::min(nel - 48, (long) 6) - 1);
       }
     } else {
       printf("guess_aufbau_getneff: nl > 5sp nyi.\n");
@@ -447,7 +441,7 @@ void guess_aufbau_getneff(int n, int l, int m, int nel, double znuc, double& nef
   neff = double(n);
   xi = (znuc - scon) / neff;
 
-  printf("guess_aufbau_getneff: nlm = %5d%5d%5d. neff = %10.5f xi = %10.5f\n", n, l, m, neff, xi);
+  printf("guess_aufbau_getneff: nlm = %5ld%5ld%5ld. neff = %10.5f xi = %10.5f\n", n, l, m, neff, xi);
 }
 ////////////////////////////////////////////////////////////////////////
 //void guess_g09(const clmpi& Proc, const clio& IO, const clbas& Bas, clwfn& Wfn)
@@ -462,24 +456,24 @@ void guess_aufbau_getneff(int n, int l, int m, int nel, double znuc, double& nef
 //    abort();
 //  }
 //
-//  int l, l0, lm, lmp, lmm, mu, icmo, ind, pind, mind;
+//  long l, l0, lm, lmp, lmm, mu, icmo, ind, pind, mind;
 //  double cp, ap, rpt, wpt, rsph;
 //  dcomplex cfacp, cfacm;
 //
 //  std::vector<double> rfun(Bas.GRad.nrad - 1);
-//  int bdone = 0;
-//  int pdone = 0;
+//  long bdone = 0;
+//  long pdone = 0;
 //
-//  for (int ishell = 0; ishell < Gauss.nshell; ishell ++) {
+//  for (long ishell = 0; ishell < Gauss.nshell; ishell ++) {
 //    // radial wavefunction
 //    l = get_abs(Gauss.type[ishell]);
-//    for (int irad = 1; irad < Bas.GRad.nrad; irad ++) {
+//    for (long irad = 1; irad < Bas.GRad.nrad; irad ++) {
 //      rfun[irad - 1] = ZERO;
 //    }
-//    for (int iprm = pdone; iprm < pdone + Gauss.nprm[ishell]; iprm ++) {
+//    for (long iprm = pdone; iprm < pdone + Gauss.nprm[ishell]; iprm ++) {
 //      cp = Gauss.cont[iprm];
 //      ap = Gauss.alph[iprm];
-//      for (int irad = 1; irad < Bas.GRad.nrad; irad ++) {
+//      for (long irad = 1; irad < Bas.GRad.nrad; irad ++) {
 //	rpt = Bas.GRad.xrad[irad];
 //	rfun[irad - 1] += cp * exp(-ap * rpt * rpt);
 //      }
@@ -487,7 +481,7 @@ void guess_aufbau_getneff(int n, int l, int m, int nel, double znuc, double& nef
 //    pdone += Gauss.nprm[ishell];
 //
 //    // fedvr coefficients of radial distribution function
-//    for (int irad = 1; irad < Bas.GRad.nrad; irad ++) {
+//    for (long irad = 1; irad < Bas.GRad.nrad; irad ++) {
 //      rpt = Bas.GRad.xrad[irad];
 //      wpt = Bas.GRad.wrad[irad];
 //      rfun[irad - 1] *= rpt * sqrt(wpt) * pow(rpt, l);
@@ -498,9 +492,9 @@ void guess_aufbau_getneff(int n, int l, int m, int nel, double znuc, double& nef
 //    if (l != 1) {
 //      mu = 0;
 //      // m = 0
-//      for (int ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
+//      for (long ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
 //	icmo = ifun * Gauss.ngbas + bdone + mu;
-//	for (int irad = 1; irad < Bas.GRad.nrad; irad ++) {
+//	for (long irad = 1; irad < Bas.GRad.nrad; irad ++) {
 //	  ind = ifun * Bas.GAng.nsph1 * (Bas.GRad.nrad - 1) 
 //         	                + l0 * (Bas.GRad.nrad - 1) + irad - 1;
 //	  Wfn.wfn[ind] += rfun[irad - 1] * Gauss.cmo[icmo];
@@ -509,14 +503,14 @@ void guess_aufbau_getneff(int n, int l, int m, int nel, double znuc, double& nef
 //      mu ++;
 //
 //      // m = +k, -k
-//      for (int m = 1; m <= l; m ++) {
+//      for (long m = 1; m <= l; m ++) {
 //	lmp = l0 + m;
 //	lmm = l0 - m;
-//	for (int ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
+//	for (long ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
 //	  cfacp = ONE / sqrt(TWO) * pow(-ONE, 1);
 //	  cfacm = ONE / sqrt(TWO);
 //	  icmo = ifun * Gauss.ngbas + bdone + mu;
-//	  for (int irad = 1; irad < Bas.GRad.nrad; irad ++) {
+//	  for (long irad = 1; irad < Bas.GRad.nrad; irad ++) {
 //	    rsph = rfun[irad - 1] * Gauss.cmo[icmo];
 //	    pind = ifun * Bas.GAng.nsph1 * (Bas.GRad.nrad - 1) 
 //         	                  + lmp * (Bas.GRad.nrad - 1) + irad - 1;
@@ -529,7 +523,7 @@ void guess_aufbau_getneff(int n, int l, int m, int nel, double znuc, double& nef
 //	  cfacp = ONE / sqrt(TWO) * pow(-ONE, 1) * IUNIT;
 //	  cfacm = ONE / sqrt(TWO) * (-IUNIT);
 //	  icmo = ifun * Gauss.ngbas + bdone + mu + 1;
-//	  for (int irad = 1; irad < Bas.GRad.nrad; irad ++) {
+//	  for (long irad = 1; irad < Bas.GRad.nrad; irad ++) {
 //	    rsph = rfun[irad - 1] * Gauss.cmo[icmo];
 //	    pind = ifun * Bas.GAng.nsph1 * (Bas.GRad.nrad - 1) 
 //         	                  + lmp * (Bas.GRad.nrad - 1) + irad - 1;
@@ -544,11 +538,11 @@ void guess_aufbau_getneff(int n, int l, int m, int nel, double znuc, double& nef
 //    } else {
 //      mu = 0;
 //      // p_x
-//      for (int ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
+//      for (long ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
 //	icmo = ifun * Gauss.ngbas + bdone + mu;
 //	cfacp = ONE / sqrt(TWO) * pow(-ONE, 1);
 //	cfacm = ONE / sqrt(TWO);
-//	for (int irad = 1; irad < Bas.GRad.nrad; irad ++) {
+//	for (long irad = 1; irad < Bas.GRad.nrad; irad ++) {
 //	  rsph = rfun[irad - 1] * Gauss.cmo[icmo];
 //	  pind = ifun * Bas.GAng.nsph1 * (Bas.GRad.nrad - 1) 
 //	                   + (l0 + 1) * (Bas.GRad.nrad - 1) + irad - 1;
@@ -560,11 +554,11 @@ void guess_aufbau_getneff(int n, int l, int m, int nel, double znuc, double& nef
 //      }
 //      mu ++;
 //      // p_y
-//      for (int ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
+//      for (long ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
 //	icmo = ifun * Gauss.ngbas + bdone + mu;
 //	cfacp = ONE / sqrt(TWO) * pow(-ONE, 1) * IUNIT;
 //	cfacm = ONE / sqrt(TWO) * (-IUNIT);
-//	for (int irad = 1; irad < Bas.GRad.nrad; irad ++) {
+//	for (long irad = 1; irad < Bas.GRad.nrad; irad ++) {
 //	  rsph = rfun[irad - 1] * Gauss.cmo[icmo];
 //	  pind = ifun * Bas.GAng.nsph1 * (Bas.GRad.nrad - 1) 
 //	                   + (l0 + 1) * (Bas.GRad.nrad - 1) + irad - 1;
@@ -576,9 +570,9 @@ void guess_aufbau_getneff(int n, int l, int m, int nel, double znuc, double& nef
 //      }
 //      mu ++;
 //      // p_z
-//      for (int ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
+//      for (long ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
 //	icmo = ifun * Gauss.ngbas + bdone + mu;
-//	for (int irad = 1; irad < Bas.GRad.nrad; irad ++) {
+//	for (long irad = 1; irad < Bas.GRad.nrad; irad ++) {
 //	  ind = ifun * Bas.GAng.nsph1 * (Bas.GRad.nrad - 1) 
 //         	                + l0 * (Bas.GRad.nrad - 1) + irad - 1;
 //	  Wfn.wfn[ind] += rfun[irad - 1] * Gauss.cmo[icmo];
@@ -589,8 +583,8 @@ void guess_aufbau_getneff(int n, int l, int m, int nel, double znuc, double& nef
 //    bdone += 2 * get_abs(Gauss.type[ishell]) + 1;
 //  }
 //  // debug
-//  printf("guess_g09: pdone = %5d\n", pdone);
-//  printf("guess_g09: bdone = %5d\n", bdone);
+//  printf("guess_g09: pdone = %5ld\n", pdone);
+//  printf("guess_g09: bdone = %5ld\n", bdone);
 //  // debug
 //}
 ////////////////////////////////////////////////////////////////////////

@@ -12,7 +12,7 @@ subroutine tdcc_ccsolve(int1e,int2e,cic)
   complex(c_double_complex), intent(in) :: int1e(*),int2e(*)
   complex(c_double_complex), intent(out) :: cic(ndetx,2)
   !--------------------------------------------------------------------
-  integer(c_int) :: icyc
+  integer(c_long) :: icyc
   real(c_double) :: ene,ene1,dt1,dt2(2),dt3(2)
   complex(c_double_complex), allocatable :: hcic(:,:)
   real(c_double), external :: tdcc_enec
@@ -110,7 +110,7 @@ subroutine tdcc_solve1(cic,hcic,dt1)
   complex(c_double_complex), intent(inout) :: cic(1:ndetx)
   complex(c_double_complex), intent(in) :: hcic(1:ndetx)
   real(c_double), intent(out) :: dt1
-  integer(c_int) :: h1,p1,icc,idet
+  integer(c_long) :: h1,p1,icc,idet
   complex(c_double_complex) :: tcc,rhs
 
   dt1=0d0
@@ -139,7 +139,7 @@ subroutine tdcc_solve2(cic,hcic,dt2)
   complex(c_double_complex), intent(inout) :: cic(ndetx)
   complex(c_double_complex), intent(in) :: hcic(ndetx)
   real(c_double), intent(out) :: dt2(2)
-  integer(c_int) :: h1,h2,p1,p2,icc,idet
+  integer(c_long) :: h1,h2,p1,p2,icc,idet
   complex(c_double_complex) :: tcc,rhs
 
   dt2(1)=0d0
@@ -184,7 +184,7 @@ subroutine tdcc_solve3(cic,hcic,dt3)
   complex(c_double_complex), intent(inout) :: cic(ndetx)
   complex(c_double_complex), intent(in) :: hcic(ndetx)
   real(c_double), intent(out) :: dt3(2)
-  integer(c_int) :: h1,h2,h3,p1,p2,p3,icc,idet
+  integer(c_long) :: h1,h2,h3,p1,p2,p3,icc,idet
   complex(c_double_complex) :: tcc,rhs
 
   dt3(1)=0d0
@@ -232,7 +232,7 @@ end subroutine tdcc_solve3
 !nyi  complex(c_double_complex), intent(in) :: tcc1((norb1+1):nact,1:norb1,1:*)
 !nyi  complex(c_double_complex), intent(out) :: gcc1(1:norb1,(norb1+1):nact,1:*)
 !nyi
-!nyi  integer(c_int) :: h1,p2
+!nyi  integer(c_long) :: h1,p2
 !nyi  do h1 = 1, norb1
 !nyi  do p2 = norb1+1, nact
 !nyi     gcc1(h1,p2,1) = tcc1(p2,h1,1)
@@ -252,7 +252,7 @@ end subroutine tdcc_solve3
 !nyi  complex(c_double_complex), intent(in) :: tcc2((norb1+1):nact,(norb1+1):nact,1:norb1,1:norb1,1:*)
 !nyi  complex(c_double_complex), intent(out) :: gcc2(1:norb1,1:norb1,(norb1+1):nact,(norb1+1):nact,1:*)
 !nyi
-!nyi  integer(c_int) :: h1,h2,p3,p4
+!nyi  integer(c_long) :: h1,h2,p3,p4
 !nyi  do h1 = 1, norb1
 !nyi  do h2 = 1, norb1
 !nyi  do p3 = norb1 + 1, nact
@@ -277,7 +277,7 @@ end subroutine tdcc_solve3
 !nyi  complex(c_double_complex), intent(in) :: tcc3((norb1+1):nact,(norb1+1):nact,(norb1+1):nact,1:norb1,1:norb1,1:norb1,1:*)
 !nyi  complex(c_double_complex), intent(out) :: gcc3(1:norb1,1:norb1,1:norb1,(norb1+1):nact,(norb1+1):nact,(norb1+1):nact,1:*)
 !nyi
-!nyi  integer(c_int) :: h1,h2,h3,p4,p5,p6
+!nyi  integer(c_long) :: h1,h2,h3,p4,p5,p6
 !nyi  do h1 = 1, norb1
 !nyi  do h2 = 1, norb1
 !nyi  do h3 = 1, norb1

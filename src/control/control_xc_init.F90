@@ -8,7 +8,7 @@ subroutine control_xc_init(dft_type)
   use mod_control, only : xc_funcx, xc_funcc, xc_infox, xc_infoc, func_idx, func_idc
 
   implicit none
-  integer(c_int), intent(in) :: dft_type
+  integer(c_long), intent(in) :: dft_type
   integer(c_int) :: vmajor, vminor, vmicro
   character(len=120) :: xname, cname
 

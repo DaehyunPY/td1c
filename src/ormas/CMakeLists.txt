@@ -20,9 +20,6 @@ add_library(
         ormas_fab.F90
         ormas_ipx.F90
         ormas_ipx_ras.F90
-        ormas_denipd.F90
-        ormas_denipx.F90
-        ormas_denipx_ras.F90
         ormas_ipx_old.F90
         ormas_ipx_core.F90
         ormas_mkidm.F90
@@ -39,9 +36,6 @@ add_library(
         ormas_dets1.F90
         ormas_dets_single.F90
         ormas_dett.F90
-        ormas_sij.F90
-        ormas_str_dot_str_0.F90
-        ormas_str_dot_str_1.F90
         ormas_dett_1.F90
         ormas_dist.F90
         ormas_final.F90
@@ -69,8 +63,4 @@ add_library(
         ormas_mkden2x_old.F90
         ormas_cic_print.F90
         ormas_rm_singles.F90
-        ormas_elec2fun.F90
-        ormas_sgnperm2.F90
-        ormas_chkorth.F90
-        ormas_bind_tdcis.F90
 )

@@ -1,7 +1,6 @@
 !**********************************************************
 subroutine bccdt_l3p_main()
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact,nelact
   use mod_cc,only : norb1,cc_code,g3out
   use mod_cc2

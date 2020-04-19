@@ -9,7 +9,7 @@ subroutine surff_rec_v2xmat(v2xmat)
   implicit none
   complex(c_double_complex), intent(out) :: v2xmat(1:nfun, 1:nfun)
 
-  integer(c_int) :: ifun, jfun
+  integer(c_long) :: ifun, jfun
 
   do ifun = nfcore + 1, nfun
      do jfun = 1, nfun

@@ -4,14 +4,14 @@ subroutine util_svd_real(m, n, a, z, u, v)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: m, n
+  integer(c_long), intent(in) :: m, n
   real(c_double), intent(in) :: a(1:m, 1:n)
   real(c_double), intent(out) :: z(1:*)
   real(c_double), intent(out) :: u(1:m, 1:m)
   real(c_double), intent(out) :: v(1:n, 1:n)
 
-  integer(c_int) :: info, i, j, len
-  integer(c_int), allocatable :: iwork(:)
+  integer(c_long) :: info, i, j, len
+  integer(c_long), allocatable :: iwork(:)
   real(c_double), allocatable :: rwork(:)
   real(c_double), allocatable :: tmpa(:,:)
   real(c_double), allocatable :: vt(:,:)

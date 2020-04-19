@@ -6,43 +6,33 @@
 ////////////////////////////////////////////////////////////////////////
 // static members
 ////////////////////////////////////////////////////////////////////////
-int clcontrol::num_control = 0;
+long clcontrol::num_control = 0;
 bool clcontrol::fedvr_normalized = true;
-int clcontrol::icomp;
-int clcontrol::igauge;
-int clcontrol::oorot_type;
-int clcontrol::split_type;
-int clcontrol::iprojfc;
-int clcontrol::type_dcx;
+long clcontrol::icomp;
+long clcontrol::igauge;
+long clcontrol::oorot_type;
+long clcontrol::split_type;
+long clcontrol::iprojfc;
+long clcontrol::type_dcx;
 bool clcontrol::jfc_implicit;
 bool clcontrol::xfc_implicit;
-int clcontrol::h1rat_maxcyc;
+long clcontrol::h1rat_maxcyc;
 double clcontrol::h1rat_thresh;
-int clcontrol::maxipx;
-int clcontrol::maxipd;
+long clcontrol::maxipx;
 double clcontrol::radipx;
 bool clcontrol::docs1;
 bool clcontrol::docs2;
 bool clcontrol::sae;
 bool clcontrol::psp;
-int clcontrol::psp_type;
-int clcontrol::dft_type;
-// teramura-tdcis
-bool clcontrol::istdcis;
-bool clcontrol::tdcis_rvg;
-bool clcontrol::print_xrad;
-// teramura-tdcis
-int clcontrol::reg_type;
+long clcontrol::psp_type;
+long clcontrol::dft_type;
+long clcontrol::reg_type;
 double clcontrol::throcc1;
 double clcontrol::throcc2;
 double clcontrol::throcc3;
-int clcontrol::xact2_type;
-int clcontrol::xact2_maxitr;
-double clcontrol::xact2_thresh;
-int clcontrol::ncut_occ3;
+long clcontrol::ncut_occ3;
 bool clcontrol::exact3j;
-bool clcontrol::cionly;
-int clcontrol::rrad_type;
+long clcontrol::rrad_type;
 double clcontrol::rrad_rion;
 double clcontrol::rrad_r2in;
 double clcontrol::rrad_r2out;
@@ -116,11 +106,10 @@ void clcontrol::gen(const clio& IO)
 
   IO.read_info("type_dcx", LZERO, type_dcx);
   IO.read_info("maxipx", LONE, maxipx);
-  IO.read_info("maxipd", LONE, maxipd);
   IO.read_info("radipx", 20.0, radipx);
   IO.read_info("jfc_implicit", true, jfc_implicit);
   IO.read_info("xfc_implicit", true, xfc_implicit);
-  IO.read_info("h1rat_maxcyc", 20, h1rat_maxcyc);
+  IO.read_info("h1rat_maxcyc", (long) 20, h1rat_maxcyc);
   IO.read_info("h1rat_thresh", (double) 1.0E-10, h1rat_thresh);
   IO.read_info("docs1", false, docs1);
   IO.read_info("docs2", false, docs2);
@@ -129,18 +118,6 @@ void clcontrol::gen(const clio& IO)
   IO.read_info("psp_type", LONE, psp_type);
   IO.read_info("dft_type", LZERO, dft_type);
   IO.read_info("reg_type", 0, reg_type);
-
-// teramura-tdcis
-  IO.read_info("istdcis", false, istdcis);
-  IO.read_info("tdcis_rvg", false, tdcis_rvg);
-  if(igauge == 0 && tdcis_rvg == true) {
-    std::cout << "clcontrol::gen: bad rvg and igauge" << std::endl;
-    std::cout << "clcontrol::gen: rvg = "<< tdcis_rvg
-       << ", igauge = " << igauge << std::endl;
-    abort();
-  }
-  IO.read_info("print_xrad", false, print_xrad);
-// teramura-tdcis
 
 //  throcc1 is for D^{-1} in Q terms
 //  throcc2 is for (2-D)^{-1} in core-virtual terms
@@ -152,14 +129,8 @@ void clcontrol::gen(const clio& IO)
 //  IO.read_info("throcc2", throcc2);
 //  IO.read_info("throcc3", throcc3);
 
-//  Algorithm for active-active rotation solver
-  IO.read_info("xact2_type", 0, xact2_type);
-  IO.read_info("xact2_maxitr", 100, xact2_maxitr);
-  IO.read_info("xact2_thresh", 1.0E-15, xact2_thresh);
-
   IO.read_info("ncut_occ3", 0, ncut_occ3);
   IO.read_info("exact3j", false, exact3j);
-  IO.read_info("cionly", false, cionly);
   IO.read_info("rrad_type", -1, rrad_type);
   IO.read_info("rrad_rion", 20E0, rrad_rion);
   IO.read_info("rrad_r2in", 0E0, rrad_r2in);
@@ -174,19 +145,16 @@ void clcontrol::gen(const clio& IO)
   }
 
   if (dft_type != 0) {
-//    int x_type, c_type;
+//    long x_type, c_type;
 //    IO.read_info("x_type", 1, x_type); // LDAx
 //    IO.read_info("c_type", 9, c_type); // LDAc (Perdew-Zunger 81)
     control_xc_init_(&dft_type);
   }
 
   // c++/fortran bindings
-// tdcis-teramura
   control_bind_(&icomp, &igauge, &oorot_type, &split_type, &iprojfc, &type_dcx, 
 		&jfc_implicit, &xfc_implicit, &h1rat_maxcyc, &h1rat_thresh, 
 		&docs1, &docs2, &sae, &psp, &psp_type, &dft_type, &reg_type, &throcc1, &throcc2,
-		&throcc3, &xact2_type, &xact2_maxitr, &xact2_thresh, &ncut_occ3, &exact3j, 
-		&cionly, &istdcis, &tdcis_rvg);
-// tdcis-teramura
+		&throcc3, &ncut_occ3, &exact3j);
 }
 //////////////////////////////////////////////////////////////////////////

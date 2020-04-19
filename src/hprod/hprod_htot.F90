@@ -3,10 +3,8 @@ subroutine hprod_htot(dtime, lfield, wfn, cic, hwfn, hcic)
 
   use, intrinsic :: iso_c_binding
   use mod_bas, only : nbas
-  use mod_control, only : cionly
   use mod_ormas, only : lcic,nfun
   use mod_hprod, only : dcic,orb,h0orb,h1orb,gorb,v2orb
-  use mod_control, only : istdcis
 
   implicit none
   real(c_double), intent(in) :: dtime, lfield(1:3, 1:3)
@@ -15,21 +13,10 @@ subroutine hprod_htot(dtime, lfield, wfn, cic, hwfn, hcic)
   complex(c_double_complex), intent(out) :: hwfn(1:*)
   complex(c_double_complex), intent(out) :: hcic(1:lcic)
 
-! tdcis-teramura
-  if (istdcis) then
-     call hprod_htot_tdcis(dtime, lfield, wfn, cic, hwfn, hcic)
-     return
-  end if
-! tdcis-teramura
-
   call hprod_htotx(dtime, lfield, wfn, cic)
   hcic(1:lcic) = dcic(1:lcic)
   hwfn(1:nbas*nfun) = 0d0
-  if (.not.cionly) call hprod_htot_dtorb(dtime, orb, h0orb, h1orb, gorb, v2orb, hwfn)
-
-!  if (projhigh) then
-!     call hprod_projhigh(hwfn)
-!  end if
+  call hprod_htot_dtorb(dtime, orb, h0orb, h1orb, gorb, v2orb, hwfn)
 
 !debug
 !  write(6, "('hprod_htot: wfn')")
@@ -50,7 +37,7 @@ subroutine hprod_htotx(dtime, lfield, wfn, cic)
   use mod_const, only : zero, czero, runit, cfalse
   use mod_hprod, only : rho1, rho2, v2sph, v2ang, v2ange, v2ango
   use mod_ormas, only : neltot, nfun, nfcore, ndcore, nact, lcic
-  use mod_control, only : ioorot, isplit, iprojfc, igauge, dft_type, PSP, istdcis
+  use mod_control, only : ioorot, isplit, iprojfc, igauge, dft_type, PSP
   use mod_hprod, only : ene_fcore, ene_dcore, ene_core, ene_act, ene_tot
   use mod_hprod, only : dcic, den1, den2, rden, rrden, den2r, int1e, int2e
   use mod_hprod, only : orb, orbg, h0orb, h1orb, gorb, gorbg, v2orb, v2orbg
@@ -61,7 +48,7 @@ subroutine hprod_htotx(dtime, lfield, wfn, cic)
   complex(c_double_complex), intent(in) :: wfn(1:*)
   complex(c_double_complex), intent(in) :: cic(1:lcic)
 
-  integer(c_int) :: size_orb, size_forb, size_cic
+  integer(c_long) :: size_orb, size_forb, size_cic
   real(c_double), external :: hprod_ene_fcore
   real(c_double), external :: hprod_ene_dcore
   real(c_double), external :: hprod_ene_act
@@ -71,11 +58,6 @@ subroutine hprod_htotx(dtime, lfield, wfn, cic)
      dcic(1:lcic) = czero
      call hprod_htotx_dft(dtime, lfield, wfn)
      return
-! tdcis-teramura
-  else if (istdcis) then !!teramura
-     call hprod_htotx_tdcis(dtime, lfield, wfn, cic)
-     return
-! tdcis-teramura
   end if
 
   ! laser field
@@ -85,6 +67,7 @@ subroutine hprod_htotx(dtime, lfield, wfn, cic)
 
   ! scratch initialization
   call hprod_htot_init
+
   ! current orbitals
   call hprod_orbin(lfield, wfn, orb, orbg)
 
@@ -102,7 +85,7 @@ subroutine hprod_htotx(dtime, lfield, wfn, cic)
   end if
 
   ! pseudopotential
-  if (PSP) call hprod_projpp(runit, lfield, orb, h0orb)
+  if (PSP) call hprod_projpp(runit, orb, h0orb)
 
   ! laser hamiltonian
   if (ioorot .ne. 1 .or. isplit .ne. 1) then
@@ -151,12 +134,6 @@ subroutine hprod_htotx(dtime, lfield, wfn, cic)
 !old        ! ##### 3j selection rule #####
      end if
   end if
-
-!  if (projhigh) then
-!     call hprod_projhigh(h0orb)
-!     call hprod_projhigh(h1orb)
-!     call hprod_projhigh(gorb)
-!  end if
 
   ! mo integrals
   call hprod_mkint1_sph(cfalse, orb, h0orb, h1orb, gorb)
@@ -227,7 +204,7 @@ subroutine hprod_htoto(dtime, lfield, wfn, cic, hwfn)
   complex(c_double_complex), intent(in) :: cic(1:lcic)
   complex(c_double_complex), intent(out) :: hwfn(1:*)
 
-  integer(c_int) :: size_orb, size_forb, size_cic
+  integer(c_long) :: size_orb, size_forb, size_cic
   real(c_double), external :: hprod_ene_fcore
   real(c_double), external :: hprod_ene_dcore
   real(c_double), external :: hprod_ene_act
@@ -265,7 +242,7 @@ subroutine hprod_htoto(dtime, lfield, wfn, cic, hwfn)
   end if
 
   ! pseudopotential
-  if (PSP) call hprod_projpp(runit, lfield, orb, h0orb)
+  if (PSP) call hprod_projpp(runit, orb, h0orb)
 
   ! laser hamiltonian
   if (ioorot .ne. 1 .or. isplit .ne. 1) then

@@ -1,7 +1,6 @@
 !###################################################################################
-integer(c_int) function tdcc_spin_t3inp(sp4, sp5, sp6, sh1, sh2, sh3)
+integer function tdcc_spin_t3inp(sp4, sp5, sp6, sh1, sh2, sh3)
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas, only : nelact
 !  1 : t(a1b1,i1j1)
 !  2 : t(a2b2,i2j2)
@@ -12,8 +11,8 @@ integer(c_int) function tdcc_spin_t3inp(sp4, sp5, sp6, sh1, sh2, sh3)
 !  0 : others
 
   implicit none
-  integer(c_int), intent(in) :: sh1,sh2,sh3, sp4,sp5,sp6
-  integer(c_int) :: spin_type
+  integer, intent(in) :: sh1,sh2,sh3, sp4,sp5,sp6
+  integer :: spin_type
 
   if (nelact(3)<3 .or. sh1+sh2+sh3.ne.sp4+sp5+sp6) then
      spin_type = 0

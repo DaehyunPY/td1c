@@ -12,12 +12,9 @@ add_library(
         cletdrk2.cpp
         cletdrk4.cpp
         cllawrk.cpp
-        cllawmul.cpp
         clcrnic.cpp
         cldpade.cpp
         clh1rat.cpp
-        clexpab.cpp
-        cllawab.cpp
         adi_gen_tadi.F90
         adi_t_explicit.F90
         adi_t_implicit.F90

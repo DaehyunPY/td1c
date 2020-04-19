@@ -7,7 +7,7 @@ subroutine ormas_arcwgt()
   use mod_ormas, only : nelact, nact, arc_alph, arc_beta
 
   implicit none
-  integer(c_int) :: m, k
+  integer(c_long) :: m, k
 
   allocate(arc_alph(1:nact, 1:nelact(1)))
   allocate(arc_beta(1:nact, 1:nelact(2)))
@@ -15,7 +15,7 @@ subroutine ormas_arcwgt()
   call ormas_arcwgt_spin(nelact(1), arc_alph)
   call ormas_arcwgt_spin(nelact(2), arc_beta)
 
-  if (iprint > 5) then
+  if (iprint > 2) then
      write(6,"('alpha arc weight:')")
      write(6, "(5x)", advance = 'no')
      do k = 1, nelact(1)
@@ -56,10 +56,10 @@ subroutine ormas_arcwgt_spin(nel, arc)
   use mod_ormas, only : nact
 
   implicit none
-  integer(c_int), intent(in) :: nel
-  integer(c_int), intent(inout) :: arc(1:nact, 1:*)
-  integer(c_int), allocatable :: vtxwgt(:,:)
-  integer(c_int) :: m, k
+  integer(c_long), intent(in) :: nel
+  integer(c_long), intent(inout) :: arc(1:nact, 1:*)
+  integer(c_long), allocatable :: vtxwgt(:,:)
+  integer(c_long) :: m, k
 
   ! initialization
   arc(1:nact, 1:nel) = 0
@@ -82,7 +82,7 @@ subroutine ormas_arcwgt_spin(nel, arc)
      end do
   end do
 
-  if (iprint > 5) then
+  if (iprint > 2) then
      write(6,"('vertex weight:')")
      write(6, "(5x)", advance = 'no')
      do k = 0, nel

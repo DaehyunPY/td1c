@@ -7,7 +7,7 @@ subroutine h1exp_exporb(icomp, dtime, maxcyc, ntot, alph, beta, torb, wfn)
   use mod_const, only : zero, one, czero, runit, iunit
 
   implicit none
-  integer(c_int), intent(in) :: icomp, maxcyc, ntot
+  integer(c_long), intent(in) :: icomp, maxcyc, ntot
   real(c_double), intent(in) :: dtime, alph(1:*), beta(1:*)
   complex(c_double_complex), intent(in) :: torb(1:nbas, 1:maxcyc)
   complex(c_double_complex), intent(out) :: wfn(1:nbas, 1:nfun)
@@ -16,12 +16,12 @@ subroutine h1exp_exporb(icomp, dtime, maxcyc, ntot, alph, beta, torb, wfn)
   complex(c_double_complex) :: dtfac
   complex(c_double_complex), allocatable :: hsub(:,:)
   complex(c_double_complex), allocatable :: exph(:,:)
-  integer(c_int) :: ivec, jvec, ibas, llb, ulb
+  integer(c_long) :: ivec, jvec, ibas, llb, ulb
 
   !DEBUG
   ! estimated error
   ! real(c_double) :: error
-  ! integer(c_int), external :: util_ifact
+  ! integer(c_long), external :: util_ifact
   ! error = dtime ** (ntot - 1) / util_ifact(ntot - 1, ntot - 1)
   ! do ivec = 1, ntot
   !    error = error * beta(ivec)
@@ -100,7 +100,7 @@ subroutine h1exp_exporb1(icomp, dtime, maxvec, ntot, norm, torb, hmat, norb, mma
   use mod_const, only : zero, one, czero, runit, iunit
 
   implicit none
-  integer(c_int), intent(in) :: icomp, maxvec, ntot, norb, mmap(1:nfun)
+  integer(c_long), intent(in) :: icomp, maxvec, ntot, norb, mmap(1:nfun)
   real(c_double), intent(in) :: dtime, norm(1:maxvec)
   complex(c_double_complex), intent(in) :: torb(1:nbas, 1:maxvec)
   complex(c_double_complex), intent(in) :: hmat(1:maxvec, 1:maxvec)
@@ -109,7 +109,7 @@ subroutine h1exp_exporb1(icomp, dtime, maxvec, ntot, norm, torb, hmat, norb, mma
   complex(c_double_complex) :: dtfac
   complex(c_double_complex), allocatable :: hsub(:,:)
   complex(c_double_complex), allocatable :: exph(:,:)
-  integer(c_int) :: ivec, jvec, ibas, iorb, ifun, llb, ulb
+  integer(c_long) :: ivec, jvec, ibas, iorb, ifun, llb, ulb
 
   if (icomp == 1) then
      dtfac = - dtime * iunit

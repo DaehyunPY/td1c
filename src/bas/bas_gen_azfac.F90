@@ -8,12 +8,10 @@ subroutine bas_gen_azfac()
   use mod_bas, only : znuc, alph_lm, bas_azfac
   use mod_control, only : fedvr_normalized, SAE, PSP, psp_type
   use mod_bas, only : pp_znuc, pp_rloc, pp_cloc
-  use mod_oncvpsp
-  use mod_tmpsp
 
   implicit none
   complex(c_double_complex) :: aazfac, tmp
-  integer(c_int) :: l, m, irad
+  integer(c_long) :: l, m, irad
 
   real(c_double), parameter ::  a1 = +1.231d+0
   real(c_double), parameter ::  a2 = +0.662d+0
@@ -42,16 +40,6 @@ subroutine bas_gen_azfac()
                        *(2d0*pp_cloc(2)*(xrad(irad)/pp_rloc) &
                        + 4d0*pp_cloc(3)*(xrad(irad)/pp_rloc)**3 &
                        + 6d0*pp_cloc(4)*(xrad(irad)/pp_rloc)**5))
-              end do
-           else if (PSP .and. psp_type==6) then
-              aazfac = -alph_lm(l, m)
-              do irad = 1, nrad - 1
-                 bas_azfac(irad, l, m) = aazfac * oncvpsp_getd1vloc(xrad(irad))
-              end do
-           else if (PSP .and. psp_type==7) then
-              aazfac = -alph_lm(l, m)
-              do irad = 1, nrad - 1
-                 bas_azfac(irad, l, m) = aazfac * tmpsp_getd1vloc(xrad(irad))
               end do
            else if (SAE) then
               aazfac = -alph_lm(l, m)

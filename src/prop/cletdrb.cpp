@@ -3,8 +3,8 @@
 ////////////////////////////////////////////////////////////////////////
 #include "td1c.hpp"
 #include "wrapper.hpp"
-int cletdrb::max_dim_numer = 3;
-int cletdrb::max_dim_denom = 3;
+long cletdrb::max_dim_numer = 3;
+long cletdrb::max_dim_denom = 3;
 ////////////////////////////////////////////////////////////////////////
 cletdrb::cletdrb()
 {
@@ -28,18 +28,18 @@ void cletdrb::gen(const clmpi& MPIP, const clio& IO, const clbas& Bas,
   etd_dt1 = Field.dtime;
   etd_dt2 = Field.dtime * HALF;
 
-  IO.read_info("etd_rk_order", 4, rk_order);
-  IO.read_info("etd_dim_numer1", 2, dim_numer1);
-  IO.read_info("etd_dim_numer2", 2, dim_numer2);
-  IO.read_info("etd_dim_numer3", 2, dim_numer3);
-  IO.read_info("etd_dim_denom1", 3, dim_denom1);
-  IO.read_info("etd_dim_denom2", 3, dim_denom2);
-  IO.read_info("etd_dim_denom3", 3, dim_denom3);
+  IO.read_info("etd_rk_order", (long) 4, rk_order);
+  IO.read_info("etd_dim_numer1", (long) 2, dim_numer1);
+  IO.read_info("etd_dim_numer2", (long) 2, dim_numer2);
+  IO.read_info("etd_dim_numer3", (long) 2, dim_numer3);
+  IO.read_info("etd_dim_denom1", (long) 3, dim_denom1);
+  IO.read_info("etd_dim_denom2", (long) 3, dim_denom2);
+  IO.read_info("etd_dim_denom3", (long) 3, dim_denom3);
 
   IO.read_info("etd_pade_equiv", false, pade_equiv);
   IO.read_info("etd_rosenbrock", true, rosenbrock);
-  IO.read_info("etd_time_of_h", 0, time_of_h);
-  IO.read_info("etd_cisplit", -1, cisplit);
+  IO.read_info("etd_time_of_h", (long) 0, time_of_h);
+  IO.read_info("etd_cisplit", (long) -1, cisplit);
   if (Bas.ORMAS.nact == 0) cisplit = -1;
   if (cisplit != -1) {
     std::cout << "cletdrb::gen: etd_cisplit = -1 only." << std::endl;
@@ -47,9 +47,7 @@ void cletdrb::gen(const clmpi& MPIP, const clio& IO, const clbas& Bas,
   }
 
   //  if (rk_order < 1 || rk_order > 4) {
-  if (rk_order == 1) {
-  } else if (rk_order == 4) {
-  } else {
+  if (rk_order != 4) {
     std::cout << "cletdrb::gen bad rk_order." << std::endl;
     abort();
   }
@@ -81,10 +79,10 @@ void cletdrb::gen(const clmpi& MPIP, const clio& IO, const clbas& Bas,
   tWfn.gen(MPIP, IO, Bas);
   dWfn.gen(MPIP, IO, Bas);
 
-  //  int NA2 = pow(Bas.ORMAS.nact, 2);
-  //  int NA4 = pow(Bas.ORMAS.nact, 4);
-  int NA2 = std::max(LONE, Bas.ORMAS.nact * Bas.ORMAS.nact);
-  int NA4 = NA2 * NA2;
+  //  long NA2 = pow(Bas.ORMAS.nact, 2);
+  //  long NA4 = pow(Bas.ORMAS.nact, 4);
+  long NA2 = std::max(LONE, Bas.ORMAS.nact * Bas.ORMAS.nact);
+  long NA4 = NA2 * NA2;
   Den1.resize(NA2);
   Int1e.resize(NA2);
   Int2e.resize(NA4);
@@ -329,10 +327,10 @@ void cletdrb::prop4_orb(const clmpi& Proc, const clbas& Bas,
   double time1 = Field.time + etd_dt2;
   double time2 = Field.time + etd_dt2;
   double time3 = Field.time + etd_dt1;
-  //  int NA2 = pow(Bas.ORMAS.nact, 2);
-  //  int NA4 = pow(Bas.ORMAS.nact, 4);
-  int NA2 = std::max(LONE, Bas.ORMAS.nact * Bas.ORMAS.nact);
-  int NA4 = NA2 * NA2;
+  //  long NA2 = pow(Bas.ORMAS.nact, 2);
+  //  long NA4 = pow(Bas.ORMAS.nact, 4);
+  long NA2 = std::max(LONE, Bas.ORMAS.nact * Bas.ORMAS.nact);
+  long NA4 = NA2 * NA2;
 
   if (time_of_h == 0) {
     timeh = Field.time;
@@ -444,10 +442,10 @@ void cletdrb::prop4_orbci(const clmpi& Proc, const clbas& Bas,
   double time1 = Field.time + etd_dt2;
   double time2 = Field.time + etd_dt2;
   double time3 = Field.time + etd_dt1;
-  //  int NA2 = pow(Bas.ORMAS.nact, 2);
-  //  int NA4 = pow(Bas.ORMAS.nact, 4);
-  int NA2 = std::max(LONE, Bas.ORMAS.nact * Bas.ORMAS.nact);
-  int NA4 = NA2 * NA2;
+  //  long NA2 = pow(Bas.ORMAS.nact, 2);
+  //  long NA4 = pow(Bas.ORMAS.nact, 4);
+  long NA2 = std::max(LONE, Bas.ORMAS.nact * Bas.ORMAS.nact);
+  long NA4 = NA2 * NA2;
 
   double Erefx;
   std::vector<dcomplex> Int1x(NA2), Int1y(NA2);
@@ -699,7 +697,7 @@ void cletdrb::gen_phi1(const clmpi& MPIP, const clio& IO, const clbas& Bas)
 
   phi1_d1[0] = +dfac;
   phi1_d0[0] = -dfac * roots[0];
-  for (int idim = 1; idim < dim_denom1; idim ++) {
+  for (long idim = 1; idim < dim_denom1; idim ++) {
     phi1_d1[idim] = +RUNIT;
     phi1_d0[idim] = -roots[idim];
   }
@@ -720,11 +718,11 @@ void cletdrb::gen_phi1(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   cd1 = phi1_d1;
   tfac = tunit * etd_dt1; // BE CAREFUL!
   ttmp = RUNIT * etd_dt1; // BE CAREFUL!
-  for (int inumer = 0; inumer <= dim_numer1; inumer ++) {
+  for (long inumer = 0; inumer <= dim_numer1; inumer ++) {
     cn[inumer] *= ttmp;
     ttmp *= tunit;
   }
-  for (int idenom = 0; idenom < dim_denom1; idenom ++) {
+  for (long idenom = 0; idenom < dim_denom1; idenom ++) {
     cd1[idenom] *= tfac;
   }
   phi1dt1.gen(MPIP, IO, Bas, etd_dt1, cisplit, dim_numer1, dim_denom1, cn, cd0, cd1);
@@ -735,11 +733,11 @@ void cletdrb::gen_phi1(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   cd1 = phi1_d1;
   tfac = tunit * etd_dt2; // BE CAREFUL!
   ttmp = RUNIT * etd_dt1; // BE CAREFUL!
-  for (int inumer = 0; inumer <= dim_numer1; inumer ++) {
+  for (long inumer = 0; inumer <= dim_numer1; inumer ++) {
     cn[inumer] *= ttmp;
     ttmp *= tunit;
   }
-  for (int idenom = 0; idenom < dim_denom1; idenom ++) {
+  for (long idenom = 0; idenom < dim_denom1; idenom ++) {
     cd1[idenom] *= tfac;
   }
   phi1dt2.gen(MPIP, IO, Bas, etd_dt2, cisplit, dim_numer1, dim_denom1, cn, cd0, cd1);
@@ -750,7 +748,7 @@ void cletdrb::gen_phi1(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   // printf("\n");
   // printf("\n");
   // printf("# phi1: real\n");
-  // for (int ix = 10; ix <= 500; ix ++) {
+  // for (long ix = 10; ix <= 500; ix ++) {
   //   double xr = dx * ix;
   //   dcomplex x = -xr * IUNIT;
   //   dcomplex valx = (exp(x)-1.0)/x;
@@ -760,7 +758,7 @@ void cletdrb::gen_phi1(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   // printf("\n");
   // printf("\n");
   // printf("# phi1: imag\n");
-  // for (int ix = 10; ix <= 500; ix ++) {
+  // for (long ix = 10; ix <= 500; ix ++) {
   //   double xr = dx * ix;
   //   dcomplex x = -xr * IUNIT;
   //   dcomplex valx = (exp(x)-1.0)/x;
@@ -814,7 +812,7 @@ void cletdrb::gen_phid1(const clmpi& MPIP, const clio& IO, const clbas& Bas)
 
   phid1_d1[0] = +dfac;
   phid1_d0[0] = -dfac * roots[0];
-  for (int idim = 1; idim < dim_denom1; idim ++) {
+  for (long idim = 1; idim < dim_denom1; idim ++) {
     phid1_d1[idim] = +RUNIT;
     phid1_d0[idim] = -roots[idim];
   }
@@ -835,11 +833,11 @@ void cletdrb::gen_phid1(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   cd1 = phid1_d1;
   tfac = tunit * etd_dt1; // BE CAREFUL!
   ttmp = RUNIT * etd_dt1; // BE CAREFUL!
-  for (int inumer = 0; inumer <= dim_numer1; inumer ++) {
+  for (long inumer = 0; inumer <= dim_numer1; inumer ++) {
     cn[inumer] *= ttmp;
     ttmp *= tunit;
   }
-  for (int idenom = 0; idenom < dim_denom1; idenom ++) {
+  for (long idenom = 0; idenom < dim_denom1; idenom ++) {
     cd1[idenom] *= tfac;
   }
   phid1dt1.gen(MPIP, IO, Bas, etd_dt1, cisplit, dim_numer1, dim_denom1, cn, cd0, cd1);
@@ -850,11 +848,11 @@ void cletdrb::gen_phid1(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   cd1 = phid1_d1;
   tfac = tunit * etd_dt2; // BE CAREFUL!
   ttmp = RUNIT * etd_dt1; // BE CAREFUL!
-  for (int inumer = 0; inumer <= dim_numer1; inumer ++) {
+  for (long inumer = 0; inumer <= dim_numer1; inumer ++) {
     cn[inumer] *= ttmp;
     ttmp *= tunit;
   }
-  for (int idenom = 0; idenom < dim_denom1; idenom ++) {
+  for (long idenom = 0; idenom < dim_denom1; idenom ++) {
     cd1[idenom] *= tfac;
   }
   phid1dt2.gen(MPIP, IO, Bas, etd_dt2, cisplit, dim_numer1, dim_denom1, cn, cd0, cd1);
@@ -865,7 +863,7 @@ void cletdrb::gen_phid1(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   // printf("\n");
   // printf("\n");
   // printf("# phid1: real\n");
-  // for (int ix = 10; ix <= 500; ix ++) {
+  // for (long ix = 10; ix <= 500; ix ++) {
   //   double xr = dx * ix;
   //   dcomplex x = -xr * IUNIT;
   //   dcomplex valx = (exp(x)-1.0)/x;
@@ -875,7 +873,7 @@ void cletdrb::gen_phid1(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   // printf("\n");
   // printf("\n");
   // printf("# phid1: imag\n");
-  // for (int ix = 10; ix <= 500; ix ++) {
+  // for (long ix = 10; ix <= 500; ix ++) {
   //   double xr = dx * ix;
   //   dcomplex x = -xr * IUNIT;
   //   dcomplex valx = (exp(x)-1.0)/x;
@@ -963,7 +961,7 @@ void cletdrb::gen_phi2(const clmpi& MPIP, const clio& IO, const clbas& Bas)
 
   phi2_d1[0] = +dfac;
   phi2_d0[0] = -dfac * roots[0];
-  for (int idim = 1; idim < dim_denom2; idim ++) {
+  for (long idim = 1; idim < dim_denom2; idim ++) {
     phi2_d1[idim] = +RUNIT;
     phi2_d0[idim] = -roots[idim];
   }
@@ -984,11 +982,11 @@ void cletdrb::gen_phi2(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   cd1 = phi2_d1;
   tfac = tunit * etd_dt1; // BE CAREFUL!
   ttmp = RUNIT * etd_dt1; // BE CAREFUL!
-  for (int inumer = 0; inumer <= dim_numer2; inumer ++) {
+  for (long inumer = 0; inumer <= dim_numer2; inumer ++) {
     cn[inumer] *= ttmp;
     ttmp *= tunit;
   }
-  for (int idenom = 0; idenom < dim_denom2; idenom ++) {
+  for (long idenom = 0; idenom < dim_denom2; idenom ++) {
     cd1[idenom] *= tfac;
   }
   phi2dt1.gen(MPIP, IO, Bas, etd_dt1, cisplit, dim_numer2, dim_denom2, cn, cd0, cd1);
@@ -999,11 +997,11 @@ void cletdrb::gen_phi2(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   cd1 = phi2_d1;
   tfac = tunit * etd_dt2; // BE CAREFUL!
   ttmp = RUNIT * etd_dt1; // BE CAREFUL!
-  for (int inumer = 0; inumer <= dim_numer2; inumer ++) {
+  for (long inumer = 0; inumer <= dim_numer2; inumer ++) {
     cn[inumer] *= ttmp;
     ttmp *= tunit;
   }
-  for (int idenom = 0; idenom < dim_denom2; idenom ++) {
+  for (long idenom = 0; idenom < dim_denom2; idenom ++) {
     cd1[idenom] *= tfac;
   }
   phi2dt2.gen(MPIP, IO, Bas, etd_dt2, cisplit, dim_numer2, dim_denom2, cn, cd0, cd1);
@@ -1014,7 +1012,7 @@ void cletdrb::gen_phi2(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   // printf("\n");
   // printf("\n");
   // printf("# phi2: real\n");
-  // for (int ix = 10; ix <= 500; ix ++) {
+  // for (long ix = 10; ix <= 500; ix ++) {
   //   double xr = dx * ix;
   //   dcomplex x = -xr * IUNIT;
   //   dcomplex valx = (exp(x)-1.0)/x;
@@ -1024,7 +1022,7 @@ void cletdrb::gen_phi2(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   // printf("\n");
   // printf("\n");
   // printf("# phi2: imag\n");
-  // for (int ix = 10; ix <= 500; ix ++) {
+  // for (long ix = 10; ix <= 500; ix ++) {
   //   double xr = dx * ix;
   //   dcomplex x = -xr * IUNIT;
   //   dcomplex valx = (exp(x)-1.0)/x;
@@ -1112,7 +1110,7 @@ void cletdrb::gen_phi3(const clmpi& MPIP, const clio& IO, const clbas& Bas)
 
   phi3_d1[0] = +dfac;
   phi3_d0[0] = -dfac * roots[0];
-  for (int idim = 1; idim < dim_denom3; idim ++) {
+  for (long idim = 1; idim < dim_denom3; idim ++) {
     phi3_d1[idim] = +RUNIT;
     phi3_d0[idim] = -roots[idim];
   }
@@ -1133,11 +1131,11 @@ void cletdrb::gen_phi3(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   cd1 = phi3_d1;
   tfac = tunit * etd_dt1; // BE CAREFUL!
   ttmp = RUNIT * etd_dt1; // BE CAREFUL!
-  for (int inumer = 0; inumer <= dim_numer3; inumer ++) {
+  for (long inumer = 0; inumer <= dim_numer3; inumer ++) {
     cn[inumer] *= ttmp;
     ttmp *= tunit;
   }
-  for (int idenom = 0; idenom < dim_denom3; idenom ++) {
+  for (long idenom = 0; idenom < dim_denom3; idenom ++) {
     cd1[idenom] *= tfac;
   }
   phi3dt1.gen(MPIP, IO, Bas, etd_dt1, cisplit, dim_numer3, dim_denom3, cn, cd0, cd1);
@@ -1148,11 +1146,11 @@ void cletdrb::gen_phi3(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   cd1 = phi3_d1;
   tfac = tunit * etd_dt2; // BE CAREFUL!
   ttmp = RUNIT * etd_dt1; // BE CAREFUL!
-  for (int inumer = 0; inumer <= dim_numer3; inumer ++) {
+  for (long inumer = 0; inumer <= dim_numer3; inumer ++) {
     cn[inumer] *= ttmp;
     ttmp *= tunit;
   }
-  for (int idenom = 0; idenom < dim_denom3; idenom ++) {
+  for (long idenom = 0; idenom < dim_denom3; idenom ++) {
     cd1[idenom] *= tfac;
   }
   phi3dt2.gen(MPIP, IO, Bas, etd_dt2, cisplit, dim_numer3, dim_denom3, cn, cd0, cd1);
@@ -1163,7 +1161,7 @@ void cletdrb::gen_phi3(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   // printf("\n");
   // printf("\n");
   // printf("# phi3: real\n");
-  // for (int ix = 10; ix <= 500; ix ++) {
+  // for (long ix = 10; ix <= 500; ix ++) {
   //   double xr = dx * ix;
   //   dcomplex x = -xr * IUNIT;
   //   dcomplex valx = (exp(x)-1.0)/x;
@@ -1173,7 +1171,7 @@ void cletdrb::gen_phi3(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   // printf("\n");
   // printf("\n");
   // printf("# phi3: imag\n");
-  // for (int ix = 10; ix <= 500; ix ++) {
+  // for (long ix = 10; ix <= 500; ix ++) {
   //   double xr = dx * ix;
   //   dcomplex x = -xr * IUNIT;
   //   dcomplex valx = (exp(x)-1.0)/x;

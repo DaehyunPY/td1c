@@ -5,7 +5,6 @@ subroutine tdcc_xact2_solved(dtime, cic, den1, bmat)
   ! by direct inversion of coefficient matrix.
   ! bmat holds r.h.s on input, and solution on output.
   !
-  use, intrinsic :: iso_c_binding
   use mod_control, only : icomp
   use mod_const, only : zero,czero,iunit
   use mod_ormas, only : iprint,nact,nrotaa,rotaa_mapb
@@ -16,7 +15,7 @@ subroutine tdcc_xact2_solved(dtime, cic, den1, bmat)
   complex(kind(0d0)), intent(in) :: den1(1:nact, 1:nact)
   complex(kind(0d0)), intent(inout) :: bmat(1:nact, 1:nact)
   !--------------------------------------------------------------------
-  integer(c_int) :: aact,iact,irot,numR,nrotR
+  integer :: aact,iact,irot,numR,nrotR
   real(kind(0d0)), allocatable :: amat(:,:,:,:) ! coefficient matrix
   real(kind(0d0)), allocatable :: bvec(:,:)     ! r.h.s
   real(kind(0d0)), allocatable :: rvec(:,:)     ! solution
@@ -70,19 +69,18 @@ end subroutine tdcc_xact2_solved
 !################################################################################
 subroutine tdcc_xact2_solved_amat(numR, cic, den1, amat)
 
-  use, intrinsic :: iso_c_binding
   use mod_control, only : icomp
   use mod_const, only : zero, czero, chalf
   use mod_cc, only : cc_rank
   use mod_ormas, only : iprint,nact,nrotaa,rotaa_mapb
 
   implicit none
-  integer(c_int), intent(in) :: numR
+  integer, intent(in) :: numR
   complex(kind(0d0)), intent(in) :: cic(1:*)
   complex(kind(0d0)), intent(in) :: den1(1:nact,1:nact)
   real(kind(0d0)), intent(out) :: amat(1:nrotaa,1:numR,1:nrotaa,1:numR)
   !--------------------------------------------------------------------
-  integer(c_int) :: aact,iact,bact,jact,irot,jrot
+  integer :: aact,iact,bact,jact,irot,jrot
   complex(kind(0d0)) :: tmp
   complex(kind(0d0)), allocatable :: den2x(:,:,:,:)
 
@@ -134,9 +132,10 @@ subroutine tdcc_xact2_solved_amat(numR, cic, den1, amat)
               jact = rotaa_mapb(jrot,2)
               tmp = den2x(iact,aact,jact,bact) &
                   - den2x(jact,bact,iact,aact)
-              !this is a bug:
-              !amat(irot,1,jrot,1) = amat(irot,1,jrot,1) - dble(tmp)
+!##### I don't still know which is correct... #####
+!             amat(irot,1,jrot,1) = amat(irot,1,jrot,1) - dble(tmp)
               amat(irot,1,jrot,1) = amat(irot,1,jrot,1) + dble(tmp)
+!##### I don't still know which is correct... #####
            end do
         end do
      else
@@ -152,12 +151,6 @@ subroutine tdcc_xact2_solved_amat(numR, cic, den1, amat)
               amat(irot,1,jrot,2) = amat(irot,1,jrot,2) + aimag(tmp)
               amat(irot,2,jrot,1) = amat(irot,2,jrot,1) + aimag(tmp)
               amat(irot,2,jrot,2) = amat(irot,2,jrot,2) -  dble(tmp)
-              !2019/6/10: this is a bug: remember that x^j_b=x^b*_j
-              !amat(irot,1,jrot,1) = amat(irot,1,jrot,1) +  dble(tmp)
-              !amat(irot,1,jrot,2) = amat(irot,1,jrot,2) - aimag(tmp)
-              !amat(irot,2,jrot,1) = amat(irot,2,jrot,1) + aimag(tmp)
-              !amat(irot,2,jrot,2) = amat(irot,2,jrot,2) +  dble(tmp)
-              !2019/6/10
            end do
         end do
      end if
@@ -203,17 +196,16 @@ end subroutine tdcc_xact2_solved_amat
 !################################################################################
 subroutine tdcc_xact2_solved_bvec(numR, bmat, bvec)
 
-  use, intrinsic :: iso_c_binding
   use mod_control, only : icomp
   use mod_const, only : zero, runit, iunit
   use mod_ormas, only : nact, nrotaa, rotaa_mapb
 
   implicit none
-  integer(c_int), intent(in) :: numR
+  integer, intent(in) :: numR
   complex(kind(0d0)), intent(in) :: bmat(1:nact, 1:nact)
   real(kind(0d0)), intent(out) :: bvec(1:nrotaa, 1:numR)
   !--------------------------------------------------------------------
-  integer(c_int) :: aact, iact, irot
+  integer :: aact, iact, irot
 
   if (icomp == 0) then
      do irot = 1, nrotaa
@@ -234,13 +226,12 @@ end subroutine tdcc_xact2_solved_bvec
 !################################################################################
 subroutine tdcc_xact2_solved_solve(nvar, amat, bvec, rvec)
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas, only : iprint
   use mod_control, only : reg_type, throcc3
   use mod_const, only : zero, one, two, three, half
 
   implicit none
-  integer(c_int), intent(in) :: nvar
+  integer, intent(in) :: nvar
   real(kind(0d0)), intent(in) :: amat(1:nvar, 1:nvar)
   real(kind(0d0)), intent(in) :: bvec(1:nvar)
   real(kind(0d0)), intent(out) :: rvec(1:nvar)
@@ -252,7 +243,7 @@ subroutine tdcc_xact2_solved_solve(nvar, amat, bvec, rvec)
   real(kind(0d0)), allocatable :: rtmp(:)
   real(kind(0d0)), allocatable :: uvec(:,:)
   real(kind(0d0)), allocatable :: vvec(:,:)
-  integer(c_int) :: ivar, jvar
+  integer :: ivar, jvar
 
   thresh = throcc3
   allocate(aeig(1:nvar))

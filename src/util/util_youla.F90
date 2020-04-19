@@ -15,16 +15,16 @@ subroutine util_youla_ceig(dim, amat, aeig, uvec)
 !           a = v * diaga * v^T, v = conjg(u)
 !
   implicit none
-  integer(c_int), intent(in) :: dim
+  integer(c_long), intent(in) :: dim
   complex(c_double_complex), intent(in) :: amat(1:dim, 1:dim)
   complex(c_double_complex), intent(out) :: aeig(1:*)
   complex(c_double_complex), intent(out) :: uvec(1:dim, 1:dim)
 
-  integer(c_int) :: i, j, k, l, ii, dim2
+  integer(c_long) :: i, j, k, l, ii, dim2
   complex(c_double_complex) :: tmp
   complex(c_double_complex), allocatable :: atmp(:,:)
   complex(c_double_complex), allocatable :: vvec(:,:)
-  integer(c_int), parameter :: iprint = 0
+  integer(c_long), parameter :: iprint = 0
 
   allocate(atmp(1:dim, 1:dim))
   allocate(vvec(1:dim, 1:dim))
@@ -137,12 +137,12 @@ subroutine util_youla_reig(dim, amat, aeig, uvec)
 !           a = v * diaga * v^T, v = conjg(u)
 !
   implicit none
-  integer(c_int), intent(in) :: dim
+  integer(c_long), intent(in) :: dim
   complex(c_double_complex), intent(in) :: amat(1:dim, 1:dim)
   complex(c_double_complex), intent(out) :: aeig(1:*)
   complex(c_double_complex), intent(out) :: uvec(1:dim, 1:dim)
 
-  integer(c_int) :: i, j, k, l, ii, dim2
+  integer(c_long) :: i, j, k, l, ii, dim2
   complex(c_double_complex) :: tmp
   complex(c_double_complex), allocatable :: atmp(:,:)
   complex(c_double_complex), allocatable :: vvec(:,:)
@@ -251,13 +251,13 @@ subroutine util_youla_real(dim, amat, aeig, uvec, vvec)
 !              a = u * diaga * v^T
 !
   implicit none
-  integer(c_int), intent(in) :: dim
+  integer(c_long), intent(in) :: dim
   real(c_double), intent(in) :: amat(1:dim, 1:dim)
   real(c_double), intent(out) :: aeig(1:*)
   real(c_double), intent(out) :: uvec(1:dim, 1:dim)
   real(c_double), intent(out) :: vvec(1:dim, 1:dim)
 
-  integer(c_int) :: i, j, k, l, ii, dim2
+  integer(c_long) :: i, j, k, l, ii, dim2
   real(c_double) :: tmp
   real(c_double), allocatable :: atmp(:,:)
 

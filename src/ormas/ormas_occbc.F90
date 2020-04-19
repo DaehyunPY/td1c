@@ -7,7 +7,7 @@ subroutine ormas_occbc()
        & min_sub_beta, max_sub_beta
 
   implicit none
-  integer(c_int) :: isub, iact
+  integer(c_long) :: isub, iact
 
   allocate(sub_orb(1:nact))
   do isub = 1, nsub
@@ -51,7 +51,7 @@ subroutine ormas_occbcx()
   use mod_ormas, only : min_sub_alph, max_sub_alph, min_sub_beta, max_sub_beta
 
   implicit none
-  integer(c_int) :: isub, jsub, rmax
+  integer(c_long) :: isub, jsub, rmax
 
   do isub = 1, nsub
      max_sub_alph(isub) = min(norb_sub(isub), min(max_sub(isub), nelact(1)))

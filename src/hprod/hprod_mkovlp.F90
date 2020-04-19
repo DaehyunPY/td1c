@@ -14,8 +14,8 @@ subroutine hprod_mkovlp(rmax, orb1, orb2, ovlp)
   complex(c_double_complex), intent(in) :: orb2(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: ovlp(1:nfun, 1:nfun)
 
-  integer(c_int) :: ifun, jfun, max_irad, irad, l, mi, mj, m, nproc, iproc, llr, ulr
-  integer(c_int), external :: util_omp_nproc, util_omp_iproc
+  integer(c_long) :: ifun, jfun, max_irad, irad, l, mi, mj, m, nproc, iproc, llr, ulr
+  integer(c_long), external :: util_omp_nproc, util_omp_iproc
   complex(c_double_complex) :: tmp
   complex(c_double_complex), allocatable :: ovlpp(:,:,:)
 
@@ -105,8 +105,8 @@ subroutine hprod_mkovlp_shell(rmin, rmax, orb1, orb2, ovlp)
   complex(c_double_complex), intent(in) :: orb2(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: ovlp(1:nfun, 1:nfun)
 
-  integer(c_int) :: ifun, jfun, min_irad, max_irad, irad, l, mi, mj, m, nproc, iproc, llr, ulr
-  integer(c_int), external :: util_omp_nproc, util_omp_iproc
+  integer(c_long) :: ifun, jfun, min_irad, max_irad, irad, l, mi, mj, m, nproc, iproc, llr, ulr
+  integer(c_long), external :: util_omp_nproc, util_omp_iproc
   complex(c_double_complex) :: tmp
   complex(c_double_complex), allocatable :: ovlpp(:,:,:)
 
@@ -208,8 +208,8 @@ subroutine hprod_mkovlp_kshell(kmin, kmax, orb1, orb2, ovlp)
   complex(c_double_complex), intent(in) :: orb2(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: ovlp(1:nfun, 1:nfun)
 
-  integer(c_int) :: ifun, jfun, min_ik, max_ik, ik, l, mi, mj, m, nproc, iproc, llk, ulk
-  integer(c_int), external :: util_omp_nproc, util_omp_iproc
+  integer(c_long) :: ifun, jfun, min_ik, max_ik, ik, l, mi, mj, m, nproc, iproc, llk, ulk
+  integer(c_long), external :: util_omp_nproc, util_omp_iproc
   real(c_double) :: kval
   complex(c_double_complex) :: tmp
   complex(c_double_complex), allocatable :: ovlpp(:,:,:)

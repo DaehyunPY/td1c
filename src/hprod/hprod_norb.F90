@@ -14,7 +14,7 @@ subroutine hprod_norb(wfn, cic, nwfn)
   complex(c_double_complex), intent(in) :: cic(1:*)
   complex(c_double_complex), intent(out) :: nwfn(1:(nrad-1), 0:lmax1, 1:*)
 
-  integer(c_int) :: iact, jact, ifun, jfun, irad, l, m, mi, mj
+  integer(c_long) :: iact, jact, ifun, jfun, irad, l, m, mi, mj
   complex(c_double_complex), allocatable :: umat(:,:)
   real(c_double), allocatable :: occn(:)
 
@@ -132,7 +132,7 @@ subroutine hprod_norb2(den1, umat, occn)
   complex(c_double_complex), intent(out) :: umat(1:nact, 1:nact)
   real(c_double), intent(out) :: occn(1:nact)
 
-  integer(c_int) :: iact, jact
+  integer(c_long) :: iact, jact
   complex(c_double_complex), allocatable :: dtmp(:,:)
 
   if (nact > 0) then
@@ -207,9 +207,9 @@ subroutine hprod_norb3(den1, umat, occn)
   complex(c_double_complex), intent(out) :: umat(1:nact, 1:nact)
   real(c_double), intent(out) :: occn(1:nact)
 
-  integer(c_int) :: iact, jact, ifun, jfun, irad, l, m, mi, mj, norb_msep, iorb, jorb, ntot, itot
+  integer(c_long) :: iact, jact, ifun, jfun, irad, l, m, mi, mj, norb_msep, iorb, jorb, ntot, itot
   complex(c_double_complex) :: fac1, fac2
-  integer(c_int), allocatable :: map_msep(:)
+  integer(c_long), allocatable :: map_msep(:)
   complex(c_double_complex), allocatable :: den1_msep(:,:)
   complex(c_double_complex), allocatable :: umat_msep(:,:)
 
@@ -374,9 +374,9 @@ subroutine hprod_norb4(den1, wfn, uwfn, occn)
   complex(c_double_complex), intent(out) :: uwfn(1:(nrad-1), 0:lmax1, 1:*)
   real(c_double), intent(out) :: occn(1:*)
 
-  integer(c_int) :: iact, jact, ifun, jfun, irad, l, m, mi, mj, norb_msep, iorb, jorb, ntot, itot
+  integer(c_long) :: iact, jact, ifun, jfun, irad, l, m, mi, mj, norb_msep, iorb, jorb, ntot, itot
   complex(c_double_complex) :: fac1, fac2
-  integer(c_int), allocatable :: map_msep(:)
+  integer(c_long), allocatable :: map_msep(:)
   complex(c_double_complex), allocatable :: den1_msep(:,:)
   complex(c_double_complex), allocatable :: umat_msep(:,:)
 

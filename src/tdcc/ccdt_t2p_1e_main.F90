@@ -1,7 +1,6 @@
 !**********************************************************
 subroutine ccdt_t2p_1e_main()
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas, only : nact
   use mod_cc, only : norb1,cc_code,t2out
 

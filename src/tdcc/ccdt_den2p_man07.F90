@@ -3,7 +3,6 @@ subroutine ccdt_den2p_man07(i0ab,i0ba,work1,work2,work3)
 
 !  i0 ( a b i j )_ytt + = +1/2 * Sum ( k l ) * i1 ( k l i j )_yt * t ( a b k l )_t 1
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact
   use mod_cc,only : norb1,t2inp,g2inp,t3inp,g3inp
   use mod_cc2
@@ -16,7 +15,7 @@ subroutine ccdt_den2p_man07(i0ab,i0ba,work1,work2,work3)
        work2(1:norb1,1:norb1,1:norb1,1:norb1),work3(1)
   complex(kind(0d0)) :: tmp
 
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   work1 = 0d0
   work2 = 0d0
@@ -48,7 +47,6 @@ subroutine ccdt_den2p_man07_1(i1aa,i1ab)
 
 ! i1 ( i j k l )_yt + = +1/2 * Sum ( a b ) * y ( i j a b )_y * t ( a b k l )_t 0
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact
   use mod_cc,only : norb1,t2inp,g2inp,t3inp,g3inp
   use mod_cc2
@@ -58,7 +56,7 @@ subroutine ccdt_den2p_man07_1(i1aa,i1ab)
        i1aa(1:norb1,1:norb1,1:norb1,1:norb1), &
        i1ab(1:norb1,1:norb1,1:norb1,1:norb1)
 
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   ! not needed
   i1aa = 0d0

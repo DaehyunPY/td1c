@@ -1,7 +1,6 @@
 !**********************************************************
 subroutine ccdt_l3p_main()
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact,nelact
   use mod_cc,only : norb1,cc_code,g3out
   use mod_cc2
@@ -52,15 +51,6 @@ subroutine ccdt_l3p_main()
      call ccdt_l3p_man10(g3out,cc_work1,cc_work2,cc_work3)
      call ccdt_l3p_man11(g3out,cc_work1,cc_work2,cc_work3)
   end if
-  ! following diagrams involve T3 or L3 contributions
-  !  ccdt_l3p_man04.F90
-  !  ccdt_l3p_man05.F90
-  !  ccdt_l3p_man06.F90
-  !  ccdt_l3p_man07.F90
-  !  ccdt_l3p_man08.F90
-  !  ccdt_l3p_man09.F90
-  !  ccdt_l3p_man10.F90
-  !  ccdt_l3p_man11.F90
 
 end subroutine ccdt_l3p_main
 !**********************************************************

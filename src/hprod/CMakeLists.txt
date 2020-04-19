@@ -69,9 +69,7 @@ add_library(
         hprod_proj2.F90
         hprod_ipx.F90
         hprod_dipole.F90
-        hprod_dipole_ipx.F90
-        hprod_dipole_ipd.F90
-        hprod_op1tr.F90
+        hprod_dipole_ion.F90
         hprod_trans.F90
         hprod_invden.F90
         hprod_fulldiag.F90
@@ -84,7 +82,6 @@ add_library(
         hprod_projfc.F90
         hprod_projall.F90
         hprod_trace1.F90
-        hprod_trace1_pp.F90
         hprod_invwrad.F90
         hprod_htot_dtorb.F90
         hprod_xcprod.F90
@@ -97,17 +94,4 @@ add_library(
         hprod_mkrho2_ecs.F90
         hprod_mkv2mf_ecs.F90
         hprod_htot_mkxmat_ecs.F90
-        hprod_gTran.F90
-        hprod_ppop1.F90
-        hprod_htot_tdcis.F90
-        hprod_htot_dtorb_tdcis.F90
-        hprod_orbin_tdcis.F90
-        hprod_mkrho2_tdcis.F90
-        hprod_mkv2mf_tdcis.F90
-        hprod_mfprod2_tdcis.F90
-        hprod_phys_tdcis.F90
-        hprod_dipole_tdcis.F90
-        hprod_op1e_tdcis.F90
-        hprod_phys_tdcis_debug.F90
-        hprod_popgs_tdcis.F90
 )

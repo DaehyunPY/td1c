@@ -9,7 +9,7 @@ cldvr::cldvr()
 {
 }
 ////////////////////////////////////////////////////////////////////////
-cldvr::cldvr(int n, int m0, int m1, double x0, double x1)
+cldvr::cldvr(long n, long m0, long m1, double x0, double x1)
 {
   gen(n, m0, m1, x0, x1);
 }
@@ -40,21 +40,21 @@ void cldvr::print() const
 {
   printf("# Grid nodes and weights:\n");
 
-  for(int m = 0; m <= ndvr; m ++) {
-    printf("%5d%20.10f%20.10f\n", m, xpt[m], wpt[m]);
+  for(long m = 0; m <= ndvr; m ++) {
+    printf("%5ld%20.10f%20.10f\n", m, xpt[m], wpt[m]);
   }
 
   printf("# Lobatto shape functions:\n");
 
-  for(int m = 0; m <= ndvr; m ++) {
-    for(int k = 0; k <= ndvr; k ++) {
-      int km = (ndvr + 1) * m + k;
-      printf( "%5d%5d%20.10f\n", m, k, dshape[km]);
+  for(long m = 0; m <= ndvr; m ++) {
+    for(long k = 0; k <= ndvr; k ++) {
+      long km = (ndvr + 1) * m + k;
+      printf( "%5ld%5ld%20.10f\n", m, k, dshape[km]);
     }
   }
 }
 ////////////////////////////////////////////////////////////////////////
-void cldvr::gen(int n, int m0, int m1, double x0, double x1)
+void cldvr::gen(long n, long m0, long m1, double x0, double x1)
 {
   ndvr = n;
   mmin = m0;
@@ -70,7 +70,7 @@ void cldvr::gen(int n, int m0, int m1, double x0, double x1)
   gen_wpt();
   double lenx = HALF * (xmax - xmin);
   double midx = HALF * (xmax + xmin);
-  for( int k = 0; k <= ndvr; k ++ ) {
+  for( long k = 0; k <= ndvr; k ++ ) {
     xpt[k] = xpt[k] * lenx + midx;
     wpt[k] = wpt[k] * lenx;
   }
@@ -81,7 +81,7 @@ void cldvr::gen(int n, int m0, int m1, double x0, double x1)
 ////////////////////////////////////////////////////////////////////////
 void cldvr::gen_xpt()
 {
-  const int nled = ndvr - 1;
+  const long nled = ndvr - 1;
   //BUG  std::vector<double> amat(nled*nled);
   //BUG  std::vector<double> evec(nled*nled);
   std::vector<double> amat(nled*nled, ZERO);
@@ -94,7 +94,7 @@ void cldvr::gen_xpt()
 
     //BUG    amat.clear();
     //BUG    evec.clear();
-    for (int m = 2; m <= nled; m ++) {
+    for (long m = 2; m <= nled; m ++) {
       double a, b, xm;
       xm = static_cast<double>( m );
       a = (xm + ONE) / (TWO * xm + ONE);
@@ -102,13 +102,13 @@ void cldvr::gen_xpt()
       //old      amat(m - 2, m - 1) = sqrt(a * b);
       amat[nled * (m - 1) + m - 2] = sqrt(a * b);
     }
-    for (int m = 0; m < nled - 1; m ++) {
+    for (long m = 0; m < nled - 1; m ++) {
       //old      amat(m + 1, m) = amat(m, m + 1);
       amat[nled * m + m + 1] = amat[nled * (m + 1) + m];
     }
     //debug
-    //for (int m1 = 0; m1 < nled; m1 ++) {
-    //  for (int m2 = 0; m2 < nled; m2 ++) {
+    //for (long m1 = 0; m1 < nled; m1 ++) {
+    //  for (long m2 = 0; m2 < nled; m2 ++) {
     //    printf("%10.5f", amat(m1, m2));
     //  }
     //  printf("\n");
@@ -122,15 +122,15 @@ void cldvr::gen_xpt()
     //  printf("after lapack_dsyev:\n"); 
     //  abort();
 
-    for(int m = 1; m <= ndvr - 1; m ++ ) {
+    for(long m = 1; m <= ndvr - 1; m ++ ) {
       //old      xpt[m] = amat(m - 1, m - 1);
       xpt[m] = amat[nled * (m - 1) + m - 1];
     }
   }
 
   //debug
-  //  for(int m = 0; m <= ndvr; m ++ ) {
-  //    printf("%10d%20.10f\n", m, xpt[m]);
+  //  for(long m = 0; m <= ndvr; m ++ ) {
+  //    printf("%10ld%20.10f\n", m, xpt[m]);
   //  }
   //  printf("end of cldvr_gen_xpt.\n");
   //  abort();
@@ -147,16 +147,16 @@ void cldvr::gen_wpt()
 
   if (ndvr > 1) {
     double p, absg;
-    for (int k = 1; k < ndvr; k ++) {
+    for (long k = 1; k < ndvr; k ++) {
       absg = get_abs( xpt[ k ] );
       get_legendre( absg, p );
       wpt[ k ] = scale / (p * p);
     }
   }
 // DEBUG
-//  printf("# %d's order Gauss-Lobatto weights:\n", ndvr + 1);
-//  for(int k = 0; k <= ndvr; k ++ ) {
-//    printf( "%5d %20.10f\n", k, wpt[ k ]);
+//  printf("# %ld's order Gauss-Lobatto weights:\n", ndvr + 1);
+//  for(long k = 0; k <= ndvr; k ++ ) {
+//    printf( "%5ld %20.10f\n", k, wpt[ k ]);
 //  }
 // DEBUG
 }
@@ -177,7 +177,7 @@ void cldvr::get_legendre(double& x, double& p)
     long double p2 = ZERO;
     long double c0, c1, rk;
 
-    for ( int k = 2; k <= ndvr; k ++ ) {
+    for ( long k = 2; k <= ndvr; k ++ ) {
       rk = static_cast<double>( k );
       c0 = - (rk - ONE) / rk;
       c1 = (TWO*rk - ONE) / rk;
@@ -194,15 +194,15 @@ void cldvr::gen_dshape()
 // dshape(k, m) = df_m/dx (x_k)
 //
 {
-  int km;
+  long km;
   double dshx, diffm, diffk;
 
-  for ( int m = 0; m <= ndvr; m ++ ) {
-    for ( int k = 0; k <= ndvr; k ++ ) {
+  for ( long m = 0; m <= ndvr; m ++ ) {
+    for ( long k = 0; k <= ndvr; k ++ ) {
       km = (ndvr + 1) * m + k;
       if ( m != k ) {
 	dshx = ONE / ( xpt[ m ] - xpt[ k ] );
-	for ( int l = 0; l <= ndvr; l ++ ) {
+	for ( long l = 0; l <= ndvr; l ++ ) {
 	  if ( l != m && l != k ) {
 	    diffm = xpt[ m ] - xpt[ l ];
 	    diffk = xpt[ k ] - xpt[ l ];
@@ -220,13 +220,13 @@ void cldvr::gen_dshape()
   dshape[(ndvr+1)*(ndvr+1)-1] =  HALF / wpt[ ndvr ];
 }
 ////////////////////////////////////////////////////////////////////////
-double cldvr::get_val(int m, double rval) const
+double cldvr::get_val(long m, double rval) const
 //
 // val_m(r) = \prod_{k \ne m} \frac{r - r_m}{r_k - r_m}
 //
 {
   double val = ONE;
-  for ( int k = 0; k <= ndvr; k ++ ) {
+  for ( long k = 0; k <= ndvr; k ++ ) {
     if ( m != k ) {
       val *= (rval - xpt[ k ] ) / ( xpt[ m ] - xpt[ k ] );
     }
@@ -234,7 +234,7 @@ double cldvr::get_val(int m, double rval) const
   return val;
 }
 ////////////////////////////////////////////////////////////////////////
-void cldvr::gen_radau(int n, int m0, int m1,
+void cldvr::gen_radau(long n, long m0, long m1,
 		      double x0, double x1, double d_exp_factor)
 {
   ndvr = n;
@@ -252,7 +252,7 @@ void cldvr::gen_radau(int n, int m0, int m1,
   
 //   double lenx = HALF * (xmax - xmin);
 //   double midx = HALF * (xmax + xmin);
-//   for( int k = 0; k <= ndvr; k ++ ) {
+//   for( long k = 0; k <= ndvr; k ++ ) {
 //     xpt[k] = xpt[k] * lenx + midx;
 //     wpt[k] = wpt[k] * lenx;
 //   }
@@ -323,16 +323,16 @@ void cldvr::gen_dshape_radau()
 {
   //bug dshape.clear();
 
-  int km;
+  long km;
   double dshx, diffm, diffk;
   //  int shape = 1; //to compemsate ndvr = ndvr -1
   //not to go to last point :ndvr -> ndvr-1
-  for ( int m = 0; m <= ndvr-1; m ++ ) {
-    for ( int k = 0; k <= ndvr-1; k ++ ) {
+  for ( long m = 0; m <= ndvr-1; m ++ ) {
+    for ( long k = 0; k <= ndvr-1; k ++ ) {
       km = (ndvr + 1) * m + k;
       if ( m != k ) {
 	dshx = ONE / ( xpt[ m ] - xpt[ k ] );
-	for ( int l = 0; l <= ndvr-1; l ++ ) {
+	for ( long l = 0; l <= ndvr-1; l ++ ) {
 	  if ( l != m && l != k ) {
 	    diffm = xpt[ m ] - xpt[ l ];
 	    diffk = xpt[ k ] - xpt[ l ];
@@ -346,7 +346,7 @@ void cldvr::gen_dshape_radau()
 	dshape[km] = dshx;
       } else {
 	// the case of  m == k
-	for(int l = 0; l <= ndvr-1; l++){
+	for(long l = 0; l <= ndvr-1; l++){
 	  if(l == m) continue;
 	  dshape[km] += 1/(xpt[m] - xpt[l]);
 	}
@@ -363,7 +363,7 @@ void cldvr::gen_dshape_radau()
 
   //dshape[0] += -HALF / wpt[ 0 ];
   //dshape[(ndvr+1) * (ndvr+1) -1] +=  HALF / wpt[ ndvr ];
-  //for(int l = 0; l <= ndvr-2; l++){
+  //for(long l = 0; l <= ndvr-2; l++){
   //  dshape[0] += 1/(xpt[0] - xpt[l+1]);
   //  dshape[(ndvr+1) * (ndvr-1) + ndvr-1] += 1/(xpt[ndvr-1] - xpt[l]);  
   //}

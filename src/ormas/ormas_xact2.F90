@@ -5,7 +5,7 @@ subroutine ormas_xact2(dtime, int1e, int2e, ene_act, cic, den1, den2, bmat, dcic
   ! by solving the coupled equations
   !
   use, intrinsic :: iso_c_binding
-  use mod_control, only : icomp,cionly
+  use mod_control, only : icomp
   use mod_const, only : czero, runit, iunit
   use mod_ormas, only : ormas_nocp, tdcc, ormas_donly
   use mod_ormas, only : nfun, ncore, nact, nsub, lcic, iprint
@@ -22,7 +22,7 @@ subroutine ormas_xact2(dtime, int1e, int2e, ene_act, cic, den1, den2, bmat, dcic
   complex(c_double_complex), intent(inout) :: dcic(1:*)
   !--------------------------------------------------------------------
   complex(c_double_complex) :: fac
-  integer(c_int) :: iact, jact
+  integer(c_long) :: iact, jact
   complex(c_double_complex), allocatable :: dden(:,:) ! iunit times time-derivative of 1rdm
   complex(c_double_complex), allocatable :: bact(:,:) ! rhs: B = FD - DF* - dden(H)
 
@@ -79,7 +79,7 @@ subroutine ormas_xact2(dtime, int1e, int2e, ene_act, cic, den1, den2, bmat, dcic
   dcic(1:lcic) = dcic(1:lcic) * fac
   !##################################################
 
-  if (nsub > 1 .and. .not.cionly) then
+  if (nsub > 1) then
      ! a-a-rot contributions to ci derivatives
      fac = -runit
      call ormas_zhcic1(fac, bact, cic, dcic)
@@ -119,7 +119,7 @@ subroutine ormas_xact2x(dtime, cic, den1, den2, bmat)
   complex(c_double_complex), intent(in) :: den2(1:nact, 1:nact, 1:nact, 1:nact)
   complex(c_double_complex), intent(inout) :: bmat(1:nact, 1:nact)
   !--------------------------------------------------------------------
-  integer(c_int) :: iact, jact, irot
+  integer(c_long) :: iact, jact, irot
   real(c_double) :: bnorm, anorm, bmax
   complex(c_double_complex), allocatable :: amat(:,:) ! coefficient matrix
   complex(c_double_complex), allocatable :: bvec(:)   ! r.h.s
@@ -177,7 +177,7 @@ subroutine ormas_xact2x_amat(cic, den1, den2, amat, anorm)
   !--------------------------------------------------------------------
   complex(c_double_complex), allocatable :: amat0(:,:,:,:)
   complex(c_double_complex), allocatable :: den2x(:,:,:,:)
-  integer(c_int) :: iact, jact, kact, lact, irot, jrot
+  integer(c_long) :: iact, jact, kact, lact, irot, jrot
   complex(c_double_complex) :: tmp
 
   allocate(amat0(1:nact, 1:nact, 1:nact, 1:nact))
@@ -264,7 +264,7 @@ subroutine ormas_xact2x_bvec(dtime, bmat, bvec, bnorm)
   complex(c_double), intent(out) :: bvec(1:nrotaa)
   real(c_double), intent(out) :: bnorm
   !--------------------------------------------------------------------
-  integer(c_int) :: iact, jact, irot
+  integer(c_long) :: iact, jact, irot
   complex(c_double_complex) :: tfac
 
   if (icomp == 1) then
@@ -298,7 +298,7 @@ subroutine ormas_xact2x_solve(nvar, amat, bvec, rvec)
   use mod_control, only : throcc3, reg_type, ncut_occ3
 
   implicit none
-  integer(c_int), intent(in) :: nvar
+  integer(c_long), intent(in) :: nvar
   complex(c_double_complex), intent(inout) :: amat(1:nvar, 1:nvar)
   complex(c_double_complex), intent(in) :: bvec(1:nvar)
   complex(c_double_complex), intent(out) :: rvec(1:nvar)
@@ -307,7 +307,7 @@ subroutine ormas_xact2x_solve(nvar, amat, bvec, rvec)
   complex(c_double_complex), allocatable :: btmp(:)
   complex(c_double_complex), allocatable :: rtmp(:)
   complex(c_double_complex), allocatable :: uvec(:,:)
-  integer(c_int) :: ivar, jvar, ncutx
+  integer(c_long) :: ivar, jvar, ncutx
 
   thresh = throcc3
   allocate(btmp(1:nvar))
@@ -443,7 +443,7 @@ subroutine ormas_xact2x_solver(nvar, amat, bvec, rvec)
   use mod_control, only : throcc3, reg_type
 
   implicit none
-  integer(c_int), intent(in) :: nvar
+  integer(c_long), intent(in) :: nvar
   complex(c_double_complex), intent(in) :: amat(1:nvar, 1:nvar)
   complex(c_double_complex), intent(in) :: bvec(1:nvar)
   complex(c_double_complex), intent(out) :: rvec(1:nvar)
@@ -453,7 +453,7 @@ subroutine ormas_xact2x_solver(nvar, amat, bvec, rvec)
   real(c_double), allocatable :: btmp(:)
   real(c_double), allocatable :: rtmp(:)
   real(c_double), allocatable :: uvec(:,:)
-  integer(c_int) :: ivar, jvar
+  integer(c_long) :: ivar, jvar
 
   thresh = throcc3
   allocate(atmp(1:nvar, 1:nvar))

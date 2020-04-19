@@ -10,9 +10,9 @@ subroutine ormas_mkden1_old(cic, den1)
   complex(c_double_complex) , intent(in) :: cic(1:nstr_alph, 1:nstr_beta)
   complex(c_double_complex) , intent(out) :: den1(1:nact, 1:nact)
 
-  integer(c_int) :: nact2, iproc, nproc, iact, jact
+  integer(c_long) :: nact2, iproc, nproc, iact, jact
   complex(c_double_complex) , allocatable :: den1p(:,:,:)
-  integer(c_int), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_nproc
 
   nact2 = nact * nact
   nproc = util_omp_nproc()
@@ -59,13 +59,13 @@ subroutine ormas_mkden1_old_bb(cic, den1p, nproc)
   use mod_ormas, only : n1x_m_beta, map1x_m_beta
 
   implicit none
-  integer(c_int), intent(in) :: nproc
+  integer(c_long), intent(in) :: nproc
   complex(c_double_complex) , intent(in) :: cic(1:nstr_alph, 1:nstr_beta)
   complex(c_double_complex) , intent(inout) :: den1p(1:nact, 1:nact, 0:(nproc-1))
 
-  integer(c_int) :: istr, jstr, kstr, i1x, i1x_m, iact, jact, iproc
-  integer(c_int) :: idist, jdist, kdist, lla, ula
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long) :: istr, jstr, kstr, i1x, i1x_m, iact, jact, iproc
+  integer(c_long) :: idist, jdist, kdist, lla, ula
+  integer(c_long), external :: util_omp_iproc
 
 !$omp parallel default(shared) private(istr,idist,i1x,i1x_m,iact,jact,kstr,kdist,jstr,jdist,lla,ula,iproc)
   iproc = util_omp_iproc()

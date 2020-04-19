@@ -10,12 +10,12 @@ subroutine bas_gen_d2ll(d2ll)
   implicit none
   real(c_double), intent(out) :: d2ll(1:(ndvr+1), 1:(nrad-1), 0:lmax2)
 
-  integer(c_int) :: ifun, irad, jrad, krad, l, l2, m
-  integer(c_int) :: jll, jul, jul2, jb1, jb2
-  integer(c_int) :: dim, ld, info
+  integer(c_long) :: ifun, irad, jrad, krad, l, l2, m
+  integer(c_long) :: jll, jul, jul2, jb1, jb2
+  integer(c_long) :: dim, ld, info
   real(c_double) :: radk2, angk, angk2
 !debug
-!  integer(c_int) :: ldz = 1
+!  integer(c_long) :: ldz = 1
 !  real(c_double), allocatable :: d2eig(:), work(:), zz(:,:)
 !debug
 

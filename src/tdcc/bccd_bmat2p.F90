@@ -6,21 +6,20 @@ subroutine bccd_bmat2p_1(sh1, sp2, i0)
 
 !  i0 ( h1 p2 )_ydt + = +1 * Sum ( h3 p4 ) * y ( h3 p4 )_y * dt ( p2 p4 h1 h3 )_dt 0
 
-  use, intrinsic :: iso_c_binding
   use mod_const, only : czero, runit
   use mod_ormas, only : nact
   use mod_cc, only : norb1,g1inp
   use mod_cc, only : dt2inp
 
   implicit none
-  integer(c_int), intent(in) :: sh1, sp2
+  integer, intent(in) :: sh1, sp2
   complex(kind(0d0)), intent(inout) :: i0(1:nact, 1:nact)
-  integer(c_int) :: h1, p2
-  integer(c_int) :: h3, p4, sh3, sp4
-  integer(c_int) :: spin_g1inp_1
-  integer(c_int) :: spin_dt2inp_2
-  integer(c_int), external :: tdcc_spin_g1inp
-  integer(c_int), external :: tdcc_spin_t2inp
+  integer :: h1, p2
+  integer :: h3, p4, sh3, sp4
+  integer :: spin_g1inp_1
+  integer :: spin_dt2inp_2
+  integer, external :: tdcc_spin_g1inp
+  integer, external :: tdcc_spin_t2inp
   complex(kind(0d0)), parameter :: fact = +1.0d+0 * runit
 
   do sh3 = 1, 2

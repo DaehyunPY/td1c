@@ -13,8 +13,8 @@ subroutine ormas_mkdden1_ras(fac, cic, dcic, den1)
   complex(c_double_complex), intent(in) :: dcic(1:ndetx)
   complex(c_double_complex), intent(inout) :: den1(1:nact, 1:nact)
 
-  integer(c_int) :: iproc,nproc,iact,jact,isub,jsub,istr,jstr
-  integer(c_int), external :: util_omp_nproc
+  integer(c_long) :: iproc,nproc,iact,jact,isub,jsub,istr,jstr
+  integer(c_long), external :: util_omp_nproc
   complex(c_double_complex) , allocatable :: den1p(:,:,:)
 
   if (nact == 0) return
@@ -70,14 +70,14 @@ subroutine ormas_mkdden1_ras_bb(cic, dcic, den1p, nproc)
   use mod_ormas, only : n1x_m_beta,map1x_m_beta,mval_beta,mmin_alph,mmax_alph
 
   implicit none
-  integer(c_int), intent(in) :: nproc
+  integer(c_long), intent(in) :: nproc
   complex(c_double_complex) , intent(in) :: cic(1:ndetx)
   complex(c_double_complex) , intent(in) :: dcic(1:ndetx)
   complex(c_double_complex) , intent(inout) :: den1p(1:nact,1:nact,0:(nproc-1))
 
-  integer(c_int) :: istr,jstr,kstr,i1x,i1x_m,iact,jact,iproc
-  integer(c_int) :: idist,jdist,kdist,mvala,lla,ula
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long) :: istr,jstr,kstr,i1x,i1x_m,iact,jact,iproc
+  integer(c_long) :: idist,jdist,kdist,mvala,lla,ula
+  integer(c_long), external :: util_omp_iproc
 
   !$omp parallel default(shared) private(mvala,idist,i1x,iact,jact,kstr,kdist,lla,ula,iproc)
   iproc = util_omp_iproc()
@@ -125,14 +125,14 @@ subroutine ormas_mkdden1_ras_aa(cic, dcic, den1p, nproc)
   use mod_ormas, only : n1x_m_alph,map1x_m_alph,mval_alph,mmin_beta,mmax_beta
 
   implicit none
-  integer(c_int), intent(in) :: nproc
+  integer(c_long), intent(in) :: nproc
   complex(c_double_complex) , intent(in) :: cic(1:ndetx)
   complex(c_double_complex) , intent(in) :: dcic(1:ndetx)
   complex(c_double_complex) , intent(inout) :: den1p(1:nact,1:nact,0:(nproc-1))
 
-  integer(c_int) :: istr,jstr,kstr,i1x,i1x_m,iact,jact,iproc
-  integer(c_int) :: idist,jdist,kdist,dista,mvalb,llb,ulb
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long) :: istr,jstr,kstr,i1x,i1x_m,iact,jact,iproc
+  integer(c_long) :: idist,jdist,kdist,dista,mvalb,llb,ulb
+  integer(c_long), external :: util_omp_iproc
 
   !$omp parallel default(shared) private(mvalb,idist,i1x,iact,jact,kstr,kdist,llb,ulb,iproc)
   iproc = util_omp_iproc()

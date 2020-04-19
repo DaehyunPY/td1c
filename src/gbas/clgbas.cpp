@@ -51,7 +51,7 @@ void clgbas::read_fck_info(const std::string key, std::string& val) const
 
   std::string line;
   std::stringstream ioss;
-  int ind_key;
+  long ind_key;
 
   while ( getline(_ifs, line) && line.find(key,0) == std::string::npos ) {}
 
@@ -81,7 +81,7 @@ void clgbas::read_fck_info(const std::string key, bool& val) const
 
   std::string line;
   std::stringstream ioss;
-  int ind_key;
+  long ind_key;
 
   while ( getline(_ifs, line) && line.find(key,0) == std::string::npos ) {}
 
@@ -102,7 +102,7 @@ void clgbas::read_fck_info(const std::string key, bool& val) const
   }
 }
 ////////////////////////////////////////////////////////////////////////
-void clgbas::read_fck_info(const std::string key, int& val) const
+void clgbas::read_fck_info(const std::string key, long& val) const
 {
   /* Read an integer val labeled by key from fck. */
 
@@ -111,7 +111,7 @@ void clgbas::read_fck_info(const std::string key, int& val) const
 
   std::string line;
   std::stringstream ioss;
-  int ind_key;
+  long ind_key;
 
   while ( getline(_ifs, line) && line.find(key,0) == std::string::npos ) {}
 
@@ -141,7 +141,7 @@ void clgbas::read_fck_info(const std::string key, double& val) const
 
   std::string line;
   std::stringstream ioss;
-  int ind_key;
+  long ind_key;
 
   while ( getline(_ifs, line) && line.find(key,0) == std::string::npos ) {}
 
@@ -164,7 +164,7 @@ void clgbas::read_fck_info(const std::string key, double& val) const
 
 }
 ////////////////////////////////////////////////////////////////////////
-void clgbas::read_fck_array(const std::string key, int nval, std::vector<int>& val) const
+void clgbas::read_fck_array(const std::string key, long nval, std::vector<long>& val) const
 {
   /* Read integer array val labeled by key from fck. */
 
@@ -173,8 +173,8 @@ void clgbas::read_fck_array(const std::string key, int nval, std::vector<int>& v
 
   std::string line;
   std::stringstream ioss;
-  int ind_key, nval1;
-  const int ncol = 6;
+  long ind_key, nval1;
+  const long ncol = 6;
 
   while ( getline(_ifs, line) && line.find(key,0) == std::string::npos ) {}
 
@@ -188,8 +188,8 @@ void clgbas::read_fck_array(const std::string key, int nval, std::vector<int>& v
 
     if (nval == nval1) {
 
-      int ndo;
-      int done = 0;
+      long ndo;
+      long done = 0;
       while ( done < nval ) {
 	getline(_ifs, line);
 	ioss.str("");
@@ -197,7 +197,7 @@ void clgbas::read_fck_array(const std::string key, int nval, std::vector<int>& v
 	ioss << line.c_str();
 
 	ndo = std::min(nval - done, ncol);
-	for (int ido = 0; ido < ndo; ido ++) {
+	for (long ido = 0; ido < ndo; ido ++) {
 	  ioss >> val[done + ido];
 	}
 	done += ndo;
@@ -207,7 +207,7 @@ void clgbas::read_fck_array(const std::string key, int nval, std::vector<int>& v
       done = 0;
       while ( done < nval ) {
 	ndo = std::min(nval - done, ncol);
-	for (int ido = 0; ido < ndo; ido ++) {
+	for (long ido = 0; ido < ndo; ido ++) {
 	  //	  std::cout << val[done + ido];
 	  printf("%12ld", val[done + ido]);
 	}
@@ -228,7 +228,7 @@ void clgbas::read_fck_array(const std::string key, int nval, std::vector<int>& v
   }
 }
 ////////////////////////////////////////////////////////////////////////
-void clgbas::read_fck_array(const std::string key, int nval, std::vector<double>& val) const
+void clgbas::read_fck_array(const std::string key, long nval, std::vector<double>& val) const
 {
   /* Read integer array val labeled by key from fck. */
 
@@ -237,8 +237,8 @@ void clgbas::read_fck_array(const std::string key, int nval, std::vector<double>
 
   std::string line;
   std::stringstream ioss;
-  int ind_key, nval1;
-  const int ncol = 5;
+  long ind_key, nval1;
+  const long ncol = 5;
 
   while ( getline(_ifs, line) && line.find(key,0) == std::string::npos ) {}
 
@@ -252,8 +252,8 @@ void clgbas::read_fck_array(const std::string key, int nval, std::vector<double>
 
     if (nval == nval1) {
 
-      int ndo;
-      int done = 0;
+      long ndo;
+      long done = 0;
       while ( done < nval ) {
 	getline(_ifs, line);
 	ioss.str("");
@@ -261,22 +261,22 @@ void clgbas::read_fck_array(const std::string key, int nval, std::vector<double>
 	ioss << line.c_str();
 
 	ndo = std::min(nval - done, ncol);
-	for (int ido = 0; ido < ndo; ido ++) {
+	for (long ido = 0; ido < ndo; ido ++) {
 	  ioss >> val[done + ido];
 	}
 	done += ndo;
       }
 
-      int expd;
+      long expd;
       double data;      
       std::cout << "# " << key.c_str() << ": N = " << nval << std::endl;
       done = 0;
       while ( done < nval ) {
 	ndo = std::min(nval - done, ncol);
-	for (int ido = 0; ido < ndo; ido ++) {
+	for (long ido = 0; ido < ndo; ido ++) {
 	  //	  data = val[done + ido];
-	  //	  expd = log10(get_abs(data));
-	  //	  printf("%.3fe%d", data / pow(10,expd), expd);
+	  //	  expd = (long) log10(get_abs(data));
+	  //	  printf("%.3fe%ld", data / pow(10,expd), expd);
 	  printf("%16.8E", val[done + ido]);
 	}
 	std::cout << std::endl;
@@ -298,19 +298,19 @@ void clgbas::read_fck_array(const std::string key, int nval, std::vector<double>
 ////////////////////////////////////////////////////////////////////////
 void clgbas::normalize1()
 {
-  int l, lfac;
+  long l, lfac;
   double cpi, api, cpj, apj, norm, normp, cont2, alph2, fac1, fac2;
 
-  int pdone = 0;
-  for (int ishell = 0; ishell < nshell; ishell ++) {
+  long pdone = 0;
+  for (long ishell = 0; ishell < nshell; ishell ++) {
     l = get_abs(type[ishell]);
     lfac = 1;
-    for (int k = 0; k <= l; k ++) {
+    for (long k = 0; k <= l; k ++) {
       lfac *= 2 * k + 1;
     }
 
     norm = ZERO;
-    for (int iprm = pdone; iprm < pdone + nprm[ishell]; iprm ++) {
+    for (long iprm = pdone; iprm < pdone + nprm[ishell]; iprm ++) {
       cpi = cont[iprm];
       api = alph[iprm];
       alph2 = api * TWO;
@@ -318,7 +318,7 @@ void clgbas::normalize1()
       alph2 *= TWO;
       fac2 = lfac / pow(alph2, l + 1);
       normp = fac1 * fac2;
-      printf("iprm = %5d normp = %20.10f\n", iprm, normp);
+      printf("iprm = %5ld normp = %20.10f\n", iprm, normp);
       cont[iprm] /= sqrt(normp);
     }
     // 4PI ///////////
@@ -326,7 +326,7 @@ void clgbas::normalize1()
     //    norm *= TWO * PI;
     //////////////////
 //    norm = ONE / sqrt(norm);
-//    for (int iprm = pdone; iprm < pdone + nprm[ishell]; iprm ++) {
+//    for (long iprm = pdone; iprm < pdone + nprm[ishell]; iprm ++) {
 //      cont[iprm] *= norm;
 //      //DEBUG if (ishell == 0) {
 //      //DEBUG 	cont[iprm] *= 18.2369;
@@ -339,22 +339,22 @@ void clgbas::normalize1()
 ////////////////////////////////////////////////////////////////////////
 void clgbas::normalize2()
 {
-  int l, lfac;
+  long l, lfac;
   double cpi, api, cpj, apj, norm, normp, cont2, alph2, fac1, fac2;
 
-  int pdone = 0;
-  for (int ishell = 0; ishell < nshell; ishell ++) {
+  long pdone = 0;
+  for (long ishell = 0; ishell < nshell; ishell ++) {
     l = get_abs(type[ishell]);
     lfac = 1;
-    for (int k = 0; k <= l; k ++) {
+    for (long k = 0; k <= l; k ++) {
       lfac *= 2 * k + 1;
     }
 
     norm = ZERO;
-    for (int iprm = pdone; iprm < pdone + nprm[ishell]; iprm ++) {
+    for (long iprm = pdone; iprm < pdone + nprm[ishell]; iprm ++) {
       cpi = cont[iprm];
       api = alph[iprm];
-      for (int jprm = pdone; jprm < pdone + nprm[ishell]; jprm ++) {
+      for (long jprm = pdone; jprm < pdone + nprm[ishell]; jprm ++) {
 	cpj = cont[jprm];
 	apj = alph[jprm];
 	cont2 = cpi * cpj;
@@ -370,7 +370,7 @@ void clgbas::normalize2()
     //    norm *= TWO * PI;
     //////////////////
     norm = ONE / sqrt(norm);
-    for (int iprm = pdone; iprm < pdone + nprm[ishell]; iprm ++) {
+    for (long iprm = pdone; iprm < pdone + nprm[ishell]; iprm ++) {
       cont[iprm] *= norm;
       //DEBUG if (ishell == 0) {
       //DEBUG 	cont[iprm] *= 18.2369;
@@ -383,27 +383,27 @@ void clgbas::normalize2()
 ////////////////////////////////////////////////////////////////////////
 void clgbas::overlap()
 {
-  int l, lfac;
+  long l, lfac;
   double cpi, api, cpj, apj, ovlp, cont2, alph2, fac1, fac2;
 
-  int bdone1 = 0;
-  int pdone1 = 0;
-  for (int ishell = 0; ishell < nshell; ishell ++) {
+  long bdone1 = 0;
+  long pdone1 = 0;
+  for (long ishell = 0; ishell < nshell; ishell ++) {
     l = get_abs(type[ishell]);
     lfac = 1;
-    for (int k = 0; k <= l; k ++) {
+    for (long k = 0; k <= l; k ++) {
       lfac *= 2 * k + 1;
     }
 
-    int bdone2 = 0;
-    int pdone2 = 0;
-    for (int jshell = 0; jshell < nshell; jshell ++) {
+    long bdone2 = 0;
+    long pdone2 = 0;
+    for (long jshell = 0; jshell < nshell; jshell ++) {
       ovlp = ZERO;
       if (get_abs(type[jshell]) == l) {
-	for (int iprm = pdone1; iprm < pdone1 + nprm[ishell]; iprm ++) {
+	for (long iprm = pdone1; iprm < pdone1 + nprm[ishell]; iprm ++) {
 	  cpi = cont[iprm];
 	  api = alph[iprm];
-	  for (int jprm = pdone2; jprm < pdone2 + nprm[jshell]; jprm ++) {
+	  for (long jprm = pdone2; jprm < pdone2 + nprm[jshell]; jprm ++) {
 	    cpj = cont[jprm];
 	    apj = alph[jprm];
 	    cont2 = cpi * cpj;
@@ -420,7 +420,7 @@ void clgbas::overlap()
 	//////////////////
       }
       // debug
-      printf("clgbas::overlap: %5d%5d%20.10f\n", ishell, jshell, ovlp);
+      printf("clgbas::overlap: %5ld%5ld%20.10f\n", ishell, jshell, ovlp);
       // debug
       pdone2 += nprm[jshell];
     }

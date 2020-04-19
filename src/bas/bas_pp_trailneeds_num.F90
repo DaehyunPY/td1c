@@ -2,7 +2,7 @@
 subroutine bas_pp_gen_trailneeds_num()
 
   use, intrinsic :: iso_c_binding
-  use mod_control, only : psp_type
+  use mod_control, only : name, psp_type
   use mod_rad, only : nrad, xrad, wrad
   use mod_bas, only : znuc, psp_label, pp_znuc, pp_rloc, pp_cloc, pp_rproj, pp_hproj, &
        pp_vloc, pp_vlocHF, pp_pproj, pp_fproj, pp_gproj, pp_maxl, pp_nump, pp_irmax
@@ -11,12 +11,15 @@ subroutine bas_pp_gen_trailneeds_num()
   implicit none
   !--------------------------------------------------------------------
   !--------------------------------------------------------------------
-  integer(c_int), parameter :: ic = 1
-  integer(c_int) :: irad, label
+  integer(c_long), parameter :: ic = 1
+  integer(c_long) :: irad, label
+  character(len=256) :: ppfile
   logical :: found
   real(c_double), parameter :: thresh = 1D-20
 
   label = znuc
+  ppfile = trim(trim(name)//".pp")
+  call ppatom_init(ic,ppfile)
 
   if (psp_type == 4) then
      do irad = 1, nrad - 1
@@ -85,6 +88,7 @@ subroutine bas_pp_gen_trailneeds_num()
      stop 'bas_pp_gen_trailneeds_num: bad psp_type.'
   end if
 
+  call ppatom_final
 !  stop 'for debug @ bas_pp_trailneeds_num'
 
 !  contains

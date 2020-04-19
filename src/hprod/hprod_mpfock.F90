@@ -30,7 +30,7 @@ subroutine hprod_mpfock(lfield, wfn, cic)
   zfield = lfield(3, 1)
 ! call hprod_tprod_ene(orb, h0orb)
   call hprod_tprod_all(orb, h0orb)
-  if (PSP) call hprod_projpp(runit, lfield, orb, h0orb)
+  if (PSP) call hprod_projpp(runit, orb, h0orb)
   if (igauge == 0) call hprod_zprod_all(zfield, orb, h1orb)
   if (igauge == 1) call hprod_pzprod_all(zfield, orb, h1orb)
 
@@ -96,7 +96,7 @@ subroutine hprod_mpfock_sum()
   use mod_hprod, only : h0orb, h1orb, gorb
 
   implicit none
-  integer(c_int) :: ifun, irad, l, llrf, ulrf, llrd, ulrd
+  integer(c_long) :: ifun, irad, l, llrf, ulrf, llrd, ulrd
 
   !$omp parallel default(shared) private(llrf, ulrf, llrd, ulrd)
   !###########################

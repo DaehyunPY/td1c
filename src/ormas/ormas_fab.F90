@@ -5,10 +5,10 @@ subroutine ormas_fab()
   use mod_ormas, only : fab_nr1x, fab_n1x,  fab_h1x, fab_p1x, fab_eq1x, fab_sgn1x
   implicit none
 
-  integer(c_int) :: inverse(2**nact)
-  integer(c_int) :: Conf_local(nact)
+  integer(c_long) :: inverse(2**nact)
+  integer(c_long) :: Conf_local(nact)
 
-  integer(c_int) :: k,k1,k2,rev,count,i_up,j_down
+  integer(c_long) :: k,k1,k2,rev,count,i_up,j_down
 
   !======== Define the control arrays for the mkden2 version 4 by fabian ======
 

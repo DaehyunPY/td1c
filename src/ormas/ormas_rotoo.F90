@@ -9,7 +9,7 @@ subroutine ormas_rotoo()
   use mod_ormas, only : nrotaa, rotaa_mapb
 
   implicit none
-  integer(c_int) :: irot, ifun, jfun, check
+  integer(c_long) :: irot, ifun, jfun, check
 
   call ormas_rotca()
   call ormas_rotaa()

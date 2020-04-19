@@ -4,12 +4,12 @@ subroutine util_trimat(n, thresh, npiv, a)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   real(c_double), intent(in) :: thresh
-  integer(c_int), intent(out) :: npiv
+  integer(c_long), intent(out) :: npiv
   complex(c_double_complex), intent(inout) :: a(1:n, 1:n)
 
-  integer(c_int) :: i, j
+  integer(c_long) :: i, j
   complex(c_double_complex) :: diag, fac
   complex(c_double_complex), allocatable :: tcol(:)
 

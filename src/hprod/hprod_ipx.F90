@@ -5,7 +5,7 @@ subroutine hprod_ipx(max_ipx, rad_ipx, lfield, wfn, cic, ipx)
   use mod_hprod, only : ovlp, orb, orbg
 
   implicit none
-  integer(c_int), intent(in) :: max_ipx
+  integer(c_long), intent(in) :: max_ipx
   real(c_double), intent(in) :: rad_ipx
   real(c_double), intent(in) :: lfield(1:3, 1:3)
   complex(c_double_complex), intent(in) :: wfn(1:*)
@@ -24,7 +24,7 @@ subroutine hprod_ipd(max_ipx, rad_ipx, lfield, wfn, cic, ipx)
   use mod_hprod, only : ovlp, orb, orbg
 
   implicit none
-  integer(c_int), intent(in) :: max_ipx
+  integer(c_long), intent(in) :: max_ipx
   real(c_double), intent(in) :: rad_ipx
   real(c_double), intent(in) :: lfield(1:3, 1:3)
   complex(c_double_complex), intent(in) :: wfn(1:*)

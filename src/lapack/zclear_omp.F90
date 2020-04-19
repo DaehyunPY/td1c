@@ -4,10 +4,10 @@ subroutine zclear_omp(n, x)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   complex(c_double_complex), intent(out) :: x(1:n)
 
-  integer(c_int) :: i
+  integer(c_long) :: i
   complex(c_double_complex) :: czero = (0.d+0, 0.d+0)
 
 !!NOOMP  !$omp parallel default(shared) private(i)
@@ -26,10 +26,10 @@ subroutine dclear_omp(n, x)
   use mod_const, only : zero
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   real(c_double), intent(out) :: x(1:n)
 
-  integer(c_int) :: i
+  integer(c_long) :: i
 
   !$omp parallel default(shared) private(i)
   !$omp do

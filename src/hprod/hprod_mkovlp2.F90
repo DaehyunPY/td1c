@@ -6,14 +6,14 @@ subroutine hprod_mkovlp2(mpi_gll, mpi_gul, wfn, hwfn, ovlp)
   use mod_ormas, only : nfun
 
   implicit none
-  integer(c_int), intent(in) :: mpi_gll, mpi_gul
+  integer(c_long), intent(in) :: mpi_gll, mpi_gul
   complex(c_double_complex), intent(in) :: wfn(mpi_gll:mpi_gul, 1:nfun)
   complex(c_double_complex), intent(in) :: hwfn(mpi_gll:mpi_gul, 1:nfun)
   complex(c_double_complex), intent(out) :: ovlp(1:nfun, 1:nfun)
 
-  integer(c_int), external :: util_omp_iproc
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int) :: ifun, jfun, iproc, nproc, ngrid, llg, ulg
+  integer(c_long), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long) :: ifun, jfun, iproc, nproc, ngrid, llg, ulg
   complex(c_double_complex), allocatable :: ovlpp(:,:,:)
 
   nproc = util_omp_nproc()
@@ -54,12 +54,12 @@ subroutine hprod_mkovlp2p(mpi_gll, mpi_gul, wfn, hwfn, ovlp, llg, ulg)
   use mod_bas, only : wgt
 
   implicit none
-  integer(c_int), intent(in) :: mpi_gll, mpi_gul, llg, ulg
+  integer(c_long), intent(in) :: mpi_gll, mpi_gul, llg, ulg
   complex(c_double_complex), intent(in) :: wfn(mpi_gll:mpi_gul, 1:nfun)
   complex(c_double_complex), intent(in) :: hwfn(mpi_gll:mpi_gul, 1:nfun)
   complex(c_double_complex), intent(inout) :: ovlp(1:nfun, 1:nfun)
 
-  integer(c_int) :: ifun, jfun, igrid
+  integer(c_long) :: ifun, jfun, igrid
 
   do ifun = 1, nfun
      do jfun = 1, nfun

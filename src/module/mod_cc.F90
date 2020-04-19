@@ -6,47 +6,38 @@ module mod_cc
 
   public
 
-  integer(c_int), save, pointer :: cc_type
+  integer(c_long), save, pointer :: cc_type
   character(len=16) :: cc_code
-  integer(c_int) :: cc_rank, norb1, norb2
+  integer(c_long) :: cc_rank, norb1, norb2
   logical(c_bool) :: optcc, bcc, optbcc
   logical(c_bool) :: dot1
 
   logical(c_bool), parameter :: tonly = .false.
-  integer(c_int), parameter :: cc_maxcyc = 40
+  integer(c_long), parameter :: cc_maxcyc = 40
   logical(c_bool), parameter :: cc_nonredundant = .true.
 
   logical(c_bool), parameter :: cc_solve = .true.
   logical(c_bool), parameter :: cc_solve_itr = .false.
   logical(c_bool), parameter :: cc_sreal = .true.
   logical(c_bool), parameter :: cc_read_ort = .false.
-  integer(c_int), parameter :: cc_xij_xab = 0
-  integer(c_int), parameter :: nspin = 1
-  integer(c_int), parameter :: nbiort = 1
+  integer(c_long), parameter :: cc_xij_xab = 0
+  integer(c_long), parameter :: nspin = 1
+  integer(c_long), parameter :: nbiort = 1
   real(c_double), parameter :: thrtamp = 1D-15
   real(c_double), parameter :: thrgamp = 1D-15
 
-  integer(c_int) :: ncc0,ncc1a,ncc2aa,ncc2ab,ncc3aaa,ncc3aab
-  integer(c_int),allocatable :: map_cc0(:,:)
-  integer(c_int),allocatable :: map_cc1a(:,:)
-  integer(c_int),allocatable :: map_cc2aa(:,:)
-  integer(c_int),allocatable :: map_cc2ab(:,:)
-  integer(c_int),allocatable :: map_cc3aaa(:,:)
-  integer(c_int),allocatable :: map_cc3aab(:,:)
-  integer(c_int),allocatable :: h1_cc1a(:),p1_cc1a(:)
-  integer(c_int),allocatable :: h1_cc2aa(:),h2_cc2aa(:),p1_cc2aa(:),p2_cc2aa(:)
-  integer(c_int),allocatable :: h1_cc2ab(:),h2_cc2ab(:),p1_cc2ab(:),p2_cc2ab(:)
-  integer(c_int),allocatable :: h1_cc3aaa(:),h2_cc3aaa(:),h3_cc3aaa(:),p1_cc3aaa(:),p2_cc3aaa(:),p3_cc3aaa(:)
-  integer(c_int),allocatable :: h1_cc3aab(:),h2_cc3aab(:),h3_cc3aab(:),p1_cc3aab(:),p2_cc3aab(:),p3_cc3aab(:)
-
-  integer(c_int) :: nXai,nXij,nXab
-  integer(c_int),allocatable :: aiX(:),ijX(:),abX(:)
-
-  integer(c_int) :: ncc2aa_act1,ncc2ab_act1
-  integer(c_int),allocatable :: map_cc2aa_act1(:,:)
-  integer(c_int),allocatable :: map_cc2ab_act1(:,:)
-  integer(c_int),allocatable :: h1_cc2aa_act1(:),h2_cc2aa_act1(:),p1_cc2aa_act1(:),p2_cc2aa_act1(:)
-  integer(c_int),allocatable :: h1_cc2ab_act1(:),h2_cc2ab_act1(:),p1_cc2ab_act1(:),p2_cc2ab_act1(:)
+  integer(c_long) :: ncc0,ncc1a,ncc2aa,ncc2ab,ncc3aaa,ncc3aab
+  integer(c_long),allocatable :: map_cc0(:,:)
+  integer(c_long),allocatable :: map_cc1a(:,:)
+  integer(c_long),allocatable :: map_cc2aa(:,:)
+  integer(c_long),allocatable :: map_cc2ab(:,:)
+  integer(c_long),allocatable :: map_cc3aaa(:,:)
+  integer(c_long),allocatable :: map_cc3aab(:,:)
+  integer(c_long),allocatable :: h1_cc1a(:),p1_cc1a(:)
+  integer(c_long),allocatable :: h1_cc2aa(:),h2_cc2aa(:),p1_cc2aa(:),p2_cc2aa(:)
+  integer(c_long),allocatable :: h1_cc2ab(:),h2_cc2ab(:),p1_cc2ab(:),p2_cc2ab(:)
+  integer(c_long),allocatable :: h1_cc3aaa(:),h2_cc3aaa(:),h3_cc3aaa(:),p1_cc3aaa(:),p2_cc3aaa(:),p3_cc3aaa(:)
+  integer(c_long),allocatable :: h1_cc3aab(:),h2_cc3aab(:),h3_cc3aab(:),p1_cc3aab(:),p2_cc3aab(:),p3_cc3aab(:)
 
   complex(c_double_complex), allocatable :: cc_i0(:)
   complex(c_double_complex), allocatable :: cc_i1(:)

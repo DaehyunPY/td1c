@@ -1,7 +1,6 @@
 !######################################################################
 subroutine tdcc_mkden1(cic, den1)
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas, only : nact
   use mod_cc, only : norb1,cc_rank,optcc,bcc,optbcc,den1s
 
@@ -37,7 +36,6 @@ end subroutine tdcc_mkden1
 !######################################################################
 subroutine tdcc_mkden1_ref1(den1s)
 
-  use, intrinsic :: iso_c_binding
   use mod_bas, only : smul
   use mod_const, only : runit
   use mod_ormas, only : nact,nelact
@@ -46,7 +44,7 @@ subroutine tdcc_mkden1_ref1(den1s)
   implicit none
   complex(kind(0d0)), intent(inout) :: den1s(1:nact, 1:nact, 1:2)
 
-  integer(c_int) :: iact
+  integer :: iact
 
   do iact = 1, norb1
      den1s(iact, iact, 1) = runit + den1s(iact, iact, 1)
@@ -63,7 +61,6 @@ end subroutine tdcc_mkden1_ref1
 !######################################################################
 subroutine tdcc_mkden1_spac1(den1s, den1)
 
-  use, intrinsic :: iso_c_binding
   use mod_const, only : czero, ctwo, chalf
   use mod_bas, only : mval
   use mod_ormas, only : nact, ncore
@@ -78,7 +75,7 @@ subroutine tdcc_mkden1_spac1(den1s, den1)
   complex(kind(0d0)), allocatable :: dtmp(:,:)
   complex(kind(0d0)), allocatable :: utmp(:,:)
   !DEBUG
-  integer(c_int) :: iact, jact, aact, bact, pact, qact
+  integer :: iact, jact, aact, bact, pact, qact
 
   ! den1 = 1/2 (den1s( + den1s^+)
   ! spin summation (2) and a factor (1/2) cancel

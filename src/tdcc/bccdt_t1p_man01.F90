@@ -7,7 +7,6 @@ subroutine bccdt_t1p_man01(i0)
 !4: i0 ( a i )_vt + = -1/2 * Sum ( j b c ) * t ( b c i j )_t * v ( j a b c )_v 0
 !5: i0 ( a i )_vt + = 1/4 * Sum ( j k b c ) * t ( a b c i j k )_t * v ( j k b c )_v 0
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact
   use mod_cc,only : fock,int2x,norb1,ncc1a,t2inp,t3inp
   use mod_cc,only : h1_cc1a,p1_cc1a,cc_rank
@@ -17,7 +16,7 @@ subroutine bccdt_t1p_man01(i0)
   complex(kind(0d0)),intent(inout) :: &
        i0((norb1+1):nact,1:norb1)
 
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   !##################################################
   !$omp parallel default(shared) private(a,i)

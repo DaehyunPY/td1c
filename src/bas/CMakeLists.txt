@@ -20,8 +20,6 @@ add_library(
         bas_pp_hgh.F90
         bas_pp_trailneeds.F90
         bas_pp_trailneeds_num.F90
-        bas_pp_oncvpsp.F90
-        bas_pp_tmpsp.F90
         bas_pp_genkb.F90
         bas_sph2ang2_ecs.F90
         bas_ang2sph2_ecs.F90

@@ -4,12 +4,12 @@ subroutine futil_gmatinv(n, thresh, a, inva)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   real(c_double), intent(in) :: thresh
   complex(c_double_complex), intent(in) :: a(1:n, 1:n)
   complex(c_double_complex), intent(out) :: inva(1:n, 1:n)
 
-  integer(c_int) :: i, j, k
+  integer(c_long) :: i, j, k
   complex(c_double_complex), allocatable :: aa(:,:), raa(:,:)
   complex(c_double_complex), parameter :: czero = (0.d+0, 0.d+0)
 

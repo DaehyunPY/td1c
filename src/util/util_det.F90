@@ -4,7 +4,7 @@ complex(c_double_complex) function util_det(n, thresh, a)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   real(c_double), intent(in) :: thresh
   complex(c_double_complex), intent(in) :: a(1:n, 1:n)
 
@@ -13,8 +13,8 @@ complex(c_double_complex) function util_det(n, thresh, a)
   complex(c_double_complex), parameter :: runit = (1.d+0, 0.d+0)
 
   logical :: zero_triv
-  integer(c_int) :: npiv, i, j
-  integer(c_int) :: nsys
+  integer(c_long) :: npiv, i, j
+  integer(c_long) :: nsys
   complex(c_double_complex) :: test
 ! complex(c_double_complex), external :: zdotu
   complex(c_double_complex), external :: util_zdotu

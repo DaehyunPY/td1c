@@ -1,7 +1,6 @@
 !######################################################################
 subroutine tdcc_mkden2x(cic, den2x)
 
-  use, intrinsic :: iso_c_binding
   use mod_const, only : czero
   use mod_ormas, only : nact
   use mod_cc, only : cc_rank,optcc,norb1,t2inp,g2inp,t3inp,g3inp
@@ -32,7 +31,6 @@ end subroutine tdcc_mkden2x
 !######################################################################
 subroutine tdcc_mkden2x_spac2(d2x, den2x)
 
-  use, intrinsic :: iso_c_binding
   use mod_const, only : ctwo, chalf
   use mod_ormas, only : nact
   use mod_cc, only : norb1
@@ -41,9 +39,9 @@ subroutine tdcc_mkden2x_spac2(d2x, den2x)
   complex(kind(0d0)), intent(inout) :: d2x(1:nact, 1:nact, 1:nact, 1:nact, 1:2, 1:2)
   complex(kind(0d0)), intent(out) :: den2x(1:nact, 1:nact, 1:nact, 1:nact, 1:2)
 
-  integer(c_int) :: pact, qact, ract, sact
-  integer(c_int) :: iact, jact, kact, lact
-  integer(c_int) :: aact, bact, cact, dact
+  integer :: pact, qact, ract, sact
+  integer :: iact, jact, kact, lact
+  integer :: aact, bact, cact, dact
   complex(kind(0d0)) :: tmp
 
   do iact = 1, norb1

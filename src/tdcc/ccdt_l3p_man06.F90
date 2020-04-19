@@ -4,8 +4,7 @@ subroutine ccdt_l3p_man06(i0,work1,work2,work3)
 ! i0 ( i j k a b c )_yv + = -1/2 * P( 3 ) * Sum ( l m ) 
 !  * y ( i m l a b c )_y * i1 ( j k m l )_v 2
 
-  use, intrinsic :: iso_c_binding
-  use mod_ormas,only : nact,act1_ll,act1_ul
+  use mod_ormas,only : nact
   use mod_cc,only : fock,int2x,norb1,ncc3aaa,ncc3aab,t2inp,g2inp,t3inp,g3inp
   use mod_cc,only : h1_cc3aaa,h2_cc3aaa,h3_cc3aaa,p1_cc3aaa,p2_cc3aaa,p3_cc3aaa
   use mod_cc,only : h1_cc3aab,h2_cc3aab,h3_cc3aab,p1_cc3aab,p2_cc3aab,p3_cc3aab
@@ -18,7 +17,7 @@ subroutine ccdt_l3p_man06(i0,work1,work2,work3)
        work1(1:norb1,1:norb1,1:norb1,1:norb1), &
        work2(1:norb1,1:norb1,1:norb1,1:norb1),work3(1)
 
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   work1 = 0d0
   work2 = 0d0
@@ -41,8 +40,8 @@ subroutine ccdt_l3p_man06(i0,work1,work2,work3)
      i = h1_cc3aaa(icc)
      j = h2_cc3aaa(icc)
      k = h3_cc3aaa(icc)
-     do l = act1_ll,norb1
-        do m = act1_ll,l-1
+     do l = 1,norb1
+        do m = 1,l-1
            i0(i,j,k,a,b,c,1) = i0(i,j,k,a,b,c,1) &
                 + g3inp(i,l,m,a,b,c,spin_g3aaa)*work1(j,k,l,m) &
                 - g3inp(j,l,m,a,b,c,spin_g3aaa)*work1(i,k,l,m) &
@@ -59,14 +58,14 @@ subroutine ccdt_l3p_man06(i0,work1,work2,work3)
      i = h1_cc3aab(icc)
      j = h2_cc3aab(icc)
      k = h3_cc3aab(icc)
-     do l = act1_ll,norb1
-        do m = act1_ll,l-1
+     do l = 1,norb1
+        do m = 1,l-1
            i0(i,j,k,a,b,c,2) = i0(i,j,k,a,b,c,2) &
                 - g3inp(l,m,k,a,b,c,spin_g3aab)*work1(j,i,l,m)
         end do
      end do
-     do l = act1_ll,norb1
-        do m = act1_ll,norb1
+     do l = 1,norb1
+        do m = 1,norb1
            i0(i,j,k,a,b,c,2) = i0(i,j,k,a,b,c,2) &
                 + g3inp(i,l,m,a,b,c,spin_g3aab)*work2(j,k,l,m) &
                 - g3inp(j,l,m,a,b,c,spin_g3aab)*work2(i,k,l,m)
@@ -86,7 +85,6 @@ subroutine ccdt_l3p_man06_1(i1aa,i1ab)
 ! 6-2
 !     i1 ( i j k l )_vt + = 1/2 * Sum ( a b ) * t ( a b k l )_t * v ( i j a b )_v 0
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact
   use mod_cc,only : norb1,int2x,t2inp
   use mod_cc2
@@ -95,7 +93,7 @@ subroutine ccdt_l3p_man06_1(i1aa,i1ab)
   complex(kind(0d0)),intent(inout) :: &
        i1aa(1:norb1,1:norb1,1:norb1,1:norb1), &
        i1ab(1:norb1,1:norb1,1:norb1,1:norb1)
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   !$omp parallel default(shared) private(icc,i,j,k,l,m,a,b,c,d,e)
   !$omp do

@@ -4,7 +4,6 @@ subroutine ccdt_l3p_man09(i0,work1,work2,work3)
 ! i0 ( i j k a b c )_ytv + = -1/2 * P( 9 ) * Sum ( d ) 
 !  * i1 ( i d a b )_yt * v ( j k c d )_v 1
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact
   use mod_cc,only : fock,int2x,norb1,ncc3aaa,ncc3aab,t2inp,g2inp,t3inp,g3inp
   use mod_cc,only : h1_cc3aaa,h2_cc3aaa,h3_cc3aaa,p1_cc3aaa,p2_cc3aaa,p3_cc3aaa
@@ -18,7 +17,7 @@ subroutine ccdt_l3p_man09(i0,work1,work2,work3)
        work1(1:norb1,(norb1+1):nact,(norb1+1):nact,(norb1+1):nact),&
        work2(1:norb1,(norb1+1):nact,(norb1+1):nact,(norb1+1):nact),work3(1)
 
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   work1 = 0d0
   work2 = 0d0
@@ -85,8 +84,7 @@ subroutine ccdt_l3p_man09_1(i1aa,i1ab)
 ! i1 ( i a b c )_yt + = -0.5 * Sum ( j k d ) 
 !  * t ( d a j k )_t * y ( i j k b c d )_y 0
 
-  use, intrinsic :: iso_c_binding
-  use mod_ormas,only : nact,act1_ll,act1_ul
+  use mod_ormas,only : nact
   use mod_cc,only : norb1,t2inp,g3inp
   use mod_cc2
 
@@ -94,7 +92,7 @@ subroutine ccdt_l3p_man09_1(i1aa,i1ab)
   complex(kind(0d0)),intent(inout) :: &
        i1aa(1:norb1,(norb1+1):nact,(norb1+1):nact,(norb1+1):nact),&
        i1ab(1:norb1,(norb1+1):nact,(norb1+1):nact,(norb1+1):nact)
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   !$omp parallel default(shared) private(icc,i,j,k,l,m,a,b,c,d,e)
   !$omp do
@@ -103,13 +101,13 @@ subroutine ccdt_l3p_man09_1(i1aa,i1ab)
      a = p2_ovvvaa(icc)
      b = p3_ovvvaa(icc)
      c = p4_ovvvaa(icc)
-     do d = norb1+1,act1_ul
-     do j = act1_ll,norb1
-        do k = act1_ll,j-1
+     do d = norb1+1,nact
+     do j = 1,norb1
+        do k = 1,j-1
            i1aa(i,a,b,c) = i1aa(i,a,b,c) &
                 - t2inp(d,a,j,k,spin_t2aa)*g3inp(i,j,k,b,c,d,spin_g3aaa)
         end do
-        do k = act1_ll,norb1
+        do k = 1,norb1
            i1aa(i,a,b,c) = i1aa(i,a,b,c) &
                 + t2inp(a,d,j,k,spin_t2ab)*g3inp(i,j,k,b,c,d,spin_g3aab)
         end do
@@ -123,13 +121,13 @@ subroutine ccdt_l3p_man09_1(i1aa,i1ab)
      a = p2_ovvvab(icc)
      b = p3_ovvvab(icc)
      c = p4_ovvvab(icc)
-     do d = norb1+1,act1_ul
-     do j = act1_ll,norb1
-        do k = act1_ll,j-1
+     do d = norb1+1,nact
+     do j = 1,norb1
+        do k = 1,j-1
            i1ab(i,a,b,c) = i1ab(i,a,b,c) &
                 - t2inp(d,a,j,k,spin_t2aa)*g3inp(j,k,i,c,d,b,spin_g3aab)
         end do
-        do k = act1_ll,norb1
+        do k = 1,norb1
            i1ab(i,a,b,c) = i1ab(i,a,b,c) &
                 + t2inp(d,a,j,k,spin_t2ab)*g3inp(i,j,k,b,d,c,spin_g3aab)
         end do

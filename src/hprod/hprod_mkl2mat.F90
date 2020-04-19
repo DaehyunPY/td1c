@@ -16,8 +16,8 @@ subroutine hprod_mkl2mat(orb, oa2, oap, oam)
 
   real(c_double) :: pcsi, pcsj, pcsji
   complex(c_double_complex) :: tmp1
-  integer(c_int) :: ifun, jfun, irad, l, m, mi, mj, nproc, iproc, llr, ulr
-  integer(c_int), external :: util_omp_iproc, util_omp_nproc
+  integer(c_long) :: ifun, jfun, irad, l, m, mi, mj, nproc, iproc, llr, ulr
+  integer(c_long), external :: util_omp_iproc, util_omp_nproc
   complex(c_double_complex), allocatable :: oa2p(:,:,:) ! l^2
   complex(c_double_complex), allocatable :: oapp(:,:,:) ! l_+
   complex(c_double_complex), allocatable :: oamp(:,:,:) ! l_-

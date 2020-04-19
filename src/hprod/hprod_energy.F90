@@ -19,12 +19,12 @@ subroutine hprod_energy(lfield, wfn, cic)
   complex(c_double_complex), intent(in) :: wfn(*)
   complex(c_double_complex), intent(in) :: cic(*)
 
-  integer(c_int) :: size_orb, size_forb, size_cic
+  integer(c_long) :: size_orb, size_forb, size_cic
   real(c_double), external :: hprod_ene_dcore
   real(c_double), external :: hprod_ene_act
   complex(c_double_complex) :: zfield
 !debug
-  integer(c_int) :: iact,jact
+  integer(c_long) :: iact,jact
 !debug
 
   if (dft_type .ne. 0) then
@@ -51,7 +51,7 @@ subroutine hprod_energy(lfield, wfn, cic)
 !  if (igauge == 0) call hprod_zprod_all(zfield, orb, h1orb)
 !  if (igauge == 1) call hprod_pzprod_all(zfield, orb, h1orb)
   call hprod_tprod_dyn(orb, h0orb)
-  if (PSP) call hprod_projpp(runit, lfield, orb, h0orb)
+  if (PSP) call hprod_projpp(runit, orb, h0orb)
 
   if (igauge == 0) call hprod_zprod_dyn(zfield, orb, h1orb)
   if (igauge == 1) call hprod_pzprod_dyn(zfield, orb, h1orb)
@@ -142,7 +142,7 @@ real(c_double) function hprod_energy1(lfield, rion, wfn, cic)
   complex(c_double_complex), intent(in) :: wfn(*)
   complex(c_double_complex), intent(in) :: cic(*)
 
-  integer(c_int) :: size_orb, size_forb
+  integer(c_long) :: size_orb, size_forb
   real(c_double), external :: hprod_ene_dcore
   real(c_double), external :: hprod_ene_act
   complex(c_double_complex) :: zfield
@@ -171,7 +171,7 @@ real(c_double) function hprod_energy1(lfield, rion, wfn, cic)
 !  if (igauge == 0) call hprod_zprod_all(zfield, orb, h1orb)
 !  if (igauge == 1) call hprod_pzprod_all(zfield, orb, h1orb)
   call hprod_tprod_dyn(orb, h0orb)
-  if (PSP) call hprod_projpp(runit, lfield, orb, h0orb)
+  if (PSP) call hprod_projpp(runit, orb, h0orb)
 
   if (igauge == 0) call hprod_zprod_dyn(zfield, orb, h1orb)
   if (igauge == 1) call hprod_pzprod_dyn(zfield, orb, h1orb)

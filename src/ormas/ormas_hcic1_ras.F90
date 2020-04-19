@@ -34,7 +34,7 @@ subroutine ormas_hcic1_ras_bbp(int1e, cic, hcic)
   complex(c_double_complex), intent(in) :: int1e(1:nact, 1:nact)
   complex(c_double_complex), intent(in) :: cic(1:ndetx)
   complex(c_double_complex), intent(inout) :: hcic(1:ndetx)
-  integer(c_int) :: istr,jstr,kstr,i1x_m,i1x,ifun,jfun,idist,jdist,kdist,lla,ula,mvala
+  integer(c_long) :: istr,jstr,kstr,i1x_m,i1x,ifun,jfun,idist,jdist,kdist,lla,ula,mvala
   complex(c_double_complex) :: tmp
 
   !$omp parallel default(shared) private(mvala,idist,i1x,ifun,jfun,kstr,kdist,tmp,lla,ula)
@@ -88,7 +88,7 @@ subroutine ormas_hcic1_ras_aap(int1e, cic, hcic)
   complex(c_double_complex), intent(in) :: int1e(1:nact,1:nact)
   complex(c_double_complex), intent(in) :: cic(1:ndetx)
   complex(c_double_complex), intent(inout) :: hcic(1:ndetx)
-  integer(c_int) :: istr,jstr,kstr,i1x_m,i1x,ifun,jfun,idist,jdist,kdist,llb,ulb,idet,mvalb
+  integer(c_long) :: istr,jstr,kstr,i1x_m,i1x,ifun,jfun,idist,jdist,kdist,llb,ulb,idet,mvalb
   complex(c_double_complex) :: tmp
   complex(c_double_complex), allocatable :: dcic(:)
 

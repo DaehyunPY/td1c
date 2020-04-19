@@ -9,7 +9,7 @@ subroutine bas_gen_d2fac()
   use mod_bas, only : bas_d2fac1, bas_d2fac2, bas_d2invr, bas_d2rpl0, bas_d2rpl1, bas_d2crpl1
 
   implicit none
-  integer(c_int) :: l, m, irad, dim
+  integer(c_long) :: l, m, irad, dim
   real(c_double) :: r2pi
 ! Orimo_ECS
   real(c_double) :: tmp_exp_factor

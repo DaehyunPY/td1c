@@ -14,13 +14,13 @@ subroutine dpade_gen(icomp, dtime, alpha, tinv, tpiv)
   use mod_bas, only : tmat
 
   implicit none
-  integer(c_int), intent(in) :: icomp
+  integer(c_long), intent(in) :: icomp
   real(c_double), intent(in) :: dtime
   complex(c_double_complex), intent(in) :: alpha
   complex(c_double_complex), intent(out) :: tinv(1:(3*ndvr+1), 1:(nrad-1), 0:lmax1)
-  integer(c_int), intent(out) :: tpiv(1:(nrad-1), 0:lmax1)
+  integer(c_long), intent(out) :: tpiv(1:(nrad-1), 0:lmax1)
 
-  integer(c_int) :: irad, jrad, l, jll, jul, jb1, jb2, dim, ld2, info
+  integer(c_long) :: irad, jrad, l, jll, jul, jb1, jb2, dim, ld2, info
   complex(c_double_complex) :: fac
 
   dim = nrad - 1

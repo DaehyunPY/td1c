@@ -117,7 +117,7 @@ subroutine hprod_mfprodx3j_fcj(dofc, wfn, g1wfn)
   logical(c_bool), intent(in) :: dofc
   complex(c_double_complex), intent(in) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(inout) :: g1wfn(1:(nrad-1), 0:lmax1, 1:nfun)
-  integer(c_int) :: ifun, l1, irad, llr, ulr
+  integer(c_long) :: ifun, l1, irad, llr, ulr
 
 ! real(c_double), parameter :: y00 = 1d0/sqrt(4d0*pi)
   real(c_double), parameter :: y00 = 1d0/(2d0*pi)
@@ -167,7 +167,7 @@ subroutine hprod_mfprodx3j_fcx1(dofc, wfn, v2, g1wfn)
   complex(c_double_complex), intent(in) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(in) :: v2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(inout) :: g1wfn(1:(nrad-1), 0:lmax1, 1:nfun)
-  integer(c_int) :: ifun,jfun,l1,l12,irad,llr,ulr,mij,lll12,ull12
+  integer(c_long) :: ifun,jfun,l1,l12,irad,llr,ulr,mij,lll12,ull12
 
   if (nfcore1 == 0) return
 
@@ -223,7 +223,7 @@ subroutine hprod_mfprodx3j_fcx2(dofc, wfn, g1wfn)
   logical(c_bool), intent(in) :: dofc
   complex(c_double_complex), intent(in) :: wfn(1:(nrad-1), 1:nlat, 1:nfun)
   complex(c_double_complex), intent(inout) :: g1wfn(1:(nrad-1), 1:nlat, 1:nfun)
-  integer(c_int) :: ifun, ilat, irad, llr, ulr
+  integer(c_long) :: ifun, ilat, irad, llr, ulr
 
   if (nfcore2 == 0) return
   if (nfcore2 > 0) stop 'hprod_mfprodx3j_fcx2: nyi.'
@@ -265,7 +265,7 @@ subroutine hprod_mfprodx3j_dcj(dofc, wfn, v2, g1wfn, d2v)
   complex(c_double_complex), intent(in) :: v2(1:ngrid, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(inout) :: g1wfn(1:ngrid, 1:nfun)
   complex(c_double_complex), intent(out) :: d2v(1:ngrid)
-  integer(c_int) :: ifun, jfun, igrid, llg, ulg
+  integer(c_long) :: ifun, jfun, igrid, llg, ulg
 
   if (ndcore == 0) return
 
@@ -301,7 +301,7 @@ subroutine hprod_mfprodx3j_dcj(dofc, wfn, v2, g1wfn, d2v)
     complex(c_double_complex), intent(in) :: wfn(1:(nrad-1), 1:nlat, 1:nfun)
     complex(c_double_complex), intent(in) :: d2v(1:(nrad-1), 1:nlat)
     complex(c_double_complex), intent(inout) :: g1wfn(1:(nrad-1), 1:nlat, 1:nfun)
-    integer(c_int) :: irad, ilat, llr, ulr
+    integer(c_long) :: irad, ilat, llr, ulr
     !$omp parallel default(shared) private(llr,ulr)
     call util_omp_disp(1, nradfc, llr, ulr)
     do ifun = 1, nfcore
@@ -330,7 +330,7 @@ subroutine hprod_mfprodx3j_dcx(dofc, wfn, v2, g1wfn)
   complex(c_double_complex), intent(in) :: wfn(1:ngrid, 1:nfun)
   complex(c_double_complex), intent(in) :: v2(1:ngrid, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(inout) :: g1wfn(1:ngrid, 1:nfun)
-  integer(c_int) :: ifun, jfun, igrid, llg, ulg
+  integer(c_long) :: ifun, jfun, igrid, llg, ulg
 
   if (ndcore == 0) return
 
@@ -359,7 +359,7 @@ subroutine hprod_mfprodx3j_dcx(dofc, wfn, v2, g1wfn)
     complex(c_double_complex), intent(in) :: wfn(1:(nrad-1), 1:nlat, 1:nfun)
     complex(c_double_complex), intent(in) :: v2(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
     complex(c_double_complex), intent(inout) :: g1wfn(1:(nrad-1), 1:nlat, 1:nfun)
-    integer(c_int) :: irad, ilat, llr, ulr
+    integer(c_long) :: irad, ilat, llr, ulr
     !$omp parallel default(shared) private(llr,ulr)
     call util_omp_disp(1, nradfc, llr, ulr)
     do ifun = 1, nfcore
@@ -394,7 +394,7 @@ subroutine hprod_mfprodx3j_actj(dofc, wfn, v2, g2wfn, d2v)
   complex(c_double_complex), intent(in) :: v2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(inout) :: g2wfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: d2v(1:(nrad-1), 0:lmax2)
-  integer(c_int) :: ifun,jfun,iact,jact,irad,llr,ulr,l1,l2,l12,lll1,ull1
+  integer(c_long) :: ifun,jfun,iact,jact,irad,llr,ulr,l1,l2,l12,lll1,ull1
   complex(c_double_complex) :: d2vo(1:(nrad-1))
   
   if (ncore == 0 .or. nact == 0) return
@@ -476,7 +476,7 @@ subroutine hprod_mfprodx3j_actx(dofc, wfn, v2, g2wfn, wd1)
   complex(c_double_complex), intent(in) :: v2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(inout) :: g2wfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: wd1(1:(nrad-1), 0:lmax1, 1:nact)
-  integer(c_int) :: ifun,jfun,iact,jact,irad,llr,ulr,l1,l2,l12,lll1,ull1,mij
+  integer(c_long) :: ifun,jfun,iact,jact,irad,llr,ulr,l1,l2,l12,lll1,ull1,mij
   complex(c_double_complex) :: wd1v(1:(nrad-1))
   complex(c_double_complex) :: dens
   
@@ -571,7 +571,7 @@ subroutine hprod_mfprodx3j_actjall(wfn, v2, g2wfn, d2v)
   complex(c_double_complex), intent(in) :: v2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(inout) :: g2wfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: d2v(1:(nrad-1), 0:lmax2)
-  integer(c_int) :: ifun,jfun,iact,jact,irad,llr,ulr,l1,l2,l12,lll1,ull1
+  integer(c_long) :: ifun,jfun,iact,jact,irad,llr,ulr,l1,l2,l12,lll1,ull1
   complex(c_double_complex) :: d2vo(1:(nrad-1))
   
   if (nact == 0) return
@@ -648,7 +648,7 @@ subroutine hprod_mfprodx3j_actxall(wfn, v2, g2wfn, wd1)
   complex(c_double_complex), intent(in) :: v2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(inout) :: g2wfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: wd1(1:(nrad-1), 0:lmax1, 1:nact)
-  integer(c_int) :: ifun,jfun,iact,jact,irad,llr,ulr,l1,l2,l12,lll1,ull1,mij
+  integer(c_long) :: ifun,jfun,iact,jact,irad,llr,ulr,l1,l2,l12,lll1,ull1,mij
   complex(c_double_complex) :: wd1v(1:(nrad-1))
   complex(c_double_complex) :: dens
   
@@ -717,7 +717,7 @@ subroutine hprod_mfprodx3j_act2(wfn, v2, twfn, g2wfn, d2v)
   complex(c_double_complex), intent(out) :: twfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(inout) :: g2wfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: d2v(1:(nrad-1), 0:lmax2, 1:nact, 1:nact)
-  integer(c_int) :: ifun,jfun,kfun,lfun,iact,jact,kact,lact,irad,l1,l2,l12,mij,mfac,llr,ulr,lll1,ull1
+  integer(c_long) :: ifun,jfun,kfun,lfun,iact,jact,kact,lact,irad,l1,l2,l12,mij,mfac,llr,ulr,lll1,ull1
   complex(c_double_complex) :: d2vo(1:(nrad-1))
   
   if (nact == 0) return

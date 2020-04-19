@@ -10,7 +10,7 @@ subroutine bas_gen_pzfac()
 
   implicit none
   complex(c_double_complex) :: tmp
-  integer(c_int) :: l, m, irad
+  integer(c_long) :: l, m, irad
 
   if (ecs_flag == 0) then
      if (fedvr_normalized) then

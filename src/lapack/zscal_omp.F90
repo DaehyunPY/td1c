@@ -4,11 +4,11 @@ subroutine zscal_omp(n, a, x)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   complex(c_double_complex), intent(in) :: a
   complex(c_double_complex), intent(inout) :: x(1:n)
 
-  integer(c_int) :: i
+  integer(c_long) :: i
 
 ! use blas
 ! call zscal(n, a, x, 1, y, 1)
@@ -28,12 +28,12 @@ subroutine zscal2_omp(n, a, x, y)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   complex(c_double_complex), intent(in) :: a
   complex(c_double_complex), intent(in) :: x(1:n)
   complex(c_double_complex), intent(out) :: y(1:n)
 
-  integer(c_int) :: i
+  integer(c_long) :: i
 
 ! use blas
 ! call zscal(n, a, x, 1, y, 1)
@@ -53,11 +53,11 @@ subroutine dscal_omp(n, a, x)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   real(c_double), intent(in) :: a
   real(c_double), intent(inout) :: x(1:n)
 
-  integer(c_int) :: i
+  integer(c_long) :: i
 
 ! use blas
 ! call dscal(n, a, x, 1, y, 1)

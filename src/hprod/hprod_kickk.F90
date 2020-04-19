@@ -11,8 +11,8 @@ subroutine hprod_kickk(knorm, wfn)
   real(c_double), intent(in) :: knorm
   complex(c_double_complex), intent(inout) :: wfn(1:*)
 
-  integer(c_int) :: ifun
-  integer(c_int) :: llr, ulr, irad, ilat
+  integer(c_long) :: ifun
+  integer(c_long) :: llr, ulr, irad, ilat
   complex(c_double_complex) :: faclv
   complex(c_double_complex), allocatable :: wfng(:,:,:)
 

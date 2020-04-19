@@ -5,9 +5,6 @@ subroutine hprod_orbin(lfield, wfn, orb, orbg)
   use mod_bas, only : nbas, ngrid
   use mod_ormas, only : nfcore, nfun
   use mod_hprod, only : orbe, orbo
-! tdcis-teramura
-  use mod_ormas, only : nfcore_tdcis
-! tdcis-teramura
 
   implicit none
   real(c_double), intent(in) :: lfield(1:3, 1:3)
@@ -15,18 +12,12 @@ subroutine hprod_orbin(lfield, wfn, orb, orbg)
   complex(c_double_complex), intent(out) :: orb(1:nbas, 1:*)
   complex(c_double_complex), intent(out) :: orbg(1:ngrid, 1:*)
 
-  integer(c_int) :: ifun
-  integer(c_int) :: llr, ulr, irad, ilat
+  integer(c_long) :: ifun
+  integer(c_long) :: llr, ulr, irad, ilat
   complex(c_double_complex) :: faclv
 
 !  call zcopy_omp(nbas*(nfun-nfcore), wfn(1,nfcore+1), orb(1,nfcore+1))
   call zcopy(nbas*(nfun-nfcore), wfn(1,nfcore+1), 1, orb(1,nfcore+1), 1)
-! tdcis-teramura
-  !debug
-  !debug call zcopy(nbas*(nfun - nfcore_tdcis), wfn(1,nfcore_tdcis + 1), &
-  !debug            1, orb(1,nfcore_tdcis + 1), 1)
-  !debug
-! tdcis-teramura
   call bas_sph2ang1_dyn(orb, orbg)
   call hprod_fcorb(lfield, orb, orbg)
 
@@ -79,8 +70,8 @@ subroutine hprod_fcorbg(lfield, orbg)
   real(c_double), intent(in) :: lfield(1:3, 1:3)
   complex(c_double_complex), intent(out) :: orbg(1:(nrad-1), 1:nlat, 1:*)
 
-  integer(c_int) :: ifun
-  integer(c_int) :: llr, ulr, irad, ilat
+  integer(c_long) :: ifun
+  integer(c_long) :: llr, ulr, irad, ilat
   complex(c_double_complex) :: faclv
 
   if (nfcore == 0) return

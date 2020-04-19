@@ -7,11 +7,11 @@ complex(c_double_complex) function ormas_dets1(istr, jstr, ncore, nel, nela, orb
 
   implicit none
   !--------------------------------------------------------------------
-  integer(c_int), intent(in) :: istr, jstr, ncore, nel, nela, orb(0:nela, *)
+  integer(c_long), intent(in) :: istr, jstr, ncore, nel, nela, orb(0:nela, *)
   complex(c_double_complex), intent(in) :: s0(1:nel, 1:nel)
   complex(c_double_complex), intent(out) :: work(1:nel, 1:nel)
   !--------------------------------------------------------------------
-  integer(c_int) :: iel, jel, iela, jela
+  integer(c_long) :: iel, jel, iela, jela
   complex(c_double_complex), external :: util_det
 
   if (nel <= 0) then

@@ -14,7 +14,7 @@ subroutine hprod_fulldiag(wfn)
   ! ### args ###
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:*)
   ! ### local ###
-  integer(c_int) :: dim
+  integer(c_long) :: dim
   complex(c_double_complex), allocatable :: fock(:,:,:)
 
   dim = nrad - 1
@@ -46,7 +46,7 @@ subroutine hprod_fulldiag_fock1(fock)
 
   ! ### local ###
   real(c_double) :: oor, zor
-  integer(c_int) :: dim, nsub, irad, jrad, l, l2, jll, jul, ib1
+  integer(c_long) :: dim, nsub, irad, jrad, l, l2, jll, jul, ib1
 
   dim = nrad - 1
   nsub = ndvr
@@ -99,7 +99,7 @@ subroutine hprod_fulldiag_fock2j(wfn, fock)
   complex(c_double_complex), intent(in) :: wfn(1:(nrad-1), 0:lmax1, 1:*)
   complex(c_double_complex), intent(inout) :: fock(1:(nrad-1), 1:(nrad-1), 0:lmax1)
 
-  integer(c_int) :: ifun, irad, l
+  integer(c_long) :: ifun, irad, l
   complex(c_double_complex), allocatable :: rho(:)
 
   allocate(rho(1:(nrad-1)))
@@ -149,7 +149,7 @@ subroutine hprod_fulldiag_fock2k(wfn, fock)
   complex(c_double_complex), intent(in) :: wfn(1:(nrad-1), 0:lmax1, 1:*)
   complex(c_double_complex), intent(inout) :: fock(1:(nrad-1), 1:(nrad-1), 0:lmax1)
 
-  integer(c_int) :: jfun, irad, jrad, l, ll, jtype
+  integer(c_long) :: jfun, irad, jrad, l, ll, jtype
   real(c_double) :: fac
   real(c_double), external :: util_3j000
   real(c_double), parameter :: small = 1.D-15
@@ -204,12 +204,12 @@ subroutine hprod_fulldiag_poisson1(lval, d2ll, rho)
   implicit none
 
   ! ### args ###
-  integer(c_int), intent(in) :: lval
+  integer(c_long), intent(in) :: lval
   real(c_double), intent(in) :: d2ll(1:(ndvr+1), 1:(nrad-1))
   complex(c_double_complex), intent(inout) :: rho(1:(nrad-1))
 
   ! ### local ###
-  integer(c_int) :: irad, dim, nsub, ld, info
+  integer(c_long) :: irad, dim, nsub, ld, info
   real(c_double) :: r2pi, tmpr, tmpi
   real(c_double), allocatable :: rho2(:,:)
   real(c_double), allocatable :: fac1(:)   ! 4*pi / (2*l+1)
@@ -288,8 +288,8 @@ subroutine hprod_fulldiag_diag(fock)
 
   ! ### local ###
   character(len = 9), parameter :: fname = "HFOrb.dat"
-  integer(c_int), parameter :: iow = 10
-  integer(c_int) :: dim, l, ifun, irad, maxfun
+  integer(c_long), parameter :: iow = 10
+  integer(c_long) :: dim, l, ifun, irad, maxfun
   complex(c_double_complex), allocatable :: ftmp(:,:), utmp(:,:)
 
   dim = nrad - 1

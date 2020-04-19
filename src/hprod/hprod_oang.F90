@@ -31,7 +31,7 @@ subroutine hprod_oangz(den1, oangz)
   complex(c_double_complex), intent(in) :: den1(1:nact, 1:nact)
   real(c_double), intent(out) :: oangz
   !##### local #####
-  integer(c_int) :: iact, ifun
+  integer(c_long) :: iact, ifun
 
   oangz = zero
   do ifun = 1, ncore
@@ -61,8 +61,8 @@ subroutine hprod_oang2(orb, den1, den2, oang2)
   complex(c_double_complex), intent(in) :: den2(1:nact, 1:nact, 1:nact, 1:nact)
   real(c_double), intent(out) :: oang2
   !##### local #####
-  integer(c_int) :: ifun, jfun, kfun, lfun
-  integer(c_int) :: iact, jact, kact, lact
+  integer(c_long) :: ifun, jfun, kfun, lfun
+  integer(c_long) :: iact, jact, kact, lact
   real(c_double) :: m_i, m_k, oang2_core, oang2_act1, oang2_act2
   complex(c_double_complex), allocatable :: oa2(:,:) ! l^2
   complex(c_double_complex), allocatable :: oap(:,:) ! l_+

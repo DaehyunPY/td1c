@@ -9,7 +9,7 @@ subroutine wfn_orth_cic(cic)
   complex(c_double_complex), intent(inout) :: cic(1:lcic)
 
   real(c_double) :: norm
-  integer(c_int) :: idet
+  integer(c_long) :: idet
 
   if (tdcc) then
 !     write(6,"('wfn_orth_cic: cc amplitudes left unnormalized.')")
@@ -43,7 +43,7 @@ subroutine wfn_orth_orb(orb)
 
   real(c_double) :: norm
   complex(c_double_complex) :: tmp, ovlp
-  integer(c_int) :: ifun, jfun, l, mi, mj, irad
+  integer(c_long) :: ifun, jfun, l, mi, mj, irad
   real(c_double), allocatable :: bra_wrad(:)
 
 !DEBUG
@@ -185,7 +185,7 @@ subroutine wfn_orth_orb_symm(orb)
   complex(c_double_complex), intent(inout) :: orb(1:nbas, 1:nfun)
 
   complex(c_double_complex) :: tmp
-  integer(c_int) :: ifun, jfun, kfun, ibas
+  integer(c_long) :: ifun, jfun, kfun, ibas
 
   complex(c_double_complex), allocatable :: seig(:)
   complex(c_double_complex), allocatable :: smat(:,:)
@@ -327,7 +327,7 @@ subroutine wfn_orth_smat(orb, smat)
   complex(c_double_complex), intent(out) :: smat(1:nfun, 1:nfun)
   
   complex(c_double_complex) :: tmp
-  integer(c_int) :: ifun, jfun, ibas
+  integer(c_long) :: ifun, jfun, ibas
 
   write(6, "('wfn_orth_smat may include bug!')")
   stop

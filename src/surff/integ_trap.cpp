@@ -29,11 +29,11 @@ void Integ_trap::prop(const clmpi& MPIP, const clbas& Bas, const clfield& Field,
   
 #pragma omp parallel default(shared)
   {
-    int ithr = omp_get_thread_num();
-    int llk, ulk;
+    long ithr = omp_get_thread_num();
+    long llk, ulk;
     MPIP.omp_divide(ithr, 0, ksize, llk, ulk);
 
-    for(int iorb = 0; iorb < norb; ++iorb){
+    for(long iorb = 0; iorb < norb; ++iorb){
       ////////////////////////
       // omp parallelized
       ////////////////////////
@@ -46,12 +46,12 @@ void Integ_trap::prop(const clmpi& MPIP, const clbas& Bas, const clfield& Field,
 
 #pragma omp parallel default(shared)
   {
-    int ithr = omp_get_thread_num();
-    int llk, ulk;
+    long ithr = omp_get_thread_num();
+    long llk, ulk;
     MPIP.omp_divide(ithr, 0, ksize, llk, ulk);
 
-    for(int iorb = 0; iorb < norb; ++iorb){
-      for(int jorb = 0; jorb < norb; ++jorb){
+    for(long iorb = 0; iorb < norb; ++iorb){
+      for(long jorb = 0; jorb < norb; ++jorb){
 	////////////////////////
 	// omp parallelized
 	////////////////////////
@@ -65,14 +65,14 @@ void Integ_trap::prop(const clmpi& MPIP, const clbas& Bas, const clfield& Field,
 
 
 //old unparallelized
-//   for(int iorb = 0; iorb < norb; ++iorb){
+//   for(long iorb = 0; iorb < norb; ++iorb){
 //     for(int ik = 0; ik  < ksize; ik++){
 //       opes[iorb * ksize + ik] += dt * opes_dt[iorb * ksize + ik];
 //     }
 //   }
 
-//   for(int iorb = 0; iorb < norb; ++iorb){
-//     for(int jorb = 0; jorb < norb; ++jorb){
+//   for(long iorb = 0; iorb < norb; ++iorb){
+//     for(long jorb = 0; jorb < norb; ++jorb){
 //       for(int ik = 0; ik  < ksize; ik++){
 // 	opes[iorb * ksize + ik]
 // 	  += dt * tmp_opes[jorb * ksize + ik] * v2xmat[iorb * norb + jorb];

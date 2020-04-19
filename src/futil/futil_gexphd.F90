@@ -4,11 +4,11 @@ subroutine futil_gexphd(n, fac, hmat, exph)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   complex(c_double_complex), intent(in) :: fac
   complex(c_double_complex), intent(in) :: hmat(1:n, 1:n)
   complex(c_double_complex), intent(out) :: exph(1:n, 1:n)
-  integer(c_int) :: i, j, k
+  integer(c_long) :: i, j, k
   complex(c_double_complex) :: expd
   complex(c_double_complex), allocatable :: htmp(:,:)
   complex(c_double_complex), allocatable :: lvec(:,:), linv(:,:)

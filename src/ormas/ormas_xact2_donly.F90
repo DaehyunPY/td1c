@@ -21,7 +21,7 @@ subroutine ormas_xact2_donly(dtime, int1e, int2e, ene_act, cic, den1, den2, bmat
   complex(c_double_complex), intent(inout) :: dcic(1:*)
   !--------------------------------------------------------------------
   complex(c_double_complex) :: fac
-  integer(c_int) :: iact, jact
+  integer(c_long) :: iact, jact
   complex(c_double_complex), allocatable :: bact(:,:) ! rhs: B = FD - DF*
 
   allocate(bact(1:nact, 1:nact))
@@ -94,7 +94,7 @@ subroutine ormas_xact2x_donly(dtime, cic, den1, den2, bmat)
   complex(c_double_complex), intent(in) :: den2(1:nact, 1:nact, 1:nact, 1:nact)
   complex(c_double_complex), intent(inout) :: bmat(1:nact, 1:nact)
   !--------------------------------------------------------------------
-  integer(c_int) :: iact, jact, irot
+  integer(c_long) :: iact, jact, irot
   real(c_double) :: bnorm, anorm, bmax
   complex(c_double_complex), allocatable :: amat(:,:) ! coefficient matrix
   complex(c_double_complex), allocatable :: bvec(:)   ! r.h.s
@@ -151,7 +151,7 @@ subroutine ormas_xact2x_donly_amat(cic, den1, den2, amat, anorm)
   real(c_double), intent(out) :: anorm
   !--------------------------------------------------------------------
   complex(c_double_complex), allocatable :: amat0(:,:,:,:)
-  integer(c_int) :: iact, jact, kact, lact, irot, jrot
+  integer(c_long) :: iact, jact, kact, lact, irot, jrot
   complex(c_double_complex) :: tmp
 
   allocate(amat0(1:nact, 1:nact, 1:nact, 1:nact))
@@ -225,7 +225,7 @@ subroutine ormas_xact2x_donly_bvec(dtime, bmat, bvec, bnorm)
   complex(c_double), intent(out) :: bvec(1:nrotaa)
   real(c_double), intent(out) :: bnorm
   !--------------------------------------------------------------------
-  integer(c_int) :: iact, jact, irot
+  integer(c_long) :: iact, jact, irot
   complex(c_double_complex) :: tfac
 
   if (icomp == 1) then

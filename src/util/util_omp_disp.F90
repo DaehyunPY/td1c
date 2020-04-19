@@ -4,12 +4,12 @@ subroutine util_omp_disp(ll, ul, llp, ulp)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: ll, ul
-  integer(c_int), intent(out) :: llp, ulp
+  integer(c_long), intent(in) :: ll, ul
+  integer(c_long), intent(out) :: llp, ulp
   ! local
-  integer(c_int) :: ndata, ndpp, iproc, nproc
-  integer(c_int), external :: omp_get_num_threads
-  integer(c_int), external :: omp_get_thread_num
+  integer(c_long) :: ndata, ndpp, iproc, nproc
+  integer, external :: omp_get_num_threads
+  integer, external :: omp_get_thread_num
 
   iproc = omp_get_thread_num()
   nproc = omp_get_num_threads()
@@ -44,10 +44,10 @@ subroutine util_omp_disp_top(iproc, nproc, ll, ul, llp, ulp)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: iproc, nproc, ll, ul
-  integer(c_int), intent(out) :: llp, ulp
+  integer(c_long), intent(in) :: iproc, nproc, ll, ul
+  integer(c_long), intent(out) :: llp, ulp
   ! local
-  integer(c_int) :: ndata, ndpp
+  integer(c_long) :: ndata, ndpp
 
   ndata = ul - ll + 1
   ndpp = ndata / nproc

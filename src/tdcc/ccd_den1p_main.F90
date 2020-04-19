@@ -1,7 +1,6 @@
 !**********************************************************
 subroutine ccd_den1p_main(den)
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas, only : nact
   use mod_cc, only : cc_code
   use mod_cc2

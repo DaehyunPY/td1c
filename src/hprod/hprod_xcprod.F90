@@ -14,11 +14,11 @@ subroutine hprod_xcprod(dofc, wfn, hwfn)
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 1:nlat, 1:nfun)
   complex(c_double_complex), intent(inout) :: hwfn(1:(nrad-1), 1:nlat, 1:nfun)
 
-  integer(c_int) :: lll, ull, iproc
-  integer(c_int) :: ifun, ilat, irad
+  integer(c_long) :: lll, ull, iproc
+  integer(c_long) :: ifun, ilat, irad
   real(c_double), allocatable :: rho1(:,:)
   real(c_double), allocatable :: v2xc(:,:)
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_iproc
   
   allocate(rho1(1:(nrad-1), 1:nlat))
   allocate(v2xc(1:(nrad-1), 1:nlat))

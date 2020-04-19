@@ -23,7 +23,7 @@ void print_date(){
 	 pnow->tm_min, 
 	 pnow->tm_sec);
 
-//  sprintf(buff,"%d:%d:%d",pnow->tm_hour,pnow->tm_min,pnow->tm_sec);
+//  sprintf(buff,"%ld:%ld:%ld",pnow->tm_hour,pnow->tm_min,pnow->tm_sec);
 //  printf("\n########\n");
 //  printf(buff);
 //  printf("\n########\n");
@@ -34,7 +34,7 @@ void print_date(){
 //  typedef boost::date_time::c_local_adjustor<pt::ptime> local_adj;
 //  auto epoch = local_adj::utc_to_local(pt::ptime(gg::date(1970, 1, 1)));
 //
-//  auto facet = new pt::time_facet("%Y-%m-%d %H:%M:%S");
+//  auto facet = new pt::time_facet("%Y-%m-%ld %H:%M:%S");
 //  std::stringstream ss;
 //  ss.imbue(std::locale(std::cout.getloc(), facet));
 //        

@@ -1,7 +1,6 @@
 !######################################################################
 subroutine tdcc_hcc12(int1e, int2e, cic, hcic)
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas, only :nact,lcic
   use mod_cc, only : norb1,cc_rank,tonly,dot1,optcc,bcc,optbcc,fock,int2x
   use mod_cc, only : t0inp,g0inp,t1inp,g1inp,t2inp,g2inp,t3inp,g3inp

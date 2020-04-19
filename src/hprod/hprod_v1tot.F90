@@ -15,7 +15,7 @@ subroutine hprod_v1tot(dtime, lfield, wfn, cic, hwfn, hcic)
   complex(c_double_complex), intent(inout) :: hwfn(1:nbas, 1:nfun)
   complex(c_double_complex), intent(inout) :: hcic(1:lcic)
 
-  integer(c_int) :: ifun
+  integer(c_long) :: ifun
   complex(c_double_complex) :: zfield, tfac
 
   zfield = lfield(3, 1)
@@ -28,10 +28,6 @@ subroutine hprod_v1tot(dtime, lfield, wfn, cic, hwfn, hcic)
   else
      call hprod_pzprod_dyn(zfield, wfn, hwfn)
   end if
-
-!  if (projhigh) then
-!     call hprod_projhigh(hwfn)
-!  end if
 
   ! sigma vector
   call hprod_v1tot_mkint1(wfn, hwfn, int1e)
@@ -65,11 +61,11 @@ subroutine hprod_v1tot_mkint1(wfn, hwfn, int1e)
   complex(c_double_complex), intent(in) :: hwfn(1:nbas, 1:nfun)
   complex(c_double_complex), intent(out) :: int1e(1:nact, 1:nact)
 
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
   complex(c_double_complex) :: tmp
   complex(c_double_complex), allocatable :: int1p(:,:,:)
-  integer(c_int) :: nproc, iproc, iact, jact, ifun, jfun, ibas, llb, ulb
+  integer(c_long) :: nproc, iproc, iact, jact, ifun, jfun, ibas, llb, ulb
 
   nproc = util_omp_nproc()
   int1e(1:nact, 1:nact) = czero

@@ -11,7 +11,6 @@ subroutine tdcc_final()
   use mod_cc, only : fock,int2x,den1s,den2s,den1_noref,den2_noref
   use mod_cc, only : t1inp,g1inp,t2inp,g2inp,t3inp,g3inp,dt1inp,dg1inp,dt2inp,dg2inp,dt3inp,dg3inp
   use mod_cc, only : t1out,g1out,t2out,g2out,t3out,g3out,dt1out,dg1out,dt2out,dg2out,dt3out,dg3out
-  use mod_cc, only : aiX,ijX,abX
   use mod_cc2
   
   implicit none
@@ -22,10 +21,6 @@ subroutine tdcc_final()
   deallocate(den2s)
   deallocate(den1_noref)
   deallocate(den2_noref)
-
-  deallocate(aiX)
-  deallocate(ijX)
-  deallocate(abX)
 
   deallocate(cc_work1)
   deallocate(cc_work2)

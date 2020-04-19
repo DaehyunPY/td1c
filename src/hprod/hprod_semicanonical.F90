@@ -14,14 +14,14 @@ subroutine hprod_semicanonical(wfn)
   complex(c_double_complex) :: fock(1:nact,1:nact)
   complex(c_double_complex) :: umat(1:nact,1:nact)
   real(c_double) :: lfield(1:9) = zero
-  integer(c_int) :: iact,jact,kact,ifun,jfun,ibas
+  integer(c_long) :: iact,jact,kact,ifun,jfun,ibas
 
   if (nact==0 .or. nelact(3)<=1) return
 
   call hprod_htot_init
   call hprod_orbin(lfield, wfn, orb, orbg)
   call hprod_tprod_dyn(orb, h0orb)
-  if (PSP) call hprod_projpp(runit, lfield, orb, h0orb)
+  if (PSP) call hprod_projpp(runit, orb, h0orb)
   if (neltot(3) >= 2) then
      if (.not.exact3j) then
         call hprod_mkrho2_dyn

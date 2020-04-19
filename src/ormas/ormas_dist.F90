@@ -9,7 +9,7 @@ subroutine ormas_dist()
   use mod_ormas, only : dist, dist_alph, dist_beta
 
   implicit none
-  integer(c_int) :: isub, idist
+  integer(c_long) :: isub, idist
 
 !old  call ormas_dist_itr(.false., nelact(1), nsub, min_sub_alph, max_sub_alph, ndist_alph)
 !old  call ormas_dist_itr(.false., nelact(2), nsub, min_sub_beta, max_sub_beta, ndist_beta)
@@ -32,6 +32,20 @@ subroutine ormas_dist()
   call ormas_dist_itr(nelact(3), nsub, min_sub, max_sub, ndist, dist)
 
   if (iprint > 0) then
+!     write(6, "('# ORMAS: distribution', i5)") ndist
+!     write(6, "(10x)", advance = 'no')
+!     do isub = 1, nsub
+!        write(6, "(i10)", advance = 'no') isub
+!     end do
+!     write(6, *)
+!     do idist = 1, ndist
+!        write(6, "(i10)", advance = 'no') idist
+!        do isub = 1, nsub
+!           write(6, "(i10)", advance = 'no') dist(isub, idist)
+!        end do
+!        write(6, *)
+!     end do
+
      write(6, "('# ORMAS: alpha-distribution', i5)") ndist_alph
      write(6, "(10x)", advance = 'no')
      do isub = 1, nsub
@@ -70,19 +84,16 @@ subroutine ormas_dist_ndist(nel, nsub, min_sub, max_sub, ndist)
   use mod_ormas, only : iprint
 
   implicit none
-  integer(c_int), intent(in) :: nel, nsub, min_sub(1:*), max_sub(1:*)
-  integer(c_int), intent(out) :: ndist
+  integer(c_long), intent(in) :: nel, nsub, min_sub(1:*), max_sub(1:*)
+  integer(c_long), intent(out) :: ndist
 
   logical :: getnew
-  integer(c_int) :: isub, nel_dyn, rest
-  integer(c_int), allocatable :: max_dyn(:)
-  integer(c_int), allocatable :: dist1(:)
-  integer(c_int), allocatable :: dist1_dyn(:)
-  logical(c_bool), external :: ormas_dist_chk_dplus
+  integer(c_long) :: isub, nel_dyn, rest
+  integer(c_long), allocatable :: max_dyn(:)
+  integer(c_long), allocatable :: dist1(:)
 
   allocate(max_dyn(1:nsub))
   allocate(dist1(1:nsub))
-  allocate(dist1_dyn(1:nsub))
 
   ! dynamical boundaries
   nel_dyn = nel
@@ -93,24 +104,22 @@ subroutine ormas_dist_ndist(nel, nsub, min_sub, max_sub, ndist)
 
   ! first distribution
   rest = nel_dyn
-  dist1_dyn(1) = min(max_dyn(1), rest)
+  dist1(1) = min(max_dyn(1), rest)
   do isub = 2, nsub
-     rest = rest - dist1_dyn(isub - 1)
-     dist1_dyn(isub) = min(max_dyn(isub), rest)
+     rest = rest - dist1(isub - 1)
+     dist1(isub) = min(max_dyn(isub), rest)
   end do
 
   ! recursive search of possible distributions
   ndist = 0
   getnew = .true.
   do while(getnew)
-     dist1(1:nsub) = dist1_dyn(1:nsub) + min_sub(1:nsub)
-     if (ormas_dist_chk_dplus(nel,min_sub,max_sub,dist1)) ndist = ndist + 1   
-     call ormas_dist_next(nel_dyn, nsub, max_dyn, getnew, dist1_dyn)
+     ndist = ndist + 1
+     call ormas_dist_next(nel_dyn, nsub, max_dyn, getnew, dist1)
   end do
 
-  deallocate(dist1_dyn)
-  deallocate(dist1)
   deallocate(max_dyn)
+  deallocate(dist1)
 
 end subroutine ormas_dist_ndist
 !################################################################################
@@ -121,20 +130,17 @@ subroutine ormas_dist_itr(nel, nsub, min_sub, max_sub, ndist, dist)
   use mod_ormas, only : iprint
 
   implicit none
-  integer(c_int), intent(in) :: nel, nsub, min_sub(1:*), max_sub(1:*)
-  integer(c_int), intent(out) :: ndist
-  integer(c_int), intent(out) :: dist(1:nsub, 1:*)
+  integer(c_long), intent(in) :: nel, nsub, min_sub(1:*), max_sub(1:*)
+  integer(c_long), intent(out) :: ndist
+  integer(c_long), intent(out) :: dist(1:nsub, 1:*)
 
   logical :: getnew
-  integer(c_int) :: isub, nel_dyn, rest
-  integer(c_int), allocatable :: max_dyn(:)
-  integer(c_int), allocatable :: dist1(:)
-  integer(c_int), allocatable :: dist1_dyn(:)
-  logical(c_bool), external :: ormas_dist_chk_dplus
+  integer(c_long) :: isub, nel_dyn, rest
+  integer(c_long), allocatable :: max_dyn(:)
+  integer(c_long), allocatable :: dist1(:)
 
   allocate(max_dyn(1:nsub))
   allocate(dist1(1:nsub))
-  allocate(dist1_dyn(1:nsub))
 
   ! dynamical boundaries
   nel_dyn = nel
@@ -145,27 +151,23 @@ subroutine ormas_dist_itr(nel, nsub, min_sub, max_sub, ndist, dist)
 
   ! first distribution
   rest = nel_dyn
-  dist1_dyn(1) = min(max_dyn(1), rest)
+  dist1(1) = min(max_dyn(1), rest)
   do isub = 2, nsub
-     rest = rest - dist1_dyn(isub - 1)
-     dist1_dyn(isub) = min(max_dyn(isub), rest)
+     rest = rest - dist1(isub - 1)
+     dist1(isub) = min(max_dyn(isub), rest)
   end do
 
   ! recursive search of possible distributions
   ndist = 0
   getnew = .true.
   do while(getnew)
-     dist1(1:nsub) = dist1_dyn(1:nsub) + min_sub(1:nsub)
-     if (ormas_dist_chk_dplus(nel,min_sub,max_sub,dist1)) then
-        ndist = ndist + 1
-        dist(1:nsub, ndist) = dist1(1:nsub)
-     end if
-     call ormas_dist_next(nel_dyn, nsub, max_dyn, getnew, dist1_dyn)
+     ndist = ndist + 1
+     dist(1:nsub, ndist) = dist1(1:nsub) + min_sub(1:nsub)
+     call ormas_dist_next(nel_dyn, nsub, max_dyn, getnew, dist1)
   end do
 
-  deallocate(dist1_dyn)
-  deallocate(dist1)
   deallocate(max_dyn)
+  deallocate(dist1)
 
 end subroutine ormas_dist_itr
 !################################################################################
@@ -176,11 +178,11 @@ subroutine ormas_dist_next(nel, nsub, max_sub, getnew, dist)
   use mod_ormas, only : iprint
 
   implicit none
-  integer(c_int), intent(in) :: nel, nsub, max_sub(1:nsub)
+  integer(c_long), intent(in) :: nel, nsub, max_sub(1:nsub)
   logical, intent(inout) :: getnew
-  integer(c_int), intent(inout) :: dist(1:nsub)
+  integer(c_long), intent(inout) :: dist(1:nsub)
 
-  integer(c_int) :: isub, jsub, ksub, rest
+  integer(c_long) :: isub, jsub, ksub, rest
 
   getnew = .false.
   do isub = nsub, 1, -1
@@ -202,102 +204,4 @@ subroutine ormas_dist_next(nel, nsub, max_sub, getnew, dist)
   end do
 
 end subroutine ormas_dist_next
-!################################################################################
-logical(c_bool) function ormas_dist_chk_dplus(nel, min_sub, max_sub, dist)
-
-  use, intrinsic :: iso_c_binding
-  use mod_ormas, only : iprint,dplus,dplus_type
-
-  implicit none
-  integer(c_int), intent(in) :: nel, min_sub(1:*), max_sub(1:*)
-  integer(c_int), intent(in) :: dist(1:*)
-
-  logical(c_bool) :: check
-!old  integer(c_int) :: dist1, dist2, dist3, dist4
-
-  check = .true.
-  if (.not.dplus .or. dplus_type < 0) then
-     continue
-  else if (dplus_type == 0) then
-     if ((dist(1)+dist(2).lt.nel-2 .and. dist(1).ne.max_sub(1)) .or. &
-         (dist(3)+dist(4).gt.2 .and. dist(4).ne.0)) check = .false.
-  else if (dplus_type == 1) then
-     if (dist(2)+dist(3).gt.2 .and. dist(3).ne.0) check = .false.
-  else if (dplus_type == 2) then
-     if (dist(1)+dist(2).lt.nel-2 .and. dist(1).ne.max_sub(1)) check = .false.
-  end if
-!old  if (.not.dplus) then
-!old     continue
-!old  else if (dplus_type == 0) then
-!old     dist1 = dist(1) + min_sub(1)
-!old     dist2 = dist(2) + min_sub(2)
-!old     dist3 = dist(3) + min_sub(3)
-!old     dist4 = dist(4) + min_sub(4)
-!old     if ((dist1+dist2.lt.nel-2 .and. dist1.ne.max_sub(1)) .or. &
-!old         (dist3+dist4.gt.2 .and. dist4.ne.0)) check = .false.
-!old  else if (dplus_type == 1) then
-!old     dist2 = dist(2) + min_sub(2)
-!old     dist3 = dist(3) + min_sub(3)
-!old     if (dist2+dist3.gt.2 .and. dist3.ne.0) check = .false.
-!old  else if (dplus_type == 2) then
-!old     dist1 = dist(1) + min_sub(1)
-!old     dist2 = dist(2) + min_sub(2)
-!old     if (dist1+dist2.lt.nel-2 .and. dist1.ne.max_sub(1)) check = .false.
-!old  end if
-
-  ormas_dist_chk_dplus = check
-  return
-
-end function ormas_dist_chk_dplus
-!################################################################################
-integer(c_int) function ormas_dist_type_dplus(nel, min_sub, max_sub, dist)
-!
-! type = -1 for Dplus violating term
-! type = +1 for |0,-3|3,0>
-! type = +2 for |-3|3,0>
-! type = +3 for |0,-3|3>
-! type =  0 otherwise
-!
-  use, intrinsic :: iso_c_binding
-  use mod_ormas, only : iprint,dplus,dplus_type
-
-  implicit none
-  integer(c_int), intent(in) :: nel, min_sub(1:*), max_sub(1:*)
-  integer(c_int), intent(in) :: dist(1:*)
-
-  integer(c_int) :: type
-!old  integer(c_int) :: dist2, dist3
-  logical(c_bool), external :: ormas_dist_chk_dplus
-
-  type = 0
-  if (.not.dplus .or. dplus_type < 0) then
-     continue
-  else if (.not.ormas_dist_chk_dplus(nel,min_sub,max_sub,dist)) then
-     type = -1
-  else if (dplus_type == 0) then
-     if (dist(3).gt.2) type = 1
-  else if (dplus_type == 1) then
-     if (dist(2).gt.2) type = 1
-  else if (dplus_type == 2) then
-     if (dist(3).gt.2) type = 1
-  end if
-!old  if (.not.dplus) then
-!old     continue
-!old  else if (.not.ormas_dist_chk_dplus(nel,min_sub,max_sub,dist)) then
-!old     type = -1
-!old  else if (dplus_type == 0) then
-!old     dist3 = dist(3) + min_sub(3)
-!old     if (dist3.gt.2) type = 1
-!old  else if (dplus_type == 1) then
-!old     dist2 = dist(2) + min_sub(2)
-!old     if (dist2.gt.2) type = 1
-!old  else if (dplus_type == 2) then
-!old     dist3 = dist(3) + min_sub(3)
-!old     if (dist3.gt.2) type = 1
-!old  end if
-
-  ormas_dist_type_dplus = type
-  return
-
-end function ormas_dist_type_dplus
 !################################################################################

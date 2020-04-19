@@ -10,7 +10,7 @@ subroutine hprod_trans(umat, wfn, twfn)
   complex(c_double_complex), intent(in) :: umat(1:nact, 1:nact)
   complex(c_double_complex), intent(in) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: twfn(1:(nrad-1), 0:lmax1, 1:nfun)
-  integer(c_int) :: rdim, llr, ulr
+  integer(c_long) :: rdim, llr, ulr
 
   rdim = nrad - 1
   !$omp parallel default(shared) private(llr, ulr)
@@ -32,12 +32,12 @@ subroutine hprod_transp(umat, wfn, twfn, llr, ulr)
   use mod_const, only : czero, ctwo
 
   implicit none
-  integer(c_int), intent(in) :: llr, ulr
+  integer(c_long), intent(in) :: llr, ulr
   complex(c_double_complex), intent(in) :: umat(1:nact, 1:nact)
   complex(c_double_complex), intent(in) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: twfn(1:(nrad-1), 0:lmax1, 1:nfun)
 
-  integer(c_int) :: ifun, jfun, iact, jact, l, m, irad
+  integer(c_long) :: ifun, jfun, iact, jact, l, m, irad
 
   twfn(llr:ulr, 0:lmax1, 1:nfun) = czero
 

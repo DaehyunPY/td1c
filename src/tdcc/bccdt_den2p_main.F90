@@ -1,7 +1,6 @@
 !**********************************************************
 subroutine bccdt_den2p_main(den)
 
-  use, intrinsic :: iso_c_binding
   use mod_bas, only : smul
   use mod_ormas,only : nact,den2_abonly,nelact
   use mod_cc,only : cc_code

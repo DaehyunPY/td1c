@@ -1,7 +1,6 @@
 !######################################################################
 subroutine tdcc_mkint2x(int2e,int2x)
 
-  use, intrinsic :: iso_c_binding
   use mod_bas,only : smul
   use mod_ormas,only : nact,nelact
 
@@ -9,7 +8,7 @@ subroutine tdcc_mkint2x(int2e,int2x)
   complex(kind(0d0)),intent(in) :: int2e(1:nact,1:nact,1:nact,1:nact)
   complex(kind(0d0)),intent(out) :: int2x(1:nact,1:nact,1:nact,1:nact,1:6)
 
-  integer(c_int) :: iact,jact,kact,lact
+  integer :: iact,jact,kact,lact
 
   int2x = 0d0
   if (nelact(1)>=2) then

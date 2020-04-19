@@ -1,8 +1,6 @@
 !     subroutine hprod_xc_ldax (ideriv,npt,rhoa1,sigmaaa1,zk,vrhoa,vsigmaaa,v2rhoa2,v2rhoasigmaaa,v2sigmaaa2)
       subroutine hprod_xc_ldax (ideriv,npt,rhoa1,zk,vrhoa)
 
-      use, intrinsic :: iso_c_binding
-!
 !     P.A.M. Dirac
 !     Proceedings of the Cambridge Philosophical Society, 26 (1930) 376
 !
@@ -31,7 +29,7 @@
 !        Comp. Phys. Comm. 136 (2001) 310-318.
 !
       implicit real*8 (a-h,o-z)
-      integer(c_int) ideriv,npt
+      integer ideriv,npt
       real*8 rhoa1(npt)
 !SATO real*8 sigmaaa1(npt)
       real*8 zk(npt),vrhoa(npt) !SATO,vsigmaaa(npt)

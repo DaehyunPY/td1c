@@ -7,7 +7,6 @@ subroutine ccd_ene_1(i0)
 
 ! i0 ( )_vt + = +1/4 * Sum ( h3 h4 p1 p2 ) * t ( p1 p2 h3 h4 )_t * v ( h3 h4 p1 p2 )_v 0
 
-  use, intrinsic :: iso_c_binding
   use mod_const, only : czero, runit
   use mod_ormas, only : nact
   use mod_cc, only : norb1,t2inp
@@ -15,11 +14,11 @@ subroutine ccd_ene_1(i0)
 
   implicit none
   complex(kind(0d0)), intent(inout) :: i0
-  integer(c_int) :: h3, h4, p1, p2, sh3, sh4, sp1, sp2
-  integer(c_int) :: spin_t2inp
-  integer(c_int) :: spin_int2x
-  integer(c_int), external :: tdcc_spin_t2inp
-  integer(c_int), external :: tdcc_spin_int2x
+  integer :: h3, h4, p1, p2, sh3, sh4, sp1, sp2
+  integer :: spin_t2inp
+  integer :: spin_int2x
+  integer, external :: tdcc_spin_t2inp
+  integer, external :: tdcc_spin_int2x
   complex(kind(0d0)), parameter :: fact = +1.0d+0 / 4.0d+0 * runit
 
   do sh3 = 1, 2
@@ -50,7 +49,6 @@ end subroutine ccd_ene_1
 !**********************************************************
 complex(kind(0d0)) function ccd_ene_main()
 
-  use, intrinsic :: iso_c_binding
   use mod_const, only : czero
 
   implicit none

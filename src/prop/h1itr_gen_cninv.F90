@@ -14,12 +14,12 @@ subroutine h1itr_gen_cninv(icomp, dtime, cnpiv, cninv)
   use mod_bas, only : tmat
 
   implicit none
-  integer(c_int), intent(in) :: icomp
+  integer(c_long), intent(in) :: icomp
   real(c_double), intent(in) :: dtime
-  integer(c_int), intent(out) :: cnpiv(1:(nrad-1), 0:lmax1)
+  integer(c_long), intent(out) :: cnpiv(1:(nrad-1), 0:lmax1)
   complex(c_double_complex), intent(out) :: cninv(1:(3*ndvr+1), 1:(nrad-1), 0:lmax1)
 
-  integer(c_int) :: irad, jrad, l, jll, jul, jb1, jb2, dim, ld2, info
+  integer(c_long) :: irad, jrad, l, jll, jul, jb1, jb2, dim, ld2, info
   complex(c_double_complex) :: fac
 
   !DEBUG
@@ -77,13 +77,13 @@ subroutine h1itr_gen_cninv2(icomp, dtime, cnpiv, cninv)
   use mod_bas, only : tmat
 
   implicit none
-  integer(c_int), intent(in) :: icomp
+  integer(c_long), intent(in) :: icomp
   real(c_double), intent(in) :: dtime
-  integer(c_int), intent(out) :: cnpiv(1:(nrad-1), 0:lmax1)
+  integer(c_long), intent(out) :: cnpiv(1:(nrad-1), 0:lmax1)
   complex(c_double_complex), intent(out) :: cninv(1:(3*ndvr+1), 1:(nrad-1), 0:lmax1)
 
 
-  integer(c_int) :: irad, jrad, l, jll, jul, jb1, jb2, dim, ld2, info
+  integer(c_long) :: irad, jrad, l, jll, jul, jb1, jb2, dim, ld2, info
   complex(c_double_complex) :: fac
 
   dim = nrad - 1

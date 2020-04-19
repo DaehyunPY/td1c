@@ -4,25 +4,20 @@ subroutine hprod_init()
   use, intrinsic :: iso_c_binding
   use mod_rad, only : nrad
   use mod_sph, only : nlat, lmax1, lmax2
-  use mod_control, only : istdcis, tdcis_rvg
   use mod_ormas, only : nact, nfun, lcic
   use mod_hprod, only : orb, torb, h0orb, h1orb, v2orb, gorb
   use mod_hprod, only : orbg, torbg, h0orbg, h1orbg, v2orbg, gorbg
   use mod_hprod, only : orb0, rhofc, v2jfc, v2xfc, rho1, rho2, v2sph, v2ang, cic, dcic, cic0
   use mod_hprod, only : ovlp, fmat, bmat, xmat, int1e, int2e, den1, rden, rrden, den2, den2r
   use mod_hprod, only : orbe, gorbe, v2orbe, v2ange, orbo, gorbo, v2orbo, v2ango, rho23j, v2sph3j, torb3j
-! tdcis-teramura
-  use mod_hprod, only : tdcis_eig, h1orb0, orb0rot, orb0rotg, v2ang0, &
-       ridm_tdcis, ezphi, h0orb0
-! tdcis-teramura
-
+!not here but @ hprod_getprojhigh  use mod_hprod, only : projhigh, projhigh_orbs, projhigh_eigs
 ! Sato_ECS
   use mod_rad, only : ecs_flag
   use mod_hprod, only : h0orb_out, h1orb_out
 ! Sato_ECS
 
   implicit none
-  integer(c_int) :: numx
+  integer(c_long) :: numx
 
   allocate(orb(1:(nrad-1),0:lmax1,1:nfun))
   allocate(torb(1:(nrad-1),0:lmax1,1:nfun))
@@ -48,27 +43,17 @@ subroutine hprod_init()
   allocate(dcic(1:lcic))
   allocate(cic0(1:lcic))
 
-! tdcis-teramura
-  if (istdcis) then
-     allocate(tdcis_eig(1:nfun))
-     allocate(h0orb0(1:(nrad-1),0:lmax1,1:nfun))
-     allocate(h1orb0(1:(nrad-1),0:lmax1,1:nfun))
-     allocate(orb0rot(1:(nrad-1),0:lmax1,1:nfun))
-     allocate(orb0rotg(1:(nrad-1),1:nlat,1:nfun))
-     allocate(v2ang0(1:(nrad-1),1:nlat, 1:nfun,1:nfun))
-     allocate(ridm_tdcis(1:nfun,1:nfun))
-     if (tdcis_rvg) then 
-        allocate(ezphi(1:(nrad-1),0:lmax1,1:nfun))
-     end if
-  end if
-! tdcis-teramura
-
 ! Sato_ECS
   if (ecs_flag == 1) then
      allocate(h0orb_out(1:(nrad-1),0:lmax1,1:nfun))
      allocate(h1orb_out(1:(nrad-1),0:lmax1,1:nfun))
   end if
 ! Sato_ECS
+
+!not here but @ hprod_getprojhigh  if (projhigh) then
+!not here but @ hprod_getprojhigh     allocate(projhigh_orbs(1:(nrad-1),1:(nrad-1),0:lmax1))
+!not here but @ hprod_getprojhigh     allocate(projhigh_eigs(1:(nrad-1),0:lmax1))
+!not here but @ hprod_getprojhigh  end if
 
 ! ##### 3j selection rule #####
   !if (exact3j) then

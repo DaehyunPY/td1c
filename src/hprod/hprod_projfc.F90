@@ -15,9 +15,9 @@ subroutine hprod_projfc(inner, wfn, hwfn)
   complex(c_double_complex), intent(in) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(inout) :: hwfn(1:(nrad-1), 0:lmax1, 1:nfun)
 
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
-  integer(c_int) :: nproc, iproc, llr, ulr
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
+  integer(c_long) :: nproc, iproc, llr, ulr
   complex(c_double_complex), allocatable :: fmatp(:,:,:)
 
   nproc = util_omp_nproc()
@@ -85,13 +85,13 @@ subroutine hprod_projfcp_fmat(wfn, hwfn, fmat, llr, ulr)
   use mod_ormas, only : nfcore, nfun
 
   implicit none
-  integer(c_int), intent(in) :: llr, ulr
+  integer(c_long), intent(in) :: llr, ulr
   complex(c_double_complex), intent(in) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(in) :: hwfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(inout) :: fmat(1:nfun, 1:nfun)
 
   complex(c_double_complex) :: tmp
-  integer(c_int) :: ifun, jfun, l, irad
+  integer(c_long) :: ifun, jfun, l, irad
 
   do ifun = 1, nfcore
      do jfun = 1, nfun
@@ -121,11 +121,11 @@ subroutine hprod_projfcp_proj(inner, wfn, fmat, hwfn, llr, ulr)
 
   implicit none
   logical, intent(in) :: inner
-  integer(c_int), intent(in) :: llr, ulr
+  integer(c_long), intent(in) :: llr, ulr
   complex(c_double_complex), intent(in) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(in) :: fmat(1:nfun, 1:nfun)
   complex(c_double_complex), intent(inout) :: hwfn(1:(nrad-1), 0:lmax1, 1:nfun)
-  integer(c_int) :: l, irad, ifun, jfun
+  integer(c_long) :: l, irad, ifun, jfun
 
   if (.not. inner) then
      do ifun = 1, nfun
@@ -171,9 +171,9 @@ subroutine hprod_projfc2(inner, wfn, hwfn)
   complex(c_double_complex), intent(in) :: wfn(1:nbas, 1:nfun)
   complex(c_double_complex), intent(inout) :: hwfn(1:nbas, 1:nfun)
 
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
-  integer(c_int) :: nproc, iproc, llr, ulr
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
+  integer(c_long) :: nproc, iproc, llr, ulr
   complex(c_double_complex), allocatable :: fmatp(:,:,:)
 
   nproc = util_omp_nproc()
@@ -239,13 +239,13 @@ subroutine hprod_projfc2p_fmat(wfn, hwfn, fmat, llr, ulr)
   use mod_ormas, only : nfcore, nfun
 
   implicit none
-  integer(c_int), intent(in) :: llr, ulr
+  integer(c_long), intent(in) :: llr, ulr
   complex(c_double_complex), intent(in) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(in) :: hwfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(inout) :: fmat(1:nfun, 1:nfun)
 
   complex(c_double_complex) :: tmp
-  integer(c_int) :: ifun, jfun, l, irad
+  integer(c_long) :: ifun, jfun, l, irad
 
   do ifun = 1, nfcore
 !    do jfun = nfcore + 1, nfun
@@ -278,11 +278,11 @@ subroutine hprod_projfc2p_proj(inner, wfn, fmat, hwfn, llr, ulr)
 
   implicit none
   logical, intent(in) :: inner
-  integer(c_int), intent(in) :: llr, ulr
+  integer(c_long), intent(in) :: llr, ulr
   complex(c_double_complex), intent(in) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(in) :: fmat(1:nfun, 1:nfun)
   complex(c_double_complex), intent(inout) :: hwfn(1:(nrad-1), 0:lmax1, 1:nfun)
-  integer(c_int) :: ifun, jfun, l, irad
+  integer(c_long) :: ifun, jfun, l, irad
 
   if (.not. inner) then
      do ifun = 1, nfun

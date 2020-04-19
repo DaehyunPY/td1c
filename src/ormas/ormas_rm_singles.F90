@@ -9,7 +9,7 @@ subroutine ormas_rm_singles(cic)
 
   implicit none
   complex(c_double_complex), intent(inout) :: cic(1:lcic)
-  integer(c_int) :: istr, jstr, ifun, jfun
+  integer(c_long) :: istr, jstr, ifun, jfun
 
   if (nact == 0) return
   if (.not. ormas_donly) return

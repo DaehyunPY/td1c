@@ -2,8 +2,8 @@
 // ETD-RK4
 ////////////////////////////////////////////////////////////////////////
 #include "td1c.hpp"
-int cletdrk4::max_dim_numer = 8;
-int cletdrk4::max_dim_denom = 3;
+long cletdrk4::max_dim_numer = 8;
+long cletdrk4::max_dim_denom = 3;
 ////////////////////////////////////////////////////////////////////////
 cletdrk4::cletdrk4()
 {
@@ -27,8 +27,8 @@ void cletdrk4::gen(const clmpi& MPIP, const clio& IO, const clbas& Bas,
   etd_dt1 = Field.dtime;
   etd_dt2 = Field.dtime * HALF;
 
-  IO.read_info("etd_dim_numer", 2, dim_numer);
-  IO.read_info("etd_dim_denom", 2, dim_denom);
+  IO.read_info("etd_dim_numer", (long) 2, dim_numer);
+  IO.read_info("etd_dim_denom", (long) 2, dim_denom);
   IO.read_info("etd_pade_old", false, pade_old);
 
   gen_exp(MPIP, IO, Bas);
@@ -205,7 +205,7 @@ void cletdrk4::gen_exp(const clmpi& MPIP, const clio& IO, const clbas& Bas)
 
     exp_d1[0] = +dfac;
     exp_d0[0] = -dfac * roots[0];
-    for (int idim = 1; idim < dim_denom; idim ++) {
+    for (long idim = 1; idim < dim_denom; idim ++) {
       exp_d1[idim] = +RUNIT;
       exp_d0[idim] = -roots[idim];
     }
@@ -227,14 +227,14 @@ void cletdrk4::gen_exp(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   cd1 = exp_d1;
   tfac = tunit * etd_dt1;
   ttmp = RUNIT; // BE CAREFUL!
-  for (int inumer = 0; inumer <= dim_numer; inumer ++) {
+  for (long inumer = 0; inumer <= dim_numer; inumer ++) {
     cn[inumer] *= ttmp;
     ttmp *= tunit;
   }
-  for (int idenom = 0; idenom < dim_denom; idenom ++) {
+  for (long idenom = 0; idenom < dim_denom; idenom ++) {
     cd1[idenom] *= tfac;
   }
-  exp1.gen(MPIP, IO, Bas, etd_dt1, -1, dim_numer, dim_denom, cn, cd0, cd1);
+  exp1.gen(MPIP, IO, Bas, etd_dt1, (long) -1, dim_numer, dim_denom, cn, cd0, cd1);
 
   // ##### exp(-i*h*dt/2) #####
   cn = exp_n;
@@ -242,20 +242,20 @@ void cletdrk4::gen_exp(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   cd1 = exp_d1;
   tfac = tunit * etd_dt2;
   ttmp = RUNIT; // BE CAREFUL!
-  for (int inumer = 0; inumer <= dim_numer; inumer ++) {
+  for (long inumer = 0; inumer <= dim_numer; inumer ++) {
     cn[inumer] *= ttmp;
     ttmp *= tunit;
   }
-  for (int idenom = 0; idenom < dim_denom; idenom ++) {
+  for (long idenom = 0; idenom < dim_denom; idenom ++) {
     cd1[idenom] *= tfac;
   }
-  exp2.gen(MPIP, IO, Bas, etd_dt2, -1, dim_numer, dim_denom, cn, cd0, cd1);
+  exp2.gen(MPIP, IO, Bas, etd_dt2, (long) -1, dim_numer, dim_denom, cn, cd0, cd1);
 
   //DEBUG
   // dcomplex vala;
   // double dx = 0.001;
   // printf("# exp: real\n");
-  // for (int ix = 10; ix <= 500; ix ++) {
+  // for (long ix = 10; ix <= 500; ix ++) {
   //   double xr = dx * ix;
   //   dcomplex x = -xr * IUNIT;
   //   dcomplex valx = exp(x);
@@ -265,7 +265,7 @@ void cletdrk4::gen_exp(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   // printf("\n");
   // printf("\n");
   // printf("# exp: imag\n");
-  // for (int ix = 10; ix <= 500; ix ++) {
+  // for (long ix = 10; ix <= 500; ix ++) {
   //   double xr = dx * ix;
   //   dcomplex x = -xr * IUNIT;
   //   dcomplex valx = exp(x);
@@ -381,7 +381,7 @@ void cletdrk4::gen_gfun(const clmpi& MPIP, const clio& IO, const clbas& Bas)
 
     gfun_d1[0] = +dfac;
     gfun_d0[0] = -dfac * roots[0];
-    for (int idim = 1; idim < dim_denom; idim ++) {
+    for (long idim = 1; idim < dim_denom; idim ++) {
       gfun_d1[idim] = +RUNIT;
       gfun_d0[idim] = -roots[idim];
     }
@@ -403,14 +403,14 @@ void cletdrk4::gen_gfun(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   cd1 = gfun_d1;
   tfac = tunit * etd_dt2;
   ttmp = RUNIT * etd_dt2; // BE CAREFUL!
-  for (int inumer = 0; inumer <= dim_numer; inumer ++) {
+  for (long inumer = 0; inumer <= dim_numer; inumer ++) {
     cn[inumer] *= ttmp;
     ttmp *= tunit;
   }
-  for (int idenom = 0; idenom < dim_denom; idenom ++) {
+  for (long idenom = 0; idenom < dim_denom; idenom ++) {
     cd1[idenom] *= tfac;
   }
-  gfun.gen(MPIP, IO, Bas, etd_dt2, -1, dim_numer, dim_denom, cn, cd0, cd1);
+  gfun.gen(MPIP, IO, Bas, etd_dt2, (long) -1, dim_numer, dim_denom, cn, cd0, cd1);
 
   //DEBUG
   // dcomplex vala;
@@ -418,7 +418,7 @@ void cletdrk4::gen_gfun(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   // printf("\n");
   // printf("\n");
   // printf("# gfun: real\n");
-  // for (int ix = 10; ix <= 500; ix ++) {
+  // for (long ix = 10; ix <= 500; ix ++) {
   //   double xr = dx * ix;
   //   dcomplex x = -xr * IUNIT;
   //   dcomplex valx = (exp(x)-1.0)/x;
@@ -428,7 +428,7 @@ void cletdrk4::gen_gfun(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   // printf("\n");
   // printf("\n");
   // printf("# gfun: imag\n");
-  // for (int ix = 10; ix <= 500; ix ++) {
+  // for (long ix = 10; ix <= 500; ix ++) {
   //   double xr = dx * ix;
   //   dcomplex x = -xr * IUNIT;
   //   dcomplex valx = (exp(x)-1.0)/x;
@@ -546,7 +546,7 @@ void cletdrk4::gen_f0fun(const clmpi& MPIP, const clio& IO, const clbas& Bas)
 
     f0fun_d1[0] = +dfac;
     f0fun_d0[0] = -dfac * roots[0];
-    for (int idim = 1; idim < dim_denom; idim ++) {
+    for (long idim = 1; idim < dim_denom; idim ++) {
       f0fun_d1[idim] = +RUNIT;
       f0fun_d0[idim] = -roots[idim];
     }
@@ -568,14 +568,14 @@ void cletdrk4::gen_f0fun(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   cd1 = f0fun_d1;
   tfac = tunit * etd_dt1;
   ttmp = RUNIT * etd_dt1; // BE CAREFUL!
-  for (int inumer = 0; inumer <= dim_numer; inumer ++) {
+  for (long inumer = 0; inumer <= dim_numer; inumer ++) {
     cn[inumer] *= ttmp;
     ttmp *= tunit;
   }
-  for (int idenom = 0; idenom < dim_denom; idenom ++) {
+  for (long idenom = 0; idenom < dim_denom; idenom ++) {
     cd1[idenom] *= tfac;
   }
-  f0fun.gen(MPIP, IO, Bas, etd_dt1, -1, dim_numer, dim_denom, cn, cd0, cd1);
+  f0fun.gen(MPIP, IO, Bas, etd_dt1, (long) -1, dim_numer, dim_denom, cn, cd0, cd1);
 
   //DEBUG
   // dcomplex vala;
@@ -583,7 +583,7 @@ void cletdrk4::gen_f0fun(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   // printf("\n");
   // printf("\n");
   // printf("# f0fun: real\n");
-  // for (int ix = 10; ix <= 500; ix ++) {
+  // for (long ix = 10; ix <= 500; ix ++) {
   //   double xr = dx * ix;
   //   dcomplex x = -xr * IUNIT;
   //   dcomplex valx = (-4.0-x+exp(x)*(4.0-3.0*x+x*x))/(x*x*x);
@@ -593,7 +593,7 @@ void cletdrk4::gen_f0fun(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   // printf("\n");
   // printf("\n");
   // printf("# f0fun: imag\n");
-  // for (int ix = 10; ix <= 500; ix ++) {
+  // for (long ix = 10; ix <= 500; ix ++) {
   //   double xr = dx * ix;
   //   dcomplex x = -xr * IUNIT;
   //   dcomplex valx = (-4.0-x+exp(x)*(4.0-3.0*x+x*x))/(x*x*x);
@@ -710,7 +710,7 @@ void cletdrk4::gen_f1fun(const clmpi& MPIP, const clio& IO, const clbas& Bas)
 
     f1fun_d1[0] = +dfac;
     f1fun_d0[0] = -dfac * roots[0];
-    for (int idim = 1; idim < dim_denom; idim ++) {
+    for (long idim = 1; idim < dim_denom; idim ++) {
       f1fun_d1[idim] = +RUNIT;
       f1fun_d0[idim] = -roots[idim];
     }
@@ -732,14 +732,14 @@ void cletdrk4::gen_f1fun(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   cd1 = f1fun_d1;
   tfac = tunit * etd_dt1;
   ttmp = RUNIT * etd_dt1; // BE CAREFUL!
-  for (int inumer = 0; inumer <= dim_numer; inumer ++) {
+  for (long inumer = 0; inumer <= dim_numer; inumer ++) {
     cn[inumer] *= ttmp;
     ttmp *= tunit;
   }
-  for (int idenom = 0; idenom < dim_denom; idenom ++) {
+  for (long idenom = 0; idenom < dim_denom; idenom ++) {
     cd1[idenom] *= tfac;
   }
-  f1fun.gen(MPIP, IO, Bas, etd_dt1, -1, dim_numer, dim_denom, cn, cd0, cd1);
+  f1fun.gen(MPIP, IO, Bas, etd_dt1, (long) -1, dim_numer, dim_denom, cn, cd0, cd1);
 
   //DEBUG
   // dcomplex vala;
@@ -747,7 +747,7 @@ void cletdrk4::gen_f1fun(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   // printf("\n");
   // printf("\n");
   // printf("# f1fun: real\n");
-  // for (int ix = 10; ix <= 500; ix ++) {
+  // for (long ix = 10; ix <= 500; ix ++) {
   //   double xr = dx * ix;
   //   dcomplex x = -xr * IUNIT;
   //   dcomplex valx = 2.0*(2.0+x+exp(x)*(x-2.0))/(x*x*x);
@@ -757,7 +757,7 @@ void cletdrk4::gen_f1fun(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   // printf("\n");
   // printf("\n");
   // printf("# f1fun: imag\n");
-  // for (int ix = 10; ix <= 500; ix ++) {
+  // for (long ix = 10; ix <= 500; ix ++) {
   //   double xr = dx * ix;
   //   dcomplex x = -xr * IUNIT;
   //   dcomplex valx = 2.0*(2.0+x+exp(x)*(x-2.0))/(x*x*x);
@@ -875,7 +875,7 @@ void cletdrk4::gen_f2fun(const clmpi& MPIP, const clio& IO, const clbas& Bas)
 
     f2fun_d1[0] = +dfac;
     f2fun_d0[0] = -dfac * roots[0];
-    for (int idim = 1; idim < dim_denom; idim ++) {
+    for (long idim = 1; idim < dim_denom; idim ++) {
       f2fun_d1[idim] = +RUNIT;
       f2fun_d0[idim] = -roots[idim];
     }
@@ -897,14 +897,14 @@ void cletdrk4::gen_f2fun(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   cd1 = f2fun_d1;
   tfac = tunit * etd_dt1;
   ttmp = RUNIT * etd_dt1; // BE CAREFUL!
-  for (int inumer = 0; inumer <= dim_numer; inumer ++) {
+  for (long inumer = 0; inumer <= dim_numer; inumer ++) {
     cn[inumer] *= ttmp;
     ttmp *= tunit;
   }
-  for (int idenom = 0; idenom < dim_denom; idenom ++) {
+  for (long idenom = 0; idenom < dim_denom; idenom ++) {
     cd1[idenom] *= tfac;
   }
-  f2fun.gen(MPIP, IO, Bas, etd_dt1, -1, dim_numer, dim_denom, cn, cd0, cd1);
+  f2fun.gen(MPIP, IO, Bas, etd_dt1, (long) -1, dim_numer, dim_denom, cn, cd0, cd1);
 
   //DEBUG
   // dcomplex vala;
@@ -912,7 +912,7 @@ void cletdrk4::gen_f2fun(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   // printf("\n");
   // printf("\n");
   // printf("# f2fun: real\n");
-  // for (int ix = 10; ix <= 500; ix ++) {
+  // for (long ix = 10; ix <= 500; ix ++) {
   //   double xr = dx * ix;
   //   dcomplex x = -xr * IUNIT;
   //   dcomplex valx = (-4.0-3.0*x-x*x+exp(x)*(4.0-x))/(x*x*x);
@@ -922,7 +922,7 @@ void cletdrk4::gen_f2fun(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   // printf("\n");
   // printf("\n");
   // printf("# f2fun: imag\n");
-  // for (int ix = 10; ix <= 500; ix ++) {
+  // for (long ix = 10; ix <= 500; ix ++) {
   //   double xr = dx * ix;
   //   dcomplex x = -xr * IUNIT;
   //   dcomplex valx = (-4.0-3.0*x-x*x+exp(x)*(4.0-x))/(x*x*x);
@@ -940,11 +940,11 @@ dcomplex cletdrk4::test_pade(const std::vector<dcomplex>& pnum,
   dcomplex valp, tmp, tmp_tay;
   tmp = pnum[0];
   tmp_tay = RUNIT;
-  for (int inum = 1; inum <= dim_numer; inum ++) {
+  for (long inum = 1; inum <= dim_numer; inum ++) {
     tmp_tay *= x;
     tmp += pnum[inum] * tmp_tay;
   }
-  for (int idenom = 0; idenom < dim_denom; idenom ++) {
+  for (long idenom = 0; idenom < dim_denom; idenom ++) {
     tmp /= (pd0[idenom] + pd1[idenom] * x);
   }
   valp = tmp;

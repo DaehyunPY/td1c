@@ -16,10 +16,10 @@ real(c_double) function hprod_ene_dcore(doall, orb, h0orb, h1orb, gorb)
   complex(c_double_complex), intent(in) ::  gorb(1:nbas, 1:nfun)
 
   real(c_double), external :: hprod_ene_dcx
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
   complex(c_double_complex) :: tmp, h01, h012, enep
-  integer(c_int) :: nproc, iproc, ifun, ibas, llb, ulb
+  integer(c_long) :: nproc, iproc, ifun, ibas, llb, ulb
 
 !nyi  real(c_double), external :: hprod_ene_dcore_ecs
 !nyi  if (ecs_flag == 1) then

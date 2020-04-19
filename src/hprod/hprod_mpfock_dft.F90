@@ -33,7 +33,7 @@ subroutine hprod_mpfock_dft(lfield, wfn)
   ! 1e operators
   zfield = lfield(3, 1)
   call hprod_tprod_all(orb, h0orb)
-  if (PSP) call hprod_projpp(runit, lfield, orb, h0orb)
+  if (PSP) call hprod_projpp(runit, orb, h0orb)
 
   if (igauge == 0) call hprod_zprod_all(zfield, orb, h1orb)
   if (igauge == 1) call hprod_pzprod_all(zfield, orb, h1orb)

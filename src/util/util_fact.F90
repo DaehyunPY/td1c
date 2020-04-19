@@ -4,9 +4,9 @@ real(c_long_double) function util_fact(n)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
 
-  integer(c_int) i
+  integer(c_long) i
   real(c_long_double) d4m, d4i
 
   d4m = 1

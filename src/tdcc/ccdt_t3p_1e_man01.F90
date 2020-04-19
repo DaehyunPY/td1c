@@ -4,7 +4,6 @@ subroutine ccdt_t3p_1e_man01(i0,work1,work2)
 ! i0 ( a b c i j k )_tf + = -1 * P( 3 ) * Sum ( l ) 
 !  * t ( a b c i j l )_t * f ( l k )_f 0
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact
   use mod_cc,only : fock,int2x,norb1,ncc3aaa,ncc3aab,t2inp,g2inp,t3inp,g3inp
   use mod_cc,only : h1_cc3aaa,h2_cc3aaa,h3_cc3aaa,p1_cc3aaa,p2_cc3aaa,p3_cc3aaa
@@ -16,7 +15,7 @@ subroutine ccdt_t3p_1e_man01(i0,work1,work2)
        i0((norb1+1):nact,(norb1+1):nact,(norb1+1):nact,1:norb1,1:norb1,1:norb1,1:2)
   complex(kind(0d0)) :: work1(1),work2(1)
 
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   !##################################################
   !$omp parallel default(shared) private(a,b,c,i,j,k)

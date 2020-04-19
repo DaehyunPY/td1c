@@ -9,13 +9,13 @@ subroutine ormas_mkden2x_ras(cic, den2)
   complex(c_double_complex) , intent(in) :: cic(1:ndetx)
   complex(c_double_complex) , intent(out) :: den2(1:nact, 1:nact, 1:nact, 1:nact)
 
-  integer(c_int) :: lwork
-  integer(c_int) :: nproc,iproc,iact,jact,kact,lact
+  integer(c_long) :: lwork
+  integer(c_long) :: nproc,iproc,iact,jact,kact,lact
   complex(c_double_complex) , allocatable :: work(:,:)
   complex(c_double_complex) , allocatable :: den2aa(:,:,:,:,:)
   complex(c_double_complex) , allocatable :: den2bb(:,:,:,:,:)
   complex(c_double_complex) , allocatable :: den2ab(:,:,:,:,:)
-  integer(c_int), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_nproc
 
   if (nact == 0) return
   nproc = util_omp_nproc()
@@ -55,13 +55,13 @@ subroutine ormas_mkden2x_ras_bbp(cic, lwork, work, den2p, nproc)
   use mod_ormas, only : p1x_beta,h1x_beta,eq1x_beta,sgn1x_beta,mmin_alph,mmax_alph
 
   implicit none
-  integer(c_int), intent(in) :: lwork, nproc
+  integer(c_long), intent(in) :: lwork, nproc
   complex(c_double_complex) , intent(in) :: cic(1:ndetx)
   complex(c_double_complex) , intent(out) :: work(1:lwork, 0:(nproc-1))
   complex(c_double_complex) , intent(out) :: den2p(1:nact, 1:nact, 1:nact, 1:nact, 0:(nproc-1))
 
-  integer(c_int), external :: util_omp_iproc
-  integer(c_int) :: istr,jstr,kstr,lstr,i1x_m,i1x,j1x_m,j1x,m_ij,m_kl,iact,jact,kact,lact, &
+  integer(c_long), external :: util_omp_iproc
+  integer(c_long) :: istr,jstr,kstr,lstr,i1x_m,i1x,j1x_m,j1x,m_ij,m_kl,iact,jact,kact,lact, &
        & iord,jord,idist,jdist,kdist,ldist,distb,lla,ula,iproc,mvala,sfac,ssgn
 
   if (smul == 1 .and. nelact(1) == nelact(2)) then
@@ -155,13 +155,13 @@ subroutine ormas_mkden2x_ras_aap(cic, lwork, work, den2p, nproc)
   use mod_ormas, only : p1x_alph,h1x_alph,eq1x_alph,sgn1x_alph,mmin_beta,mmax_beta
 
   implicit none
-  integer(c_int), intent(in) :: lwork, nproc
+  integer(c_long), intent(in) :: lwork, nproc
   complex(c_double_complex) , intent(in) :: cic(1:ndetx)
   complex(c_double_complex) , intent(out) :: work(1:lwork, 0:(nproc-1))
   complex(c_double_complex) , intent(out) :: den2p(1:nact, 1:nact, 1:nact, 1:nact, 0:(nproc-1))
 
-  integer(c_int), external :: util_omp_iproc
-  integer(c_int) :: istr,jstr,kstr,lstr,i1x_m,i1x,j1x_m,j1x,m_ij,m_kl,iact,jact,kact,lact, &
+  integer(c_long), external :: util_omp_iproc
+  integer(c_long) :: istr,jstr,kstr,lstr,i1x_m,i1x,j1x_m,j1x,m_ij,m_kl,iact,jact,kact,lact, &
        & iord,jord,idist,jdist,kdist,ldist,llb,ulb,iproc,mvalb,ssgn,dista
 
   if (smul == 1 .and. nelact(1) == nelact(2)) return
@@ -255,15 +255,15 @@ subroutine ormas_mkden2x_ras_abp(cic, lwork, work, den2p, nproc)
   use mod_ormas, only : nstr_beta,n1x_m_beta,map1x_m_beta,p1x_beta,h1x_beta,eq1x_beta,sgn1x_beta
 
   implicit none
-  integer(c_int), intent(in) :: lwork, nproc
+  integer(c_long), intent(in) :: lwork, nproc
   complex(c_double_complex) , intent(in) :: cic(1:ndetx)
   complex(c_double_complex) , intent(out) :: work(1:lwork, 0:(nproc-1))
   complex(c_double_complex) , intent(out) :: den2p(1:nact, 1:nact, 1:nact, 1:nact, 0:(nproc-1))
 
   complex(c_double_complex) :: tmp
   complex(c_double_complex), allocatable :: d2cp(:,:,:,:)
-  integer(c_int), external :: util_omp_iproc
-  integer(c_int) :: istr,jstr,kstr,lstr,i1x_m,i1x,j1x_m,j1x,m_ij,m_kl,iact,jact,kact,lact, &
+  integer(c_long), external :: util_omp_iproc
+  integer(c_long) :: istr,jstr,kstr,lstr,i1x_m,i1x,j1x_m,j1x,m_ij,m_kl,iact,jact,kact,lact, &
        & iord,jord,idist,jdist,kdist,ldist,distb,dista,lla,ula,llb,ulb,iproc,mvala,mvalb,sfac,ssgn
 
   !$omp parallel default(shared) private(mvala,idist,kdist,ldist,m_kl,i1x,iact,jact,kstr, &
@@ -464,13 +464,13 @@ subroutine ormas_mkden2x_ras_sum(den2aa,den2bb,den2ab,den2,nproc)
   use mod_bas, only : mval
 
   implicit none
-  integer(c_int), intent(in) :: nproc
+  integer(c_long), intent(in) :: nproc
   complex(c_double_complex) , intent(in) :: den2aa(1:nact, 1:nact, 1:nact, 1:nact, 0:(nproc-1))
   complex(c_double_complex) , intent(in) :: den2bb(1:nact, 1:nact, 1:nact, 1:nact, 0:(nproc-1))
   complex(c_double_complex) , intent(in) :: den2ab(1:nact, 1:nact, 1:nact, 1:nact, 0:(nproc-1))
   complex(c_double_complex) , intent(out) :: den2(1:nact, 1:nact, 1:nact, 1:nact)
 
-  integer(c_int) :: iact, jact, kact, lact, iord, jord, iproc
+  integer(c_long) :: iact, jact, kact, lact, iord, jord, iproc
 
   do iproc = 0, nproc - 1
      den2(:,:,:,:) = den2(:,:,:,:) + den2aa(:,:,:,:,iproc) &

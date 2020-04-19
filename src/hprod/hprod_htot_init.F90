@@ -5,15 +5,12 @@ subroutine hprod_htot_init()
   use mod_rad, only : ecs_flag
   use mod_bas, only : nbas, nbas2, ngrid
   use mod_ormas, only : nfun, nact, lcic
-! tdcis-teramura
-  use mod_control, only : istdcis, tdcis_rvg
-! tdcis-teramura
   use mod_hprod
 
   implicit none
-  integer(c_int) :: size_orb, size_orbg
-  integer(c_int) :: size_cic, size_den1, size_den2
-  integer(c_int) :: size_fmat, size_rho2, size_rho2g
+  integer(c_long) :: size_orb, size_orbg
+  integer(c_long) :: size_cic, size_den1, size_den2
+  integer(c_long) :: size_fmat, size_rho2, size_rho2g
 
   ! initialization
   size_orb = nbas * nfun
@@ -53,17 +50,6 @@ subroutine hprod_htot_init()
   !oldend if
   !##### 3j selection rule #####
 
-  ! tdcis
-  if(istdcis) then
-     call zclear_omp(size_orb, orb0rot); call zclear_omp(size_orbg, orb0rotg)
-     call zclear_omp(size_orb, h1orb0)
-     call zclear_omp(size_fmat, ridm_tdcis)
-     if(tdcis_rvg) then
-        call zclear_omp(size_orb, ezphi)
-     end if
-  end if
-  ! tdcis
-
 ! Sato_ECS
   if (ecs_flag == 1) then
      h0orb_out = 0d0
@@ -84,13 +70,9 @@ subroutine hprod_htot_init2()
   use mod_sph, only : nlat, lmax2
   use mod_ormas, only : nfcore, nfun
   use mod_hprod, only : rho2, v2sph, v2ang, v2ange, v2ango, rho23j, v2sph3j
-! tdcis-teramura
-  use mod_hprod, only : v2ang0
-  use mod_control, only : istdcis
-! tdcis-teramura
 
   implicit none
-  integer(c_int) :: ifun, jfun
+  integer(c_long) :: ifun, jfun
 
   do ifun = 1, nfun
      do jfun = max(nfcore + 1, ifun), nfun
@@ -114,17 +96,6 @@ subroutine hprod_htot_init2()
         !##### 3j selection rule #####
      end do
   end do
-
-  ! tdcis
-  ! if(istdcis) then
-  !    do ifun = 1, nfun
-  !       do jfun = max(nfcore + 1, ifun), nfun
-  !          v2ang0(1:(nrad-1), 1:nlat, jfun, ifun) = czero
-  !          v2ang0(1:(nrad-1), 1:nlat, ifun, jfun) = czero
-  !       end do
-  !    end do
-  ! end if
-  ! tdcis
 
 end subroutine hprod_htot_init2
 !#######################################################################

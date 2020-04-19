@@ -12,7 +12,7 @@ subroutine bas_pp_genkb(orb)
   !--------------------------------------------------------------------
   complex(c_double_complex), intent(in) :: orb(1:(nrad-1), 0:lmax1, 1:nfun)
   !--------------------------------------------------------------------
-  integer(c_int) :: ifun, irad, myl,mym
+  integer(c_long) :: ifun, irad, myl,mym
   complex(c_double_complex) :: norm(1:nfun), ovlp(1:nfun)
   complex(c_double_complex), allocatable :: chi(:,:)
 

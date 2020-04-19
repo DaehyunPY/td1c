@@ -13,7 +13,7 @@ subroutine wfn_proj(porb, orb)
   complex(c_double_complex) :: fac, fac1, fac2
   complex(c_double_complex), allocatable :: s2p(:,:)
   complex(c_double_complex), allocatable :: s2a(:,:)
-  integer(c_int) :: ifun, jfun, ibas
+  integer(c_long) :: ifun, jfun, ibas
 
   write(6, "('wfn_proj may include bug!')")
   stop

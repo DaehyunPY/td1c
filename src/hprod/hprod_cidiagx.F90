@@ -12,10 +12,10 @@ subroutine hprod_cidiagx(cic)
   complex(c_double_complex), intent(inout) :: cic(1:lcic)
   complex(c_double_complex), external :: util_zdotc
 
-  integer(c_int) :: idav, jdav, isub, jsub
-  integer(c_int), parameter :: max_dav = 40
-  real(c_double), parameter :: thr_dav = 1.D-15
-!debug  integer(c_int), parameter :: max_dav = 20
+  integer(c_long) :: idav, jdav, isub, jsub
+  integer(c_long), parameter :: max_dav = 20
+  real(c_double), parameter :: thr_dav = 1.D-10
+!debug  integer(c_long), parameter :: max_dav = 20
 !debug  real(c_double), parameter :: thr_dav = 1.D-8
   real(c_double) :: norm
   complex(c_double_complex) :: ovlp

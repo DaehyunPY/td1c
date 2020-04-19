@@ -12,13 +12,13 @@ subroutine h1itr_prop2(icomp, isplit, igauge, lfield1, lfield2, dtime, maxcyc, &
   use mod_hprod, only : orb, orbg, torb, h1orb
 
   implicit none
-  integer(c_int), intent(in) :: icomp, isplit, igauge, maxcyc, cnpiv(1:*)
+  integer(c_long), intent(in) :: icomp, isplit, igauge, maxcyc, cnpiv(1:*)
   real(c_double), intent(in) :: lfield1(9), lfield2(9), dtime, thresh
   complex(c_double_complex), intent(in) :: cninv(1:*)
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
 
   complex(c_double_complex) :: zfield1, zfield2, tfac, zfac2, tmp
-  integer(c_int) :: ncyc, icyc, ifun, size1, sizef, sized
+  integer(c_long) :: ncyc, icyc, ifun, size1, sizef, sized
   logical, parameter :: debug = .true.
   real(c_double) :: rmsres, maxres
 
@@ -121,8 +121,8 @@ subroutine h1itr_prop2_fcore(orb, torb)
   complex(c_double_complex), intent(inout) :: torb(1:nbas, 1:nfun)
 
   complex(c_double_complex) :: tmp
-  integer(c_int) :: ndfun, info, ifun, jfun
-  integer(c_int), allocatable :: ipiv(:)
+  integer(c_long) :: ndfun, info, ifun, jfun
+  integer(c_long), allocatable :: ipiv(:)
   complex(c_double_complex), allocatable :: amat(:,:)
 
  if (nfcore == 0) return

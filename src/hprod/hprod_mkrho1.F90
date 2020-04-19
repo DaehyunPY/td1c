@@ -11,7 +11,7 @@ subroutine hprod_mkrho1(rho1)
   implicit none
   real(c_double), intent(out) :: rho1(1:(nrad-1), 1:nlat)
   real(c_double) :: nume
-  integer(c_int) :: llr, ulr, ifun, ilat, irad
+  integer(c_long) :: llr, ulr, ifun, ilat, irad
 
   rho1(1:(nrad-1), 1:nlat) = zero
 

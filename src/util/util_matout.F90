@@ -4,10 +4,10 @@ subroutine util_matoutc(n, mat)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   complex(c_double_complex), intent(in) :: mat(1:n, 1:n)
   !--------------------------------------------------------------------
-  integer(c_int) :: i, j
+  integer(c_long) :: i, j
 
 
 !old  do i = 1, n
@@ -46,10 +46,10 @@ subroutine util_matoutc2(n, m, mat)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n, m
+  integer(c_long), intent(in) :: n, m
   complex(c_double_complex), intent(in) :: mat(1:n, 1:m)
   !--------------------------------------------------------------------
-  integer(c_int) :: i, j
+  integer(c_long) :: i, j
 
 
   write(6, "(' mat-real')")
@@ -77,10 +77,10 @@ subroutine util_linoutc(n, mat)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   complex(c_double_complex), intent(in) :: mat(1:*)
   !--------------------------------------------------------------------
-  integer(c_int) :: i, j, ji
+  integer(c_long) :: i, j, ji
 
 
   do i = 1, n

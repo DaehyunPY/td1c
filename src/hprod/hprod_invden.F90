@@ -11,7 +11,7 @@ subroutine hprod_invden(den1, rden, rrden)
   complex(c_double_complex), intent(out) :: rden(1:nact, 1:nact)
   complex(c_double_complex), intent(out) :: rrden(1:nact, 1:nact)
 
-  integer(c_int) :: iact, nact2
+  integer(c_long) :: iact, nact2
   complex(c_double_complex), allocatable :: tmp(:,:)
 
   if (nact == 0) return
@@ -66,13 +66,13 @@ subroutine hprod_invden_inv(n, thresh, a, inva)
   use mod_const, only : czero, runit, zero, one
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   real(c_double), intent(in) :: thresh
   complex(c_double_complex), intent(in) :: a(1:n, 1:n)
   complex(c_double_complex), intent(out) :: inva(1:n, 1:n)
 
-  integer(c_int) :: nsys
-  integer(c_int) :: ifun, jfun, kfun
+  integer :: nsys
+  integer(c_long) :: ifun, jfun, kfun
   complex(c_double_complex) :: diag, invd
   complex(c_double_complex), allocatable :: uvec(:,:)
   complex(c_double_complex), allocatable :: work(:,:)

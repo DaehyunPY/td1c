@@ -10,7 +10,7 @@ subroutine wfn_mask(orb)
 
   implicit none
   complex(c_double_complex), intent(inout) :: orb(1:(nrad-1), 0:lmax1, 1:nfun)
-  integer(c_int) :: ifun, irad, l, min_irad, llr, ulr
+  integer(c_long) :: ifun, irad, l, min_irad, llr, ulr
 
   ! determine min_irad
   min_irad = 1

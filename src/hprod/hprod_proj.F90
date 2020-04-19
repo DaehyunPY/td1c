@@ -11,7 +11,7 @@ subroutine hprod_proj(tmat, orb1, orb2)
   complex(c_double_complex), intent(in) :: orb1(1:nbas, 1:nfun)
   complex(c_double_complex), intent(inout) :: orb2(1:nbas, 1:nfun)
   ! ### local ###
-  integer(c_int) :: ifun, jfun, ibas, mi, mj, m, llb, ulb
+  integer(c_long) :: ifun, jfun, ibas, mi, mj, m, llb, ulb
 
   !$omp parallel default(shared) private(mi, mj, m, llb, ulb)
   !###########################

@@ -182,8 +182,6 @@ void Surff::init(const clmpi& MPIP, const clio& IO, const clbas& Bas)
     if(std::abs(Bas.GRad.xrad[irad] - srad ) < 10E-10){
       irad_surf = irad;
       rrad_surf = Bas.GRad.xrad[irad];
-      std::cout << "# irad_surf = " << irad_surf << std::endl;
-      std::cout << "# rrad_surf = " << rrad_surf << std::endl;
       break;
     }
   }
@@ -191,6 +189,13 @@ void Surff::init(const clmpi& MPIP, const clio& IO, const clbas& Bas)
     std::cout << "bad srad" << std::endl;
     abort();
   }
+  if(irad_surf > 0 && Bas.GRad.irad_ecs > 0 && irad_surf >= Bas.GRad.irad_ecs){
+    irad_surf = Bas.GRad.irad_ecs -1;
+    rrad_surf = Bas.GRad.xrad[Bas.GRad.irad_ecs - 1];
+  }
+
+  std::cout << "# irad_surf = " << irad_surf << std::endl;
+  std::cout << "# rrad_surf = " << rrad_surf << std::endl;
   
   double sph_bess[lnum + 1];
   double sph_bess_minus1;
@@ -261,7 +266,7 @@ void Surff::init(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   v2xmat.resize(norb * norb, 0.0);
 
   //integral
-  IO.read_info("integral_type", "EI", integ_type);
+  IO.read_info("integral_type", "trap", integ_type);
 
   if(integ_type == "trap"){
     integ = new Integ_trap(ksize, norb);
@@ -274,7 +279,7 @@ void Surff::init(const clmpi& MPIP, const clio& IO, const clbas& Bas)
   } 
   else if(integ_type == "EI"){
     integ = new Integ_EI(ksize, norb);
-    int iren;
+    long iren;
     IO.read_info("renormarize", 0, iren);
     integ->set_renormarize(iren);
   } 
@@ -282,7 +287,16 @@ void Surff::init(const clmpi& MPIP, const clio& IO, const clbas& Bas)
     std::cout << "bad integral_type. abort" << std::endl;
     abort();
   }
-  
+
+  IO.read_info("tsurff_m_resolved", false, is_m_resolved);
+  if(is_m_resolved){
+    mnum_all = 2*Bas.GAng.mmax1 + 1;
+    m_list.resize(mnum_all);
+    for(int i = 0; i < mnum_all; i++){
+      m_list[i] = i - Bas.GAng.mmax1;
+    }
+    ang_spec_m.resize(num_kang * num_krad * mnum_all);
+  }
   return;
 }
 //////////////////////////////////////////////////////////////////////////
@@ -315,11 +329,7 @@ void Surff::init_kang(const clmpi&, const clio&)
     beta[i] = di*di / (4*di*di - 1) * std::pow( 0.5 * range, 2);
   }
   
-  // sato:2019/04/22
-  // see the definition of ae_int_t in alglib.
-  // int info;
   long info;
-  // sato:2019/04/22
   alglib::real_1d_array x;
   alglib::real_1d_array w;
   x.setlength(N);

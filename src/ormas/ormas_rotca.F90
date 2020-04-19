@@ -6,7 +6,7 @@ subroutine ormas_rotca()
   use mod_ormas, only : nfcore, ncore, nocc, nrotca, rotca_mapf, rotca_mapb
 
   implicit none
-  integer(c_int) :: ifun, tfun, irot, npair, check
+  integer(c_long) :: ifun, tfun, irot, npair, check
 
   ! number of core-active rotatins
   nrotca = 0

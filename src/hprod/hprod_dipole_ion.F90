@@ -1,101 +1,122 @@
 !#######################################################################
-subroutine hprod_dipole_ion(max_ipx,rad_ipx,lfield,wfn,cic,dip,vel,acc)
+subroutine hprod_dipole_ion(rad_ipx, lfield, wfn, cic, dip, vel, acc)
 
-  use,intrinsic :: iso_c_binding
-  use mod_bas,only : nbas,mval
-  use mod_ormas,only : neltot,nfun,nfcore,ndcore
-  use mod_const,only : zero,two,four,czero,runit
-  use mod_control,only : igauge,fedvr_normalized
-  use mod_hprod,only : den1,orb,orbg,h0orb,h1orb,gorb,torb,v2orb,ovlp
+  use, intrinsic :: iso_c_binding
+  use mod_bas, only : nbas
+  use mod_sph, only : lmax1
+  use mod_control, only : 
+  use mod_rad, only : nrad, nradfc, wrad
+  use mod_ormas, only : neltot, nfun, nfcore, ndcore
+  use mod_const, only : zero, two, four, czero, runit
+  use mod_control, only : igauge, fedvr_normalized
+  use mod_hprod, only : den1, orb, orbg, h0orb, h1orb, gorb, torb, v2orb, ovlp
 
   implicit none
-  integer(c_int),intent(in) :: max_ipx
-  real(c_double),intent(in) :: rad_ipx
-  real(c_double),intent(in) :: lfield(1:3,1:3)
-  complex(c_double_complex),intent(in) :: wfn(*)
-  complex(c_double_complex),intent(in) :: cic(*)
-  complex(c_double_complex),external :: hprod_trace1
-  real(c_double),intent(out) :: dip(0:max_ipx),vel(0:max_ipx),acc(0:max_ipx)
+  real(c_double), intent(in) :: rad_ipx
+  real(c_double), intent(in) :: lfield(1:3, 1:3)
+  complex(c_double_complex), intent(in) :: wfn(*)
+  complex(c_double_complex), intent(in) :: cic(*)
+  complex(c_double_complex), external :: hprod_trace1
+  real(c_double), intent(out) :: dip(1:3), vel(1:3), acc(1:3)
 
-  integer(c_int) :: ifun,jfun,iipx
-  real(c_double) :: ipx(0:max_ipx)
-  complex(c_double) :: denipx(1:nfun,1:nfun,0:max_ipx)
-  complex(c_double) :: dtmp,dmat(1:nfun,1:nfun)
-  complex(c_double) :: vtmp,vmat(1:nfun,1:nfun)
-  complex(c_double) :: atmp,amat(1:nfun,1:nfun)
+  integer(c_long) :: ifun, l, irad, llr, ulr
+  real(c_double) :: vcorr1, vcorr2, acorr1, acorr2
+  complex(c_double_complex) :: tmp, vcorr1p, acorr1p
+
+  call hprod_mkovlp(rad_ipx, wfn, wfn, ovlp);
 
   if (nfcore > 0) then
-     write(6,"('WARNING: hprod_dipole_ion with FCs')")
+     stop "hprod_dipole_ion: nyi for nfcore > 0."
+  else if (ndcore > 0) then
+     stop "hprod_dipole_ion: nyi for ndcore > 0."
+  else
+     call ormas_mkden1_ion(ovlp, cic, den1);
+     call hprod_orbin(lfield, wfn, orb, orbg)
   end if
 
-  call hprod_orbin(lfield,wfn,orb,orbg)
-  call hprod_mkovlp(rad_ipx,orb,orb,ovlp);
-  !debug
-  !call ormas_denipx(max_ipx,ovlp,cic,ipx,denipx)
-  call ormas_denipd(max_ipx,ovlp,cic,ipx,denipx)
-  !debug
-
-!debug
-!  call ormas_mkden1(cic, den1)
-!  do ifun = 1,nfun
-!  do jfun = 1,nfun
-!     write(6,"('hprod_dipole_ion: ',2i5)",advance='no') ifun,jfun
-!     write(6,"(2f12.8)",advance='no') ovlp(ifun,jfun)
-!     write(6,"(2f12.8)",advance='no') den1(ifun,jfun)
-!     write(6,"(2f12.8)",advance='no') &
-!          denipx(ifun,jfun,0)+denipx(ifun,jfun,1)+ &
-!          denipx(ifun,jfun,2)+denipx(ifun,jfun,3)+denipx(ifun,jfun,4)
-!!     do iipx = 0, max_ipx
-!!        write(6,"(2f12.8)",advance='no') denipx(ifun,jfun,iipx)
-!!     end do
-!     write(6,*)
-!  end do
-!  end do
-!  stop
-!debug
-
-!old  if (nfcore > 0) then
-!old     stop "hprod_dipole_ion: nyi for nfcore > 0."
-!old  else if (ndcore > 0) then
-!old     stop "hprod_dipole_ion: nyi for ndcore > 0."
-!old  else
-!old     call ormas_mkden1_ion(ovlp,cic,den1);
-!old  end if
-
   ! property vectors
-  call zclear_omp(nbas*nfun,h0orb)
-  call zclear_omp(nbas*nfun,h1orb)
-  call zclear_omp(nbas*nfun,v2orb)
-  call hprod_zprod_all(runit,orb,h0orb)
-  call hprod_pzprod_all(runit,orb,h1orb)
-  call hprod_azprod_all(runit,orb,v2orb)
+  call zclear_omp(nbas*nfun, h0orb)
+  call zclear_omp(nbas*nfun, h1orb)
+  call zclear_omp(nbas*nfun, v2orb)
+  call hprod_zprod_all(runit, orb, h0orb)
+  call hprod_pzprod_all(runit, orb, h1orb)
+  call hprod_azprod_all(runit, orb, v2orb)
 
-  call hprod_mkovlp(rad_ipx,orb,h0orb,dmat);
-  call hprod_mkovlp(rad_ipx,orb,h1orb,vmat);
-  call hprod_mkovlp(rad_ipx,orb,v2orb,amat);
+  ! add iX term for velocity gauge case
+  if (nfcore > 0 .and. igauge == 1) call zaxpy_omp(nbas*nfun, lfield(3, 2), h0orb, gorb)
 
-  do iipx = 0, max_ipx
-     dtmp = 0.0
-     vtmp = 0.0
-     atmp = 0.0
-     do ifun = 1, nfun
-        do jfun = 1, nfun
-           if (mval(ifun) .ne. mval(jfun)) cycle
-           dtmp = dtmp + dmat(ifun,jfun)*denipx(jfun,ifun,iipx)
-           vtmp = vtmp + vmat(ifun,jfun)*denipx(jfun,ifun,iipx)
-           atmp = atmp + amat(ifun,jfun)*denipx(jfun,ifun,iipx)
+  ! ehrenfest formulus
+  dip(1) = dble(hprod_trace1(.true., den1, orb, h0orb))
+  vel(1) = dble(hprod_trace1(.true., den1, orb, h1orb))
+  acc(1) = dble(hprod_trace1(.true., den1, orb, v2orb))
+  if (igauge == 1) vel(1) = vel(1) + lfield(3, 3) * neltot(3)
+  acc(1) = acc(1) - lfield(3, 2) * neltot(3)
+
+  ! first correction term
+  vcorr1 = zero
+  acorr1 = zero
+  if (nfcore > 0) then
+     !$omp parallel default(shared) private(llr, ulr, tmp, vcorr1p, acorr1p) reduction(+:vcorr1, acorr1)
+     !###########################
+     call util_omp_disp(1, nradfc, llr, ulr)
+     vcorr1p = czero
+     acorr1p = czero
+     if (fedvr_normalized) then
+        do ifun = 1, nfcore
+           do l = 0, lmax1
+              do irad = llr, ulr
+                 tmp = gorb(irad, l, ifun)
+                 vcorr1p = vcorr1p + conjg(h0orb(irad, l, ifun)) * tmp
+                 acorr1p = acorr1p + conjg(h1orb(irad, l, ifun)) * tmp
+              end do
+           end do
         end do
-     end do
-     dip(iipx) = dble(dtmp)
-     vel(iipx) = dble(vtmp)
-     acc(iipx) = dble(atmp)
-! The laser contribution is neglected since they exhibit
-! spurious charge-resolved contributions to non-linear response
-! which are summed up to zero.
-!     if (igauge == 1) &
-!     vel(iipx) = vel(iipx) + lfield(3,3)*neltot(3)*ipx(iipx)
-!     acc(iipx) = acc(iipx) - lfield(3,2)*neltot(3)*ipx(iipx)
-  end do
+     else
+        do ifun = 1, nfcore
+           do l = 0, lmax1
+              do irad = llr, ulr
+                 tmp = gorb(irad, l, ifun) / wrad(irad)
+                 vcorr1p = vcorr1p + conjg(h0orb(irad, l, ifun)) * tmp
+                 acorr1p = acorr1p + conjg(h1orb(irad, l, ifun)) * tmp
+              end do
+           end do
+        end do
+     end if
+     vcorr1 = vcorr1 - four * aimag(vcorr1p)
+     acorr1 = acorr1 - four * aimag(acorr1p)
+     !###########################
+     !$omp end parallel
+  end if
+
+  ! second correction term
+  vcorr2 = zero
+  acorr2 = zero
+  if (nfcore > 0) then
+     !NEW
+     !NEW  if (igauge == 1) call zaxpy_omp(nbas*nfun, lfield(3, 2), h0orb, gorb)
+     !NEW
+     call hprod_projfc(.true., orb, gorb)
+     vcorr2 = - two * aimag(hprod_trace1(.true., den1, h0orb, gorb))
+     acorr2 = - two * aimag(hprod_trace1(.true., den1, h1orb, gorb))
+  end if
+
+  dip(2) = dip(1)
+  vel(2) = vel(1) + vcorr1
+  acc(2) = acc(1) + acorr1
+
+  dip(3) = dip(1)
+  vel(3) = vel(1) + vcorr1 + vcorr2
+  acc(3) = acc(1) + acorr1 + acorr2
+!OLD
+!OLD if (igauge == 1) acc_exp = acc_exp - two * nfcore * lfield(3, 2)
+!OLD
+!NEW
+!NEW  if (igauge == 1) acc_exp = acc_exp + two * nfcore * lfield(3, 2)
+!NEW
+
+!DEBUG
+!  write(6, "('hprod_dipole: ', 8F20.10)") vcorr1, vcorr2, vel(3), acorr1, acorr2, acc(3), acc(1), acc(2)
+!DEBUG
 
 end subroutine hprod_dipole_ion
 !#######################################################################

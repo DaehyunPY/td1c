@@ -7,7 +7,7 @@ subroutine ormas_init(idebug, mtot)
   use mod_ormas, only : fab_den2, iprint, cic_old, lcic, ndetx, tdcc
 
   implicit none
-  integer(c_int), intent(in) :: idebug, mtot
+  integer(c_long), intent(in) :: idebug, mtot
 !debug  namelist /debug/ cic_old
 
   iprint = idebug

@@ -8,7 +8,7 @@ subroutine hprod_poisson1(r2sph, v2sph)
   implicit none
   complex(c_double_complex), intent(in) ::  r2sph(1:(nrad-1), 0:lmax2)
   complex(c_double_complex), intent(out) :: v2sph(1:(nrad-1), 0:lmax2)
-  integer(c_int) :: lll, ull
+  integer(c_long) :: lll, ull
 
   !$omp parallel default(shared) private(lll, ull)
   !###########################
@@ -28,13 +28,13 @@ subroutine hprod_poisson1p(rho2, v2sph, lll, ull)
   use mod_bas, only : d2ll, bas_d2fac1, bas_d2fac2, bas_d2invr, bas_d2rpl0, bas_d2rpl1
 
   implicit none
-  integer(c_int), intent(in) :: lll, ull
+  integer(c_long), intent(in) :: lll, ull
   complex(c_double_complex), intent(in) ::     rho2(1:(nrad-1), 0:lmax2)
   complex(c_double_complex), intent(inout) :: v2sph(1:(nrad-1), 0:lmax2)
 
   real(c_double) :: tmpr, tmpi
   real(c_double), allocatable :: rrho2(:,:)
-  integer(c_int) :: dim, l, irad, ld, info
+  integer(c_long) :: dim, l, irad, ld, info
 
   ld = ndvr + 1
   dim = nrad - 1

@@ -35,12 +35,12 @@ subroutine ormas_hcic1_old_bbp(int1e, cic, hcic)
 
   complex(c_double_complex), allocatable :: sint(:,:)
   logical :: dotype2, dotype3
-  integer(c_int) :: istr, jstr, kstr, lstr, i1x, j1x, ifun, jfun, kfun, lfun, &
+  integer(c_long) :: istr, jstr, kstr, lstr, i1x, j1x, ifun, jfun, kfun, lfun, &
        & idist, jdist, kdist, ii, lla, ula, llb, ulb, subi, subj, subk, subl, &
        & occi, occk, ksub, iproc, nproc, i1x_m, j1x_m, m_ij, m_kl
   complex(c_double_complex) :: tsgn, tmp, eff1e
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
 
   nproc = util_omp_nproc()
   allocate(sint(1:nstr_beta, 0:(nproc-1)))
@@ -173,12 +173,12 @@ subroutine ormas_hcic1_old_aap(int1e, cic, hcic)
 
   complex(c_double_complex), allocatable :: sint(:,:)
   logical :: dotype2, dotype3
-  integer(c_int) :: istr, jstr, kstr, lstr, i1x, j1x, ifun, jfun, kfun, lfun, &
+  integer(c_long) :: istr, jstr, kstr, lstr, i1x, j1x, ifun, jfun, kfun, lfun, &
        & idist, jdist, kdist, ii, lla, ula, llb, ulb, subi, subj, subk, subl, &
        & occi, occk, ksub, iproc, nproc, i1x_m, j1x_m, m_ij, m_kl
   complex(c_double_complex) :: tsgn, tmp, eff1e
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
 
   nproc = util_omp_nproc()
 

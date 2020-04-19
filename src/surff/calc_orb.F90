@@ -8,12 +8,12 @@ subroutine calc_orb(sirad, orb, norb, dorb)
   use mod_sph, only : lmax1
 
   implicit none
-  integer(c_int), intent(in) :: sirad
+  integer(c_long), intent(in) :: sirad
   complex(c_double_complex), intent(in) :: orb(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: norb(0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: dorb(0:lmax1, 1:nfun)
 
-  integer(c_int) :: lll, ull
+  integer(c_long) :: lll, ull
   
   !$omp parallel default(shared) private(lll, ull)
   !###########################
@@ -40,14 +40,14 @@ subroutine calc_orbp(lll, ull, sirad, orb, norb, dorb)
   use mod_bas, only : d1mat, d2mat
 
   implicit none
-  integer(c_int), intent(in) :: lll, ull
-  integer(c_int), intent(in) :: sirad
+  integer(c_long), intent(in) :: lll, ull
+  integer(c_long), intent(in) :: sirad
   complex(c_double_complex), intent(in) :: orb(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: norb(0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: dorb(0:lmax1, 1:nfun)
 
-  integer(c_int) :: ifun, l, irad, jrad, jb1, kb1
-  integer(c_int) :: jb, ife, iloc, jloc
+  integer(c_long) :: ifun, l, irad, jrad, jb1, kb1
+  integer(c_long) :: jb, ife, iloc, jloc
 
   complex(c_double_complex) :: d1tmp
 

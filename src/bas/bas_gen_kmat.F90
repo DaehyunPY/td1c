@@ -21,8 +21,8 @@ subroutine bas_gen_kmat(kmat)
 !
   implicit none
   complex(c_double_complex), intent(out) :: kmat(1:(2*ndvr+1), 1:(nrad-1), 0:lmax1)
-  integer(c_int) :: ifun, irad, jrad, krad, l, l2, m, jll, jul, jb1
-  integer(c_int) :: dim, nsub, ld1
+  integer(c_long) :: ifun, irad, jrad, krad, l, l2, m, jll, jul, jb1
+  integer(c_long) :: dim, nsub, ld1
   real(c_double) :: oor, zor, zor1
 
   dim = nrad - 1
@@ -75,14 +75,14 @@ subroutine bas_test_keig(nrad, lmax1, mmax1, ndvr, xrad, kmat)
 ! atomic hamiltonian and its lu decomposition in banded matrices
 !
   implicit none
-  integer(c_int), intent(in) :: nrad, lmax1, mmax1, ndvr
+  integer(c_long), intent(in) :: nrad, lmax1, mmax1, ndvr
   real(c_double), intent(in) :: xrad(0:nrad)
   real(c_double), intent(inout) :: kmat(1:(ndvr+1), 1:(nrad-1), 0:lmax1)
 
-  integer(c_int) :: ifun, irad, jrad, krad, l, l2, m, jll, jul, jul2, ib, jb
-  integer(c_int) :: dim, nsub, ld, info
+  integer(c_long) :: ifun, irad, jrad, krad, l, l2, m, jll, jul, jul2, ib, jb
+  integer(c_long) :: dim, nsub, ld, info
   real(c_double) :: kang, trad2, kang2
-  integer(c_int) :: ldz = 1
+  integer(c_long) :: ldz = 1
   real(c_double), allocatable :: keig(:), work(:), zz(:,:)
 
   dim = nrad - 1

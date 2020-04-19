@@ -8,7 +8,7 @@ subroutine bas_gen_alph()
   use mod_bas, only : alph_lm
 
   implicit none
-  integer(c_int) :: l, m, irad
+  integer(c_long) :: l, m, irad
   real(c_double) :: dl, dm, tmp
 
   do m = -mmax1, mmax1

@@ -147,10 +147,10 @@ void clwfn::alloc(const clbas& Bas)
 ////////////////////////////////////////////////////////////////////////
 void clwfn::print() const
 {
-  printf("# clwfn: size1 = %10d\n", size1);
-  printf("# clwfn: size2 = %10d\n", size2);
-  printf("# clwfn: size  = %10d\n", size);
-  printf("# clwfn: sizeg = %10d\n", sizeg);
+  printf("# clwfn: size1 = %10ld\n", size1);
+  printf("# clwfn: size2 = %10ld\n", size2);
+  printf("# clwfn: size  = %10ld\n", size);
+  printf("# clwfn: sizeg = %10ld\n", sizeg);
 }
 ////////////////////////////////////////////////////////////////////////
 void clwfn::read(const clmpi& Proc, const clio& IO, const clbas& Bas)
@@ -163,17 +163,17 @@ void clwfn::read(const clmpi& Proc, const clio& IO, const clbas& Bas)
   double wfnr, wfni;
 
   // read in orbitals
-  int nrad0, lmax0, mmax0, nfun0;
+  long nrad0, lmax0, mmax0, nfun0;
   fpo = fopen(IO.orb.c_str(), "r");
-  fscanf(fpo, "%d\n", &nrad0);
-  fscanf(fpo, "%d\n", &lmax0);
-  fscanf(fpo, "%d\n", &mmax0);
-  fscanf(fpo, "%d\n", &nfun0);
+  fscanf(fpo, "%ld\n", &nrad0);
+  fscanf(fpo, "%ld\n", &lmax0);
+  fscanf(fpo, "%ld\n", &mmax0);
+  fscanf(fpo, "%ld\n", &nfun0);
 
-  int ind;
-  for (int ifun = 0; ifun < nfun0; ifun ++) {
-    for (int l = 0; l <= lmax0; l ++) {
-      for (int irad = 1; irad < nrad0; irad ++) {
+  long ind;
+  for (long ifun = 0; ifun < nfun0; ifun ++) {
+    for (long l = 0; l <= lmax0; l ++) {
+      for (long irad = 1; irad < nrad0; irad ++) {
 //	fscanf(fpo, "%lf%lf\n", &wfnr, &wfni); 
 	fscanf(fpo, "%le%le\n", &wfnr, &wfni); 
 	if (ifun < Bas.ORMAS.nfun && l <= Bas.GAng.lmax1 && irad < Bas.GRad.nrad) {
@@ -193,14 +193,14 @@ void clwfn::read(const clmpi& Proc, const clio& IO, const clbas& Bas)
   //NEW
 
   // read in ci coefficients
-  int lcic0;
+  long lcic0;
   fpc = fopen(IO.cic.c_str(), "r");
-  fscanf(fpc, "%d\n", &lcic0);
+  fscanf(fpc, "%ld\n", &lcic0);
   if (Bas.ORMAS.lcic != lcic0) {
     ormas_cic0_(&wfn[size1]);
     printf("clwfn::read-cic: cic was not read\n");
   } else {
-    for (int idet = 0; idet < Bas.ORMAS.lcic; idet ++) {
+    for (long idet = 0; idet < Bas.ORMAS.lcic; idet ++) {
       fscanf(fpc, "%le%le\n", &wfnr, &wfni);
       wfn[size1+idet] = wfnr * RUNIT + wfni * IUNIT;
     }
@@ -214,17 +214,17 @@ void clwfn::read_orb(const clmpi& Proc, const clio& IO, const clbas& Bas)
   double wfnr, wfni;
 
   // read in orbitals
-  int nrad0, lmax0, mmax0, nfun0;
+  long nrad0, lmax0, mmax0, nfun0;
   fpo = fopen(IO.orb.c_str(), "r");
-  fscanf(fpo, "%d", &nrad0);
-  fscanf(fpo, "%d", &lmax0);
-  fscanf(fpo, "%d", &mmax0);
-  fscanf(fpo, "%d", &nfun0);
+  fscanf(fpo, "%ld", &nrad0);
+  fscanf(fpo, "%ld", &lmax0);
+  fscanf(fpo, "%ld", &mmax0);
+  fscanf(fpo, "%ld", &nfun0);
 
-  int ind;
-  for (int ifun = 0; ifun < nfun0; ifun ++) {
-    for (int l = 0; l <= lmax0; l ++) {
-      for (int irad = 1; irad < nrad0; irad ++) {
+  long ind;
+  for (long ifun = 0; ifun < nfun0; ifun ++) {
+    for (long l = 0; l <= lmax0; l ++) {
+      for (long irad = 1; irad < nrad0; irad ++) {
 //	fscanf(fpo, "%lf%lf", &wfnr, &wfni); 
 	fscanf(fpo, "%le%le", &wfnr, &wfni); 
 //	if (l <= Bas.GAng.lmax1 && irad < Bas.GRad.nrad) {
@@ -251,15 +251,15 @@ void clwfn::read_cic(const clmpi& Proc, const clio& IO, const clbas& Bas)
   double wfnr, wfni;
 
   // read in ci coefficients
-  int lcic0;
+  long lcic0;
   fpc = fopen(IO.cic.c_str(), "r");
-  fscanf(fpc, "%d", &lcic0);
+  fscanf(fpc, "%ld", &lcic0);
 
   if (Bas.ORMAS.lcic != lcic0) {
     ormas_cic0_(&wfn[size1]);
     printf("clwfn::read-cic: cic was not read\n");
   } else {
-    for (int idet = 0; idet < Bas.ORMAS.lcic; idet ++) {
+    for (long idet = 0; idet < Bas.ORMAS.lcic; idet ++) {
       fscanf(fpc, "%le%le\n", &wfnr, &wfni);
       wfn[size1+idet] = wfnr * RUNIT + wfni * IUNIT;
     }
@@ -273,15 +273,15 @@ void clwfn::write(const clmpi& Proc, const clio& IO, const clbas& Bas) const
   double wfnr, wfni;
   // write out orbitals
   fpo = fopen(IO.orb.c_str(), "w");
-  fprintf(fpo, "%10d\n", Bas.GRad.nrad);
-  fprintf(fpo, "%10d\n", Bas.GAng.lmax1);
-  fprintf(fpo, "%10d\n", Bas.GAng.mmax1);
-  fprintf(fpo, "%10d\n", Bas.ORMAS.nfun);
+  fprintf(fpo, "%10ld\n", Bas.GRad.nrad);
+  fprintf(fpo, "%10ld\n", Bas.GAng.lmax1);
+  fprintf(fpo, "%10ld\n", Bas.GAng.mmax1);
+  fprintf(fpo, "%10ld\n", Bas.ORMAS.nfun);
 
-  int ind;
-  for (int ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
-    for (int l = 0; l <= Bas.GAng.lmax1; l ++) {
-      for (int irad = 1; irad < Bas.GRad.nrad; irad ++) {
+  long ind;
+  for (long ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
+    for (long l = 0; l <= Bas.GAng.lmax1; l ++) {
+      for (long irad = 1; irad < Bas.GRad.nrad; irad ++) {
 	ind = ifun * Bas.GAng.nsph1 * (Bas.GRad.nrad - 1) 
           	               + l * (Bas.GRad.nrad - 1) + irad - 1;
 	wfnr = real(wfn[ind]);
@@ -294,8 +294,8 @@ void clwfn::write(const clmpi& Proc, const clio& IO, const clbas& Bas) const
   fclose(fpo);
 
   fpc = fopen(IO.cic.c_str(), "w");
-  fprintf(fpc, "%10d\n", Bas.ORMAS.lcic);
-  for (int idet = 0; idet < Bas.ORMAS.lcic; idet ++) {
+  fprintf(fpc, "%10ld\n", Bas.ORMAS.lcic);
+  for (long idet = 0; idet < Bas.ORMAS.lcic; idet ++) {
       wfnr = real(wfn[size1+idet]);
       wfni = imag(wfn[size1+idet]);
 //    fprintf(fpc, "%25.15lf%25.15lf\n", wfnr, wfni); 
@@ -376,20 +376,20 @@ void clwfn::print_cic(std::string FNAME, const clbas& Bas) const
   ormas_cic_print_(&wfn[size1], FNAME.c_str(), FNAME.length());
 }
 ////////////////////////////////////////////////////////////////////////
-void clwfn::print_orb(int npt, std::string FNAME, const clbas& Bas) const
+void clwfn::print_orb(long npt, std::string FNAME, const clbas& Bas) const
 {
   FILE *fpo;
   fpo = fopen(FNAME.c_str(), "w");
 
-  int ind, irad, num_dvr;
+  long ind, irad, num_dvr;
   double x_ll, x_ul, dpt;
   double point, orbr, orbi;
   dcomplex wfn_val;
   std::vector<dcomplex> bas_val(Bas.GRad.nmax + 1);
 
-  for (int ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
-    fprintf(fpo, "# ifun = %10d\n", ifun);
-    for (int ife = 0; ife < Bas.GRad.nfe; ife ++) {
+  for (long ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
+    fprintf(fpo, "# ifun = %10ld\n", ifun);
+    for (long ife = 0; ife < Bas.GRad.nfe; ife ++) {
       x_ll = Bas.GRad.get_x0(ife);
       x_ul = Bas.GRad.get_x1(ife);
       dpt = (x_ul - x_ll) / npt;
@@ -398,22 +398,22 @@ void clwfn::print_orb(int npt, std::string FNAME, const clbas& Bas) const
       point = x_ll;
       while (point + dpt * HALF < x_ul) {
 
-	for(int idvr = 0; idvr <= num_dvr; idvr ++) {
+	for(long idvr = 0; idvr <= num_dvr; idvr ++) {
 	  irad = Bas.GRad.mapf[ife] + idvr;
 	  //bas_val[idvr] = Bas.GRad.get_val(irad, point);
 	  bas_val[idvr] = Bas.GRad.get_val(ife, idvr, point);
 	  //DEBUG
 	  // if (ifun == 0) {
-	  //	printf("%10d%10d%10d%20.10f%20.10f%20.10f\n", ife, idvr, irad, point, bas_val[idvr].real(), bas_val[idvr].imag());
+	  //	printf("%10ld%10ld%10ld%20.10f%20.10f%20.10f\n", ife, idvr, irad, point, bas_val[idvr].real(), bas_val[idvr].imag());
 	  // }
 	  //DEBUG
 	}
 
 	fprintf(fpo, "%20.10f", point);
-	for (int l = 0; l <= Bas.GAng.lmax1; l ++) {
+	for (long l = 0; l <= Bas.GAng.lmax1; l ++) {
 	  wfn_val = CZERO;
-	  for(int idvr = 0; idvr <= num_dvr; idvr ++) {
-	    //	  for(int idvr = 0; idvr < num_dvr; idvr ++) {
+	  for(long idvr = 0; idvr <= num_dvr; idvr ++) {
+	    //	  for(long idvr = 0; idvr < num_dvr; idvr ++) {
 	    irad = Bas.GRad.mapf[ife] + idvr;
 	    if (clcontrol::fedvr_normalized) {
 	      if (irad > 0 && irad < Bas.GRad.nrad) {
@@ -451,24 +451,24 @@ void clwfn::print_orb(int npt, std::string FNAME, const clbas& Bas) const
 ////////////////////////////////////////////////////////////////////////
 void clwfn::print_wang(const clbas& Bas) const
 {
-  int ind;
+  long ind;
   dcomplex tmp;
 
-  int size = Bas.ORMAS.nfun * Bas.GAng.nsph1;
+  long size = Bas.ORMAS.nfun * Bas.GAng.nsph1;
   std::vector<double> wlm(size);
 
-  for (int ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
-    //    printf("%5d", ifun);
-    for (int l = get_abs(Bas.mval[ifun]); l <= Bas.GAng.lmax1; l ++) {
+  for (long ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
+    //    printf("%5ld", ifun);
+    for (long l = get_abs(Bas.mval[ifun]); l <= Bas.GAng.lmax1; l ++) {
       tmp = CZERO;
       if (clcontrol::fedvr_normalized) {
-	for (int irad = 1; irad < Bas.GRad.nrad; irad ++) {
+	for (long irad = 1; irad < Bas.GRad.nrad; irad ++) {
 	  ind = ifun * Bas.GAng.nsph1 * (Bas.GRad.nrad - 1)
        	                        +  l * (Bas.GRad.nrad - 1) + irad - 1;
 	  tmp += conj(wfn[ind]) * wfn[ind];
 	}
       } else {
-	for (int irad = 1; irad < Bas.GRad.nrad; irad ++) {
+	for (long irad = 1; irad < Bas.GRad.nrad; irad ++) {
 	  ind = ifun * Bas.GAng.nsph1 * (Bas.GRad.nrad - 1)
        	                        +  l * (Bas.GRad.nrad - 1) + irad - 1;
 	  tmp += conj(wfn[ind]) * wfn[ind] * Bas.GRad.wrad[irad];
@@ -480,39 +480,16 @@ void clwfn::print_wang(const clbas& Bas) const
 
 //  printf("    l");
 //  printf("    m");
-//  for (int ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
-//    printf("%15d", ifun);
+//  for (long ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
+//    printf("%15ld", ifun);
 //  }
 //  printf("\n");
-  for (int ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
-    printf("%10d%10d", ifun, Bas.mval[ifun]);
-    for (int l = 0; l <= Bas.GAng.lmax1; l ++) {
+  for (long ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
+    printf("%10ld%10ld", ifun, Bas.mval[ifun]);
+    for (long l = 0; l <= Bas.GAng.lmax1; l ++) {
       printf("%20.10e", wlm[ifun * Bas.GAng.nsph1 + l]);
     }
     printf("\n");
   }
 }
-// tdcis-teramura
 ////////////////////////////////////////////////////////////////////////
-void clwfn::read_nradgs(const clmpi& MPIP, const clio& IO, const clbas& Bas)
-{
-  FILE *fpo;
-  double wfnr, wfni;
-
-  // read in orbitals
-  int nrad0, lmax10, lmax20;
-  fpo = fopen(IO.orb.c_str(), "r");
-  fscanf(fpo, "%ld", &nrad0);
-  fscanf(fpo, "%ld", &lmax10);
-  fclose(fpo);
-
-  lmax20 = 2*lmax10;
-  std::cout << "clwfn::read_nradgs" <<  std::endl;
-
-  wfn_set_nradgs_(&nrad0, &lmax10, &lmax20);
-  std::cout << "Bas.GRad.nradgs, Bas.GAng.lmax1gs, Bas.GAng.lmax2gs = " << Bas.GRad.nradgs << ", " << Bas.GAng.lmax1gs << ", " << Bas.GAng.lmax2gs << std::endl;
-  std::cout << "xrad[nradgs-1], xrad[nradgs], xrad[nradgs + 1] = " << Bas.GRad.xrad[ Bas.GRad.nradgs - 1] << ", " <<  Bas.GRad.xrad[ Bas.GRad.nradgs] << ", " <<  Bas.GRad.xrad[ Bas.GRad.nradgs + 1] << std::endl;
-
-}
-////////////////////////////////////////////////////////////////////////
-// tdcis-teramura

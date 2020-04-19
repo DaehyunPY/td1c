@@ -9,7 +9,7 @@ subroutine bas_pp_gen_hgh()
   !--------------------------------------------------------------------
   !--------------------------------------------------------------------
   logical(c_bool) :: found
-  integer(c_int) :: irad,l,i,j
+  integer(c_long) :: irad,l,i,j
   real(c_double) :: thresh = 1.D-6
   real(c_double) :: thresh2 = 1.D-20
 
@@ -60,11 +60,9 @@ subroutine bas_pp_gen_hgh()
      do i = 1, pp_nump(l)
         found = .false.
         do irad = 1, nrad - 1
-
            pp_pproj(irad,i,l) = &
                 sqrt(2.d+0) * xrad(irad)**(l+2*(i-1)) * exp(-(xrad(irad)/pp_rproj(l))**2/2.d+0) &
                 / (pp_rproj(l)**(l+(4*i-1)/2.d+0) * sqrt(gamma(l+(4*i-1)/2.d+0)))
-
            pp_fproj(irad,i,l) = pp_pproj(irad,i,l) * xrad(irad) * sqrt(wrad(irad))
            do j = 1, pp_nump(l)
               pp_gproj(irad,i,l) = pp_gproj(irad,i,l) + pp_hproj(i,j,l)*pp_fproj(irad,j,l)
@@ -121,7 +119,7 @@ subroutine bas_pp_gen_hgh()
   subroutine hgh_get_znuc(label, znuc)
     implicit none
     !--------------------------------------------------------------------
-    integer(c_int), intent(in) :: label
+    integer(c_long), intent(in) :: label
     real(c_double), intent(out) :: znuc
     !--------------------------------------------------------------------
     if (label == 1) then
@@ -150,10 +148,6 @@ subroutine bas_pp_gen_hgh()
        znuc = 8d0
     else if (label == 18) then
        znuc = 8d0
-    else if (label == 20) then
-       znuc = 2d0
-    else if (label == -20) then
-       znuc = 10d0
     else if (label == 36) then
        znuc = 8d0
     else
@@ -164,7 +158,7 @@ subroutine bas_pp_gen_hgh()
   subroutine hgh_get_rloc(label, rloc)
     implicit none
     !--------------------------------------------------------------------
-    integer(c_int), intent(in) :: label
+    integer(c_long), intent(in) :: label
     real(c_double), intent(out) :: rloc
     !--------------------------------------------------------------------
     if (label == 1) then
@@ -193,10 +187,6 @@ subroutine bas_pp_gen_hgh()
        rloc = 0.19d0
     else if (label == 18) then
        rloc = 0.4d0
-    else if (label == 20) then
-       rloc = 0.8d0
-    else if (label == -20) then
-       rloc = 0.39d0
     else if (label == 36) then
        rloc = 0.5d0
     else
@@ -207,7 +197,7 @@ subroutine bas_pp_gen_hgh()
   subroutine hgh_get_cloc(label, cloc)
     implicit none
     !--------------------------------------------------------------------
-    integer(c_int), intent(in) :: label
+    integer(c_long), intent(in) :: label
     real(c_double), intent(out) :: cloc(1:4)
     !--------------------------------------------------------------------
     cloc = 0d0
@@ -239,10 +229,6 @@ subroutine bas_pp_gen_hgh()
        cloc(1) = -27.692852d0; cloc(2) = 4.005906d0
     else if (label == 18) then
        cloc(1) = -7.1d0
-    else if (label == 20) then
-       !cloc = 0d0
-    else if (label == -20) then
-       cloc(1) = -4.928146d0; cloc(2) = -1.232854d0
     else if (label == 36) then
     else
        stop 'hgh_get_cloc: bad label'
@@ -252,7 +238,7 @@ subroutine bas_pp_gen_hgh()
   subroutine hgh_get_rproj(label, rproj)
     implicit none
     !--------------------------------------------------------------------
-    integer(c_int), intent(in) :: label
+    integer(c_long), intent(in) :: label
     real(c_double), intent(out) :: rproj(0:2)
     !--------------------------------------------------------------------
     rproj = 0d0
@@ -278,10 +264,6 @@ subroutine bas_pp_gen_hgh()
        rproj(0) = 0.179488d0; rproj(1) = 0.214913d0
     else if (label == 18) then
        rproj(0) = 0.317381d0; rproj(1) = 0.351619d0
-    else if (label == 20) then
-       rproj(0) = 0.669737d0; rproj(1) = 0.946474d0; rproj(2) = 0.526550d0
-    else if (label == -20) then
-       rproj(0) = 0.281909d0; rproj(1) = 0.310345d0; rproj(2) = 0.904330d0
     else if (label == 36) then
        rproj(0) = 0.410759d0; rproj(1) = 0.430256d0; rproj(2) = 0.517120d0
     else
@@ -292,7 +274,7 @@ subroutine bas_pp_gen_hgh()
   subroutine hgh_get_hproj(label, hproj)
     implicit none
     !--------------------------------------------------------------------
-    integer(c_int), intent(in) :: label
+    integer(c_long), intent(in) :: label
     real(c_double), intent(out) :: hproj(1:3,1:3,0:2)
     !--------------------------------------------------------------------
     hproj = 0d0
@@ -324,19 +306,6 @@ subroutine bas_pp_gen_hgh()
        hproj(1,1,0) = 10.249487d0
        hproj(2,2,0) =  5.602516d0
        hproj(1,1,1) =  4.978801d0
-    else if (label == 20) then
-       hproj(1,1,0) =  1.645014d0
-       hproj(2,2,0) =  1.523491d0
-       hproj(3,3,0) =  0.295996d0
-       hproj(1,1,1) =  0.585479d0
-       hproj(2,2,1) =  0.126329d0
-       hproj(1,1,2) = -3.032321d0
-    else if (label == -20) then
-       hproj(1,1,0) =  12.352340d0
-       hproj(2,2,0) =  7.657455d0
-       hproj(1,1,1) =  5.722423d0
-       hproj(2,2,1) =  0.923591d0
-       hproj(1,1,2) =  0.000371d0
     else if (label == 36) then
        hproj(1,1,0) =  5.911194d0
        hproj(2,2,0) =  1.967372d0

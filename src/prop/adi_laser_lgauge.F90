@@ -7,12 +7,12 @@ subroutine adi_laser_lgauge(icomp, istag, dtime, lfield, wfn)
   use mod_ormas, only : nfun
 
   implicit none
-  integer(c_int), intent(in) :: icomp, istag
+  integer(c_long), intent(in) :: icomp, istag
   real(c_double), intent(in) :: dtime, lfield(1:3)
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
 
-  integer(c_int) :: eve_odd, ll_eo, ul_eo, pp_eo
-  integer(c_int) :: lmaxh, lllo2, ullo2, lo2, lval
+  integer(c_long) :: eve_odd, ll_eo, ul_eo, pp_eo
+  integer(c_long) :: lmaxh, lllo2, ullo2, lo2, lval
 
   lmaxh = lmax1 / 2
   if (istag == 0) then
@@ -62,11 +62,11 @@ subroutine adi_laser_lgaugep(icomp, dtime, lfield, wfn, lval)
   use mod_const, only : one, two, three, half, runit, iunit
 
   implicit none
-  integer(c_int), intent(in) :: icomp, lval
+  integer(c_long), intent(in) :: icomp, lval
   real(c_double), intent(in) :: dtime, lfield(1:3)
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
 
-  integer(c_int) :: ifun, irad
+  integer(c_long) :: ifun, irad
   complex(c_double_complex) :: facd, facl, beta, ombd, opbd, gammp, gammm, tmp
   complex(c_double_complex) :: wfn0, wfn1, yp, ym
 

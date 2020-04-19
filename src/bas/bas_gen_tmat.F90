@@ -23,14 +23,14 @@ subroutine bas_gen_tmat(tmat)
 !
   implicit none
   complex(c_double_complex), intent(out) :: tmat(1:(2*ndvr+1), 1:(nrad-1), 0:lmax1)
-  integer(c_int) :: ifun, irad, jrad, krad, l, l2, jll, jul, jb1, ctdep1, ctdep2
-  integer(c_int) :: dim, nsub, ld1
+  integer(c_long) :: ifun, irad, jrad, krad, l, l2, jll, jul, jb1, ctdep1, ctdep2
+  integer(c_long) :: dim, nsub, ld1
   complex(c_double_complex) :: oor, zor, zor1
 ! Orimo_ECS
   complex(c_double_complex) :: pot(1:(nrad-1)), grad(1:(nrad-1))
 ! Orimo_ECS
 !DEBUG
-!  integer(c_int) :: tmp_ecs_flag, idvr, jb2
+!  integer(c_long) :: tmp_ecs_flag, idvr, jb2
 !DEBUG
   
   dim = nrad - 1
@@ -46,9 +46,9 @@ subroutine bas_gen_tmat(tmat)
 !DEBUG
 
 ! Orimo_ECS
-!  if(PSP .and. ecs_flag == 1) then
-!     stop 'bas_gen_tmat (PSP) : ecs nyi.'
-!  end if
+  if(PSP .and. ecs_flag == 1) then
+     stop 'bas_gen_tmat (PSP) : ecs nyi.'
+  end if
   if(ecs_flag == 0) then
      do irad = 1, nrad-1 
         grad(irad) = xrad(irad)
@@ -68,7 +68,7 @@ subroutine bas_gen_tmat(tmat)
         oor = one / grad(irad)
 ! Orimo_ECS
         if (PSP) then
-           if (psp_type == 1 .or. psp_type == 5 .or. psp_type == 6 .or. psp_type == 7) then
+           if (psp_type == 1 .or. psp_type == 5) then
               ! fully nonlocal separable PP
               zor = oor**2.d+0*dble(l2)*half + pp_vloc(irad)
            else

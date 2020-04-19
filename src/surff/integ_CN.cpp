@@ -51,15 +51,15 @@ void Integ_CN::prop(const clmpi& MPIP, const clbas& Bas, const clfield& Field, c
   }
 
 
-  //static int int dim = norb;
-  //static int int lda= norb;
-  //static std::vector<int long> ipiv(norb);
-  //static int int lwork = norb;
-  //static std::vector<dcomplex>  work(norb*norb);
-  //static int int info;
+  static long long dim = norb;
+  static long long lda= norb;
+  static std::vector<long long> ipiv(norb);
+  static long long lwork = norb;
+  static std::vector<dcomplex>  work(norb*norb);
+  static long long info;
 
 // Sato_TSURFF
-  int norbl = norb;
+  long norbl = norb;
   futil_gmatinv_(&norbl, &ZERO, &imp_vmat[0], &imp_vmat[0]);
 //  zgetrf(&dim, &dim, &imp_vmat[0], &lda, &ipiv[0], &info);
 //  //info = LAPACKE_zgetrf(LAPACK_COL_MAJOR, dim, dim, &imp_vmat[0], lda, &ipiv[0]);
@@ -76,20 +76,20 @@ void Integ_CN::prop(const clmpi& MPIP, const clbas& Bas, const clfield& Field, c
 //  }
 // Sato_TSURFF
 
-//   for(int iorb = 0; iorb < norb; ++iorb){
-//     for(int jorb = 0; jorb < norb; ++jorb){
+//   for(long iorb = 0; iorb < norb; ++iorb){
+//     for(long jorb = 0; jorb < norb; ++jorb){
 //       std::cout << imp_vmat[iorb * norb + jorb];
 //     }
 //   }
   
 #pragma omp parallel default(shared)
   {
-    int ithr = omp_get_thread_num();
-    int llk, ulk;
+    long ithr = omp_get_thread_num();
+    long llk, ulk;
     MPIP.omp_divide(ithr, 0, ksize, llk, ulk);
 
-    for(int iorb = 0; iorb < norb; ++iorb){
-      for(int jorb = 0; jorb < norb; ++jorb){
+    for(long iorb = 0; iorb < norb; ++iorb){
+      for(long jorb = 0; jorb < norb; ++jorb){
 	if(Bas.mval[iorb] == Bas.mval[jorb]){
 	  ////////////////////////
 	  // omp parallelized
@@ -110,12 +110,12 @@ void Integ_CN::prop(const clmpi& MPIP, const clbas& Bas, const clfield& Field, c
   std::fill(opes.begin(), opes.end(), 0.0);
 #pragma omp parallel default(shared)
   {
-    int ithr = omp_get_thread_num();
-    int llk, ulk;
+    long ithr = omp_get_thread_num();
+    long llk, ulk;
     MPIP.omp_divide(ithr, 0, ksize, llk, ulk);
 
-    for(int iorb = 0; iorb < norb; ++iorb){
-      for(int jorb = 0; jorb < norb; ++jorb){
+    for(long iorb = 0; iorb < norb; ++iorb){
+      for(long jorb = 0; jorb < norb; ++jorb){
 	if(Bas.mval[iorb] == Bas.mval[jorb]){
 	  ////////////////////////
 	  // omp parallelized
@@ -151,15 +151,15 @@ void Integ_CN::prop_old(const clmpi& MPIP, const clbas& Bas, const clfield& Fiel
   }
 
 
-  //int int dim = norb;
-  //int int lda= norb;
-  //static std::vector<int long> ipiv(norb);
-  //int int lwork = norb;
-  //static std::vector<dcomplex>  work(norb);
-  //int int info;
+  long long dim = norb;
+  long long lda= norb;
+  static std::vector<long long> ipiv(norb);
+  long long lwork = norb;
+  static std::vector<dcomplex>  work(norb);
+  long long info;
 
 // Sato_TSURFF
-  int norbl = norb;
+  long norbl = norb;
   futil_gmatinv_(&norbl, &ZERO, &imp_vmat[0], &imp_vmat[0]);
 //  zgetrf(&dim, &dim, &imp_vmat[0], &lda, &ipiv[0], &info);
 //  //info = LAPACKE_zgetrf(LAPACK_COL_MAJOR, dim, dim, &imp_vmat[0], lda, &ipiv[0]);
@@ -176,20 +176,20 @@ void Integ_CN::prop_old(const clmpi& MPIP, const clbas& Bas, const clfield& Fiel
 //  }
 // Sato_TSURFF
 
-//   for(int iorb = 0; iorb < norb; ++iorb){
-//     for(int jorb = 0; jorb < norb; ++jorb){
+//   for(long iorb = 0; iorb < norb; ++iorb){
+//     for(long jorb = 0; jorb < norb; ++jorb){
 //       std::cout << imp_vmat[iorb * norb + jorb];
 //     }
 //   }
   
 #pragma omp parallel default(shared)
   {
-    int ithr = omp_get_thread_num();
-    int llk, ulk;
+    long ithr = omp_get_thread_num();
+    long llk, ulk;
     MPIP.omp_divide(ithr, 0, ksize, llk, ulk);
 
-    for(int iorb = 0; iorb < norb; ++iorb){
-      for(int jorb = 0; jorb < norb; ++jorb){
+    for(long iorb = 0; iorb < norb; ++iorb){
+      for(long jorb = 0; jorb < norb; ++jorb){
 	if(Bas.mval[iorb] == Bas.mval[jorb]){
 	  ////////////////////////
 	  // omp parallelized
@@ -209,12 +209,12 @@ void Integ_CN::prop_old(const clmpi& MPIP, const clbas& Bas, const clfield& Fiel
   std::fill(opes.begin(), opes.end(), 0.0);
 #pragma omp parallel default(shared)
   {
-    int ithr = omp_get_thread_num();
-    int llk, ulk;
+    long ithr = omp_get_thread_num();
+    long llk, ulk;
     MPIP.omp_divide(ithr, 0, ksize, llk, ulk);
 
-    for(int iorb = 0; iorb < norb; ++iorb){
-      for(int jorb = 0; jorb < norb; ++jorb){
+    for(long iorb = 0; iorb < norb; ++iorb){
+      for(long jorb = 0; jorb < norb; ++jorb){
 	if(Bas.mval[iorb] == Bas.mval[jorb]){
 	  ////////////////////////
 	  // omp parallelized
@@ -235,8 +235,8 @@ void Integ_CN::prop_old(const clmpi& MPIP, const clbas& Bas, const clfield& Fiel
 //   int llk = 0;
 //   int ulk = ksize;
   
-//     for(int iorb = 0; iorb < norb; ++iorb){
-//       for(int jorb = 0; jorb < norb; ++jorb){
+//     for(long iorb = 0; iorb < norb; ++iorb){
+//       for(long jorb = 0; jorb < norb; ++jorb){
 // 	////////////////////////
 // 	// omp parallelized
 // 	////////////////////////
@@ -250,8 +250,8 @@ void Integ_CN::prop_old(const clmpi& MPIP, const clbas& Bas, const clfield& Fiel
 //     }    
 
 //     std::fill(opes.begin(), opes.end(), 0.0);
-//     for(int iorb = 0; iorb < norb; ++iorb){
-//       for(int jorb = 0; jorb < norb; ++jorb){
+//     for(long iorb = 0; iorb < norb; ++iorb){
+//       for(long jorb = 0; jorb < norb; ++jorb){
 // 	////////////////////////
 // 	// omp parallelized
 // 	////////////////////////

@@ -6,7 +6,7 @@
 ////////////////////////////////////////////////////////////////////////
 // static members
 ////////////////////////////////////////////////////////////////////////
-int clbas::num_bas = 0;
+long clbas::num_bas = 0;
 ////////////////////////////////////////////////////////////////////////
 clbas::clbas()
 {
@@ -43,8 +43,8 @@ void clbas::read_info(const clio& IO)
 ////////////////////////////////////////////////////////////////////////
 void clbas::print(const clio& IO) const
 {
-  printf("# nbas  = %10d\n", nbas);
-  printf("# ngrid = %10d\n", ngrid);
+  printf("# nbas  = %10ld\n", nbas);
+  printf("# ngrid = %10ld\n", ngrid);
   if (IO.iprint > 1) GRad.print();
   if (IO.iprint > 1) GAng.print(IO);
 }
@@ -55,7 +55,6 @@ void clbas::gen(const clmpi& MPIP, const clio& IO)
   GAng.gen(MPIP, IO);
   // c++/fortran bindings
   if (num_bas == 1) {
-// tdcis-teramura
 // Orimo_ECS
     bas_rad_bind_(&GRad.nfe, &GRad.nmax, &GRad.nrad, &GRad.nradfc, &GRad.mapf[0], &GRad.mapb[0],
 		  &GRad.xrad[0], &GRad.wrad[0], &GRad.radp[0], &GRad.radk[0], &GRad.radk0[0],
@@ -63,22 +62,17 @@ void clbas::gen(const clmpi& MPIP, const clio& IO)
 		  &GRad.ecs_flag, &GRad.theta, &GRad.recs, &GRad.cwrad[0], &GRad.radkI_ecs, &GRad.irad_ecs,
 		  &GRad.cxrad[0], &GRad.bra_wrad[0], &GRad.rdr[0], &GRad.wdw[0], 
 		  &GRad.type_mkint1_sph, &GRad.type_mkint2_sph, &GRad.type_mkv2mf, &GRad.type_mkxmat_aa,
-		  &GRad.inf_range, &GRad.irad_inf, &GRad.exp_factor, &GRad.switchoff, &GRad.irad_sw, &GRad.pot_type, &GRad.trunc_irad,
-		  &GRad.nradgs);
+		  &GRad.inf_range, &GRad.irad_inf, &GRad.exp_factor, &GRad.switchoff, &GRad.irad_sw, &GRad.pot_type, &GRad.trunc_irad);
 //old    bas_rad_bind_(&GRad.nfe, &GRad.nmax, &GRad.nrad, &GRad.nradfc, &GRad.mapf[0], &GRad.mapb[0],
 //old		  &GRad.xrad[0], &GRad.wrad[0], &GRad.radp[0], &GRad.radk[0], &GRad.radk0[0],
 //old		  &GRad.rmask, &GRad.mask[0],
 //old		  &GRad.ecs_flag, &GRad.theta, &GRad.recs, &GRad.cwrad[0], &GRad.radkI_ecs, &GRad.irad_ecs,
 //old		  &GRad.cxrad[0], &GRad.bra_wrad[0]);
 // Orimo_ECS
-// tdcis-teramura
-// tdcis-teramura
     bas_sph_bind_(&GAng.lmax1, &GAng.lmax2, &GAng.mmax1, &GAng.mmax2, &GAng.nsph1, 
 		  &GAng.nlat, &GAng.nphi, &GAng.nang, &GAng.wgt_lat[0], &GAng.wgt_phi, 
 		  &GAng.wgt_ang[0], &GAng.cost[0], &GAng.sint[0], 
-		  &GAng.legf1[0], &GAng.legb1[0], &GAng.legf2[0], &GAng.legb2[0],
-		  &GAng.lmax1gs, &GAng.lmax2gs);
-// tdcis-teramura
+		  &GAng.legf1[0], &GAng.legb1[0], &GAng.legf2[0], &GAng.legb2[0]);
   }
   if (clcontrol::exact3j) sph_3j_init_();
 
@@ -102,9 +96,9 @@ void clbas::gen(const clmpi& MPIP, const clio& IO)
   alph_lm.resize((GAng.lmax1 + 1) * (2 * GAng.mmax1 + 1));
 
   // operator matrices
-  int size0 = (2 * GRad.nmax + 1) * (GRad.nrad - 1);
-  int size1 = (2 * GRad.nmax + 1) * (GRad.nrad - 1) * (GAng.lmax1 + 1);
-  int size2 = (GRad.nmax + 1) * (GRad.nrad - 1) * (GAng.lmax2 + 1);
+  long size0 = (2 * GRad.nmax + 1) * (GRad.nrad - 1);
+  long size1 = (2 * GRad.nmax + 1) * (GRad.nrad - 1) * (GAng.lmax1 + 1);
+  long size2 = (GRad.nmax + 1) * (GRad.nrad - 1) * (GAng.lmax2 + 1);
   pmat.resize(size0); // radial first derivative, transposed
   kmat.resize(size1); // kinetic
   tmat.resize(size1); // kinetic + nuclear
@@ -120,8 +114,8 @@ void clbas::gen(const clmpi& MPIP, const clio& IO)
   bas_d2rpl1.resize((GRad.nrad - 1)*(GAng.lmax2 + 1)); // for Poisson
 // Orimo_ECS
   bas_d2crpl1.resize((GRad.nrad - 1)*(GAng.lmax2 + 1)); // for Poisson
-  int size3 = (3 * GRad.nmax + 1) * (GRad.nrad - 1) * (GAng.lmax2 + 1);
-  int size4 = (GRad.nmax + 1) * (GRad.irad_ecs - 1) * (GAng.lmax2 + 1);
+  long size3 = (3 * GRad.nmax + 1) * (GRad.nrad - 1) * (GAng.lmax2 + 1);
+  long size4 = (GRad.nmax + 1) * (GRad.irad_ecs - 1) * (GAng.lmax2 + 1);
   d2ll_ecs.resize(size3);
   confd2ll.resize(size4); // lu-decomposed laplacian confined in irad_ecs
   ipiv_ecs.resize((GRad.nrad - 1)*(GAng.lmax2 + 1));
@@ -181,11 +175,11 @@ void clbas::read_lmval(const clio& IO)
 
   std::string line;
   std::stringstream ioss;
-  int ttmp;
+  long ttmp;
 
   while ( getline(ifs, line) && line.find(key,0) == std::string::npos ) {}
   if(! ifs.eof()) {
-    for (int ifun = 0; ifun < ORMAS.nfun; ifun ++) {
+    for (long ifun = 0; ifun < ORMAS.nfun; ifun ++) {
       getline(ifs, line);
       ioss.str("");
       ioss.clear(std::stringstream::goodbit);
@@ -196,8 +190,8 @@ void clbas::read_lmval(const clio& IO)
 	   >> ttmp;
     }
     std::cout << "# lmval:" << std::endl;
-    for (int ifun = 0; ifun < ORMAS.nfun; ifun ++) {
-      printf("#%5d%5d%5d%5d\n", ifun, nval[ifun], lval[ifun], mval[ifun]);
+    for (long ifun = 0; ifun < ORMAS.nfun; ifun ++) {
+      printf("#%5ld%5ld%5ld%5ld\n", ifun, nval[ifun], lval[ifun], mval[ifun]);
     }
     //    abort();
   } else {
@@ -210,13 +204,13 @@ void clbas::gen_grid()
 {
   double cosp, sinp, cost, sint, phi, rad;
 
-  int igrid = 0;
-  for (int iphi = 0; iphi < GAng.nphi; iphi ++) {
+  long igrid = 0;
+  for (long iphi = 0; iphi < GAng.nphi; iphi ++) {
     phi = TWO * PI / GAng.nphi * iphi;
     cosp = cos(phi);
     sinp = sin(phi);
-    for (int ilat = 0; ilat < GAng.nlat; ilat ++) {
-      for (int irad = 1; irad < GRad.nrad; irad ++) {
+    for (long ilat = 0; ilat < GAng.nlat; ilat ++) {
+      for (long irad = 1; irad < GRad.nrad; irad ++) {
 	rad = GRad.xrad[irad];
 	grid[            igrid] = rad * GAng.sint[ilat] * cosp; // x
 	grid[    ngrid + igrid] = rad * GAng.sint[ilat] * sinp; // y
@@ -227,7 +221,7 @@ void clbas::gen_grid()
     }
   }
   if (igrid != ngrid) {
-    printf("Error in clbas_gen_grid: %10d != %10d\n", igrid, ngrid);
+    printf("Error in clbas_gen_grid: %10ld != %10ld\n", igrid, ngrid);
     abort();
   }
 }
@@ -236,15 +230,15 @@ void clbas::gen_wgt()
 {
   double wgt_ang;
 
-  int igrid = 0;
-  for (int iang = 0; iang < GAng.nang; iang ++) {
-    for (int irad = 1; irad < GRad.nrad; irad ++) {
+  long igrid = 0;
+  for (long iang = 0; iang < GAng.nang; iang ++) {
+    for (long irad = 1; irad < GRad.nrad; irad ++) {
       wgt[igrid] = GAng.wgt_ang[iang];
       igrid ++;
     }
   }
   if (igrid != ngrid) {
-    printf("Error in clgrid_gen_wgt: %10d != %10d\n", igrid, ngrid);
+    printf("Error in clgrid_gen_wgt: %10ld != %10ld\n", igrid, ngrid);
     abort();
   }
 }
@@ -279,30 +273,30 @@ void clbas::sph2ang2(const clmpi& MPIP,
 //////////////////////////////////////////////////////////////////////////
 void clbas::proj(const clbas& Bas2, const std::vector<dcomplex>& orb1, std::vector<dcomplex>& orb2) const
 {
-  int ife1, irad1, ind1, ind2;
+  long ife1, irad1, ind1, ind2;
   double rval, swgt, mat_proj;
-  int nfun_tmp = std::max(ORMAS.nfun, Bas2.ORMAS.nfun);
-  int lmax_tmp = std::max(GAng.lmax1, Bas2.GAng.lmax1);
+  long nfun_tmp = std::max(ORMAS.nfun, Bas2.ORMAS.nfun);
+  long lmax_tmp = std::max(GAng.lmax1, Bas2.GAng.lmax1);
 
-  int size2 = Bas2.ORMAS.nfun * Bas2.nbas;
+  long size2 = Bas2.ORMAS.nfun * Bas2.nbas;
   zclear_omp_(&size2, &orb2[0]);
 
-  for (int irad2 = 1; irad2 < Bas2.GRad.nrad; irad2 ++) {
+  for (long irad2 = 1; irad2 < Bas2.GRad.nrad; irad2 ++) {
     rval = Bas2.GRad.xrad[irad2];
     swgt = sqrt(Bas2.GRad.wrad[irad2]);
     ife1 = GRad.get_ife(rval);
-    //    printf("%10d%20.10f%10d\n", irad2, Bas2.GRad.xrad[irad2], ife1);
+    //    printf("%10ld%20.10f%10ld\n", irad2, Bas2.GRad.xrad[irad2], ife1);
 
     if (ife1 >= 0) {
-      for (int m = std::max(LONE - ife1, LZERO); m < GRad.get_ndvr(ife1); m ++) {
+      for (long m = std::max(LONE - ife1, LZERO); m < GRad.get_ndvr(ife1); m ++) {
 
 	irad1 = GRad.mapf[ife1] + m;
 	mat_proj = GRad.get_val(irad1, rval) * swgt;
 
-	//	printf("%10d%10d%20.10f%20.10f\n", irad2, irad1, rval, GRad.xrad[irad1]);
+	//	printf("%10ld%10ld%20.10f%20.10f\n", irad2, irad1, rval, GRad.xrad[irad1]);
 
-	for (int ifun = 0; ifun < nfun_tmp; ifun ++) {
-	  for (int l = 0; l <= lmax_tmp; l ++) {
+	for (long ifun = 0; ifun < nfun_tmp; ifun ++) {
+	  for (long l = 0; l <= lmax_tmp; l ++) {
 	    ind1 = ifun * GAng.nsph1 * (GRad.nrad - 1) 
      	                        + l * (GRad.nrad - 1) + irad1 - 1;
 	    ind2 = ifun * Bas2.GAng.nsph1 * (Bas2.GRad.nrad - 1) 
@@ -318,8 +312,8 @@ void clbas::proj(const clbas& Bas2, const std::vector<dcomplex>& orb1, std::vect
       irad1 = GRad.mapf[ife1 + 1];
       mat_proj = GRad.get_val0(ife1, rval) * swgt;
 
-      for (int ifun = 0; ifun < nfun_tmp; ifun ++) {
-	for (int l = 0; l <= lmax_tmp; l ++) {
+      for (long ifun = 0; ifun < nfun_tmp; ifun ++) {
+	for (long l = 0; l <= lmax_tmp; l ++) {
 	  ind1 = ifun * GAng.nsph1 * (GRad.nrad - 1) 
      	                      + l * (GRad.nrad - 1) + irad1 - 1;
 	  ind2 = ifun * Bas2.GAng.nsph1 * (Bas2.GRad.nrad - 1) 

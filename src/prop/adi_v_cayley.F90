@@ -6,12 +6,12 @@ subroutine adi_v_cayley(icomp, dtime, lfield, wfn)
   use mod_ormas, only : nfun
 
   implicit none
-  integer(c_int), intent(in) :: icomp
+  integer(c_long), intent(in) :: icomp
   real(c_double), intent(in) :: dtime
   real(c_double), intent(in) :: lfield(1:3)
   complex(c_double_complex), intent(inout) :: wfn(1:ngrid, 1:nfun)
 
-  integer(c_int) :: llg, ulg
+  integer(c_long) :: llg, ulg
 
   !$omp parallel default(shared) private(llg, ulg)
   !###########################
@@ -30,13 +30,13 @@ subroutine adi_v_cayleyp(icomp, dtime, lfield, grid, wfn, llg, ulg)
   use mod_const, only : one, two, runit, iunit
 
   implicit none
-  integer(c_int), intent(in) :: icomp, llg, ulg
+  integer(c_long), intent(in) :: icomp, llg, ulg
   real(c_double), intent(in) :: dtime
   real(c_double), intent(in) :: lfield(1:3)
   real(c_double), intent(in) :: grid(1:ngrid, 1:4)
   complex(c_double_complex), intent(inout) :: wfn(1:ngrid, 1:nfun)
 
-  integer(c_int) :: ifun, igrid
+  integer(c_long) :: ifun, igrid
   complex(c_double_complex) :: fac, ldip, vcay
 
   if (icomp == 1) then

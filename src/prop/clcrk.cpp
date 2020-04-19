@@ -39,7 +39,7 @@ void clcrk::gen(const clmpi& MPIP, const clio& IO, const clbas& Bas,
   rk_wghts[0].resize(rk_max_stage);
   rk_wghts[1].resize(rk_max_stage);
   rk_coeff.resize(rk_max_stage);
-  for (int is = 0; is < rk_max_stage; is ++) {
+  for (long is = 0; is < rk_max_stage; is ++) {
     rk_coeff[is].resize(rk_max_stage);
   }
   set_coeff();
@@ -47,7 +47,7 @@ void clcrk::gen(const clmpi& MPIP, const clio& IO, const clbas& Bas,
   Wfn0.gen(MPIP, IO, Bas);
   tWfn.gen(MPIP, IO, Bas);
   kWfn.resize(rk_nstage);
-  for (int is = 0; is < rk_nstage; is ++) {
+  for (long is = 0; is < rk_nstage; is ++) {
     kWfn[is].gen(MPIP, IO, Bas);
   }
 }
@@ -60,12 +60,12 @@ void clcrk::prop(const clmpi& Proc, const clbas& Bas, const clfield& Field,
   HProd.copy(Proc, Bas, Wfn, Wfn0);
 
   dcomplex fac, dtwgt;
-  for (int is = 0; is < rk_nstage; is ++) {
+  for (long is = 0; is < rk_nstage; is ++) {
     dtwgt = Field.dtime * rk_wghts[rk_level][is];
     ttime = Field.time + Field.dtime * rk_nodes[is];
 
     HProd.copy(Proc, Bas, Wfn0, tWfn);
-    for (int js = 0; js < is; js ++) {
+    for (long js = 0; js < is; js ++) {
       fac = Field.dtime * rk_coeff[is][js];
       HProd.axpy(Proc, Bas, fac, kWfn[js], tWfn);
     }
@@ -94,12 +94,12 @@ void clcrk::prop(const clmpi& Proc, const clbas& Bas, const clfield& Field,
   HProd.copy(Proc, Bas, Wfn, Wfn0);
 
   dcomplex fac, dtwgt;
-  for (int is = 0; is < rk_nstage; is ++) {
+  for (long is = 0; is < rk_nstage; is ++) {
     dtwgt = dtime * rk_wghts[rk_level][is];
     ttime = time + dtime * rk_nodes[is];
 
     HProd.copy(Proc, Bas, Wfn0, tWfn);
-    for (int js = 0; js < is; js ++) {
+    for (long js = 0; js < is; js ++) {
       fac = dtime * rk_coeff[is][js];
       HProd.axpy(Proc, Bas, fac, kWfn[js], tWfn);
     }

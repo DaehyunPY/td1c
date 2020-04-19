@@ -82,9 +82,6 @@ void init(const clmpi& Proc, const clio& IO, const clbas& Bas, clwfn& Wfn)
   } else if (prop_type.compare("lawrk") == 0) {
     cllawrk H12P;
     init_prop12(Proc, IO, Bas, Field, H12P, HPW, Wfn);
-  } else if (prop_type.compare("lawab") == 0) {
-    cllawab H12P;
-    init_prop12(Proc, IO, Bas, Field, H12P, HPW, Wfn);
   } else {
     std::cout << "init: bad prop_type" << std::endl;
     abort();
@@ -95,24 +92,15 @@ void init(const clmpi& Proc, const clio& IO, const clbas& Bas, clwfn& Wfn)
   std::vector<double> Eig(Bas.ORMAS.nfun);
   IO.read_info("fock_diag", false, fock_diag);
   Field.get_value(lfield);
-
   if (fock_diag) {
     HPW.fockdiag(Proc, Bas, lfield, Wfn, Eig);
   } else {
     HPW.orbene(Proc, Bas, lfield, Wfn, Eig);
   }
-
   printf("orbital energies:\n");
   for (int ifun = 0; ifun < Bas.ORMAS.nfun; ifun ++) {
     printf("%5d %25.15e\n", ifun, Eig[ifun]);
   }
-
-  IO.read_info("post_cidiag", false, cidiag);
-  if (cidiag && Bas.ORMAS.ndetx > 1) {
-    HPW.cidiag(Proc, Bas, Wfn);
-  }
-
-  Wfn.write(Proc, IO, Bas);
 
   typhys Phys;
   HPW.spin(Proc, Bas, Wfn, Phys);
@@ -152,7 +140,7 @@ void init(const clmpi& Proc, const clio& IO, const clbas& Bas, clwfn& Wfn)
   //nyi  Ham.fock2(Bas, Wfn);
 
   bool print_orb, print_cic;
-  int print_orb_nstep;
+  long print_orb_nstep;
   std::string fname;
   IO.read_info("print_orb", true, print_orb);
   if (print_orb) {
@@ -171,6 +159,7 @@ void init(const clmpi& Proc, const clio& IO, const clbas& Bas, clwfn& Wfn)
     Wfn.print_cic(fname, Bas);
   }
 
+  Wfn.write(Proc, IO, Bas);
   clock_t time1 = clock();
   std::cout << "# init: " << (double)(time1 - time0) / CLOCKS_PER_SEC << std::endl;
 }
@@ -178,13 +167,13 @@ void init(const clmpi& Proc, const clio& IO, const clbas& Bas, clwfn& Wfn)
 void init_split2(const clmpi& Proc, const clio& IO, const clbas& Bas, clfield& Field, 
 		 clh1prop& H1P, clh2prop& H2P, clhprod& HPW, clwfn& Wfn)
 {
-  int STEP1 = LONE;
-  int STEP2 = LTWO;
+  long STEP1 = LONE;
+  long STEP2 = LTWO;
 
   bool doh1 = clcontrol::split_type != 0;
   bool doh2 = Bas.ORMAS.neltot[2] > 1 || clcontrol::split_type == 0;  
 
-  int init_maxcyc;
+  long init_maxcyc;
   double init_dstep;
   double init_tolene;
   IO.read_info("init_dstep", 0.01, init_dstep);
@@ -192,7 +181,7 @@ void init_split2(const clmpi& Proc, const clio& IO, const clbas& Bas, clfield& F
   IO.read_info("init_maxcyc", LONE*1000000, init_maxcyc);
 
   typhys Phys;
-  int ncyc = 0;
+  long ncyc = 0;
   double test = ZERO;
   double ene1 = -1.0E+10;
 
@@ -204,7 +193,7 @@ void init_split2(const clmpi& Proc, const clio& IO, const clbas& Bas, clfield& F
   H1P.gen(Proc, IO, Bas, Field, HPW);
   H2P.gen(Proc, IO, Bas, Field, HPW);
 
-  for (int icyc = 0; icyc < init_maxcyc; icyc ++) {
+  for (long icyc = 0; icyc < init_maxcyc; icyc ++) {
     Field.get_value(lfield);
     HPW.dipole(Proc, Bas, lfield, Wfn, Phys);
     HPW.energy(Proc, Bas, lfield, Wfn, Phys);
@@ -219,10 +208,10 @@ void init_split2(const clmpi& Proc, const clio& IO, const clbas& Bas, clfield& F
     }
  
     if (icyc == 0) {
-      printf("cycle %10d %20.10f%20.10f%20.10f%20.10f\n", 
+      printf("cycle %10ld %20.10f%20.10f%20.10f%20.10f\n", 
  	     icyc, Phys.dip[2], Phys.vel[2], Phys.acc[2], Phys.ene);
     } else {
-      printf("cycle %10d %20.10f%20.10f%20.10f%20.10f%20.5e\n",
+      printf("cycle %10ld %20.10f%20.10f%20.10f%20.10f%20.5e\n",
  	     icyc, Phys.dip[2], Phys.vel[2], Phys.acc[2], Phys.ene, test);
     }
 
@@ -242,7 +231,7 @@ void init_split2(const clmpi& Proc, const clio& IO, const clbas& Bas, clfield& F
 void init_prop12(const clmpi& Proc, const clio& IO, const clbas& Bas, clfield& Field, 
 		 clh2prop& H2P, clhprod& HPW, clwfn& Wfn)
 {
-  int init_maxcyc;
+  long init_maxcyc;
   double init_dstep;
   double init_tolene;
   double init_tolwfn;
@@ -252,7 +241,7 @@ void init_prop12(const clmpi& Proc, const clio& IO, const clbas& Bas, clfield& F
   IO.read_info("init_maxcyc", LONE*1000000, init_maxcyc);
 
   typhys Phys;
-  int ncyc = 0;
+  long ncyc = 0;
   double test = ZERO;
   double ene1 = -1.0E+10;
 
@@ -263,7 +252,7 @@ void init_prop12(const clmpi& Proc, const clio& IO, const clbas& Bas, clfield& F
   double lfield[9];
   H2P.gen(Proc, IO, Bas, Field, HPW);
 
-  for (int icyc = 0; icyc < init_maxcyc; icyc ++) {
+  for (long icyc = 0; icyc < init_maxcyc; icyc ++) {
     Field.get_value(lfield);
 
     HPW.dipole(Proc, Bas, lfield, Wfn, Phys);
@@ -281,11 +270,11 @@ void init_prop12(const clmpi& Proc, const clio& IO, const clbas& Bas, clfield& F
     }
  
     if (icyc == 0) {
-      printf("cycle %10d %20.10f%20.10f%20.10f%20.10f%20.5e%20.5e%20.5e\n", 
+      printf("cycle %10ld %20.10f%20.10f%20.10f%20.10f%20.5e%20.5e%20.5e\n", 
  	     icyc, Phys.dip[2], Phys.vel[2], Phys.acc[2], Phys.ene, 
 	     Phys.ipx[0], Phys.ipx[1], Phys.ipx[2]);
     } else {
-      printf("cycle %10d %20.10f%20.10f%20.10f%20.10f%20.5e%20.5e%20.5e%20.5e\n",
+      printf("cycle %10ld %20.10f%20.10f%20.10f%20.10f%20.5e%20.5e%20.5e%20.5e\n",
  	     icyc, Phys.dip[2], Phys.vel[2], Phys.acc[2], Phys.ene, test, 
 	     Phys.ipx[0], Phys.ipx[1], Phys.ipx[2]);
     }

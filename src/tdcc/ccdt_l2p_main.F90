@@ -1,7 +1,6 @@
 !**********************************************************
 subroutine ccdt_l2p_main()
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact,nelact
   use mod_cc,only : norb1,cc_code,g2out
   use mod_cc2
@@ -75,19 +74,6 @@ subroutine ccdt_l2p_main()
      call ccdt_l2p_man17(g2out,cc_work1,cc_work2,cc_work3)
      call ccdt_l2p_man18(g2out,cc_work1,cc_work2,cc_work3)
   end if
-  !follwoing diagrams involve T3 or L3 amplitudes
-  !  ccdt_l2p_man03.F90
-  !  ccdt_l2p_man07.F90
-  !  ccdt_l2p_man08.F90
-  !  ccdt_l2p_man10.F90
-  !  ccdt_l2p_man11.F90
-  !  ccdt_l2p_man12.F90
-  !  ccdt_l2p_man13.F90
-  !  ccdt_l2p_man14.F90
-  !  ccdt_l2p_man15.F90
-  !  ccdt_l2p_man16.F90
-  !  ccdt_l2p_man17.F90
-  !  ccdt_l2p_man18.F90
 
 end subroutine ccdt_l2p_main
 !**********************************************************

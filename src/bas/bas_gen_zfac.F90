@@ -9,7 +9,7 @@ subroutine bas_gen_zfac()
 
   implicit none
   complex(c_double_complex) :: azfac, tmp
-  integer(c_int) :: l, m, irad
+  integer(c_long) :: l, m, irad
 
   if (fedvr_normalized) then
      do m = -mmax1, mmax1

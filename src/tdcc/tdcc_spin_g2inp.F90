@@ -1,7 +1,6 @@
 !###################################################################################
-integer(c_int) function tdcc_spin_g2inp(sh1, sh2, sp3, sp4)
+integer function tdcc_spin_g2inp(sh1, sh2, sp3, sp4)
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas, only : nelact
 !  1 : g(i1j1,a1b1)
 !  2 : g(i2j2,a2b2)
@@ -12,8 +11,8 @@ integer(c_int) function tdcc_spin_g2inp(sh1, sh2, sp3, sp4)
 !  0 : others
 
   implicit none
-  integer(c_int), intent(in) :: sh1, sh2, sp3, sp4
-  integer(c_int) :: spin_type
+  integer, intent(in) :: sh1, sh2, sp3, sp4
+  integer :: spin_type
 
   if (nelact(3) < 2 .or. sh1 + sh2 .ne. sp3 + sp4) then
      spin_type = 0

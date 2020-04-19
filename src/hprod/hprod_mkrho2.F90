@@ -24,7 +24,7 @@ subroutine hprod_mkrho2_dyn()
 
   implicit none
 !debug
-!  integer(c_int) :: ifun,jfun,l,ilat,irad
+!  integer(c_long) :: ifun,jfun,l,ilat,irad
 !  complex(c_double_complex), allocatable :: test_ovlp(:,:)
 !debug
 
@@ -124,7 +124,7 @@ subroutine hprod_mkrho2p(v2_type, orbg, rho2g)
   character(len=*), intent(in) :: v2_type
   complex(c_double_complex), intent(in) :: orbg(1:(nrad-1), 1:nlat, 1:nfun)
   complex(c_double_complex), intent(out) :: rho2g(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
-  integer(c_int) :: dim, ifun_ll, ifun_ul, jfun_ll, jfun_ul, llr, ulr, ifun, jfun, ilat, irad
+  integer(c_long) :: dim, ifun_ll, ifun_ul, jfun_ll, jfun_ul, llr, ulr, ifun, jfun, ilat, irad
 
   if (trim(v2_type) == 'tot') then
      dim = nrad - 1
@@ -210,7 +210,7 @@ subroutine hprod_mkrho2p3j(v2_type, orbe, orbo, rho2e, rho2o)
   complex(c_double_complex), intent(in) :: orbo(1:(nrad-1), 1:nlat, 1:nfun)
   complex(c_double_complex), intent(out) :: rho2e(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(out) :: rho2o(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
-  integer(c_int) :: dim, ifun_ll, ifun_ul, jfun_ll, jfun_ul, llr, ulr, ifun, jfun, ilat, irad
+  integer(c_long) :: dim, ifun_ll, ifun_ul, jfun_ll, jfun_ul, llr, ulr, ifun, jfun, ilat, irad
 
   if (trim(v2_type) == 'tot') then
      dim = nrad - 1

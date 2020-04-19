@@ -1,7 +1,6 @@
 !######################################################################
 subroutine tdcc_bcct1(cic,xmat)
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas, only :nact
   use mod_cc, only : norb1,cc_rank,bcc,optbcc,t2inp,t3inp,t1out
 
@@ -30,7 +29,6 @@ end subroutine tdcc_bcct1
 !################################################################################
 subroutine tdcc_bcct1_xmat(hcc1, cc2, xmat)
 
-  use, intrinsic :: iso_c_binding
   use mod_control, only : icomp
   use mod_const, only : zero,runit,iunit
   use mod_ormas, only : nact,nrotaa,rotaa_mapb
@@ -40,7 +38,7 @@ subroutine tdcc_bcct1_xmat(hcc1, cc2, xmat)
   complex(kind(0d0)), intent(in) :: hcc1((norb1+1):nact,1:norb1,1:*)
   complex(kind(0d0)), intent(in) :: cc2((norb1+1):nact,(norb1+1):nact,1:norb1,1:norb1,1:6)
   complex(kind(0d0)), intent(out) :: xmat(1:nact,1:nact)
-  integer(c_int) :: h1,h2,p1,p2,irot,jrot,nrota2
+  integer :: h1,h2,p1,p2,irot,jrot,nrota2
   real(kind(0d0)), allocatable :: x1rhs(:,:)
   real(kind(0d0)), allocatable :: x1vec(:,:)
   real(kind(0d0)), allocatable :: amat(:,:,:,:)
@@ -183,18 +181,17 @@ end subroutine tdcc_bcct1_xmat
 !################################################################################
 subroutine tdcc_bcct1_lineq(nvar, amat, bvec, rvec)
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas, only : iprint
   use mod_const, only : one, czero
   use mod_control, only : reg_type, throcc3
 
   implicit none
-  integer(c_int), intent(in) :: nvar
+  integer, intent(in) :: nvar
   real(kind(0d0)), intent(in) :: amat(1:nvar, 1:nvar)
   real(kind(0d0)), intent(in) :: bvec(1:nvar)
   real(kind(0d0)), intent(out) :: rvec(1:nvar)
 
-  integer(c_int) :: ivar, jvar
+  integer :: ivar, jvar
   real(kind(0d0)) :: thresh, inva, denom
   real(kind(0d0)), allocatable :: aeig(:)
   real(kind(0d0)), allocatable :: uvec(:,:), vvec(:,:), btmp(:), rtmp(:)

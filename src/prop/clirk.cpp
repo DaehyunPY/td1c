@@ -27,7 +27,7 @@ void clirk::gen(const clmpi& MPIP, const clio& IO, const clbas& Bas,
   clh2prop::gen_basic(MPIP, IO, Bas, Field, HPW);
 
   IO.read_info("rk_order", LTWO, irk_order);
-  IO.read_info("rk_maxcyc", 10, irk_maxcyc);
+  IO.read_info("rk_maxcyc", (long) 10, irk_maxcyc);
   IO.read_info("rk_thresh", (double) 1.0E-10, irk_thresh);
   IO.read_info("rk_formula", "trapezoidal", irk_formula);
 
@@ -79,7 +79,7 @@ void clirk::prop1(const clmpi& Proc, const clbas& Bas, double time, double dtime
   HPW.htot(Proc, Bas, dtime, lfield, Wfn0, hWfn1);
   HPW.xpyz(Proc, Bas, Wfn0, hWfn1, Wfn);
 
-  for (int icyc = 1; icyc <= irk_maxcyc; icyc ++) {
+  for (long icyc = 1; icyc <= irk_maxcyc; icyc ++) {
     // update
     Field.get_value(time1, lfield);
     HPW.copy(Proc, Bas, Wfn, Wfn1);
@@ -89,7 +89,7 @@ void clirk::prop1(const clmpi& Proc, const clbas& Bas, double time, double dtime
     // difference
     HPW.xmyz(Proc, Bas, Wfn, Wfn1, Wfn1);
     zdotc_omp_(&Wfn.size, &Wfn1.wfn[0], &Wfn1.wfn[0], &dC);
-    printf("clirk::prop1: %10d%20.10f\n", icyc, sqrt(real(dC)));
+    printf("clirk::prop1: %10ld%20.10f\n", icyc, sqrt(real(dC)));
     if (sqrt(real(dC)) < irk_thresh) break;
   }
 }
@@ -111,7 +111,7 @@ void clirk::prop2m(const clmpi& Proc, const clbas& Bas, double time, double dtim
   HPW.htot(Proc, Bas, dtime, lfield, Wfn, hWfn1);
   HPW.xpyz(Proc, Bas, Wfn0, hWfn1, Wfn);
 
-  for (int icyc = 1; icyc <= irk_maxcyc; icyc ++) {
+  for (long icyc = 1; icyc <= irk_maxcyc; icyc ++) {
     // update
     Field.get_value(timeh, lfield);
     HPW.axpbyz(Proc, Bas, CHALF, Wfn0, CHALF, Wfn, Wfn1);
@@ -122,7 +122,7 @@ void clirk::prop2m(const clmpi& Proc, const clbas& Bas, double time, double dtim
     // difference
     HPW.xmyz(Proc, Bas, Wfn, Wfn1, Wfn1);
     zdotc_omp_(&Wfn.size, &Wfn1.wfn[0], &Wfn1.wfn[0], &dC);
-    printf("clirk::prop2m: %10d%20.10f\n", icyc, sqrt(real(dC)));
+    printf("clirk::prop2m: %10ld%20.10f\n", icyc, sqrt(real(dC)));
     if (sqrt(real(dC)) < irk_thresh) break;
   }
 }
@@ -142,7 +142,7 @@ void clirk::prop2t(const clmpi& Proc, const clbas& Bas, double time, double dtim
   HPW.axpyz(Proc, Bas, cdt2, hWfn1, Wfn, Wfn0);
   HPW.axpyz(Proc, Bas, cdt2, hWfn1, Wfn0, Wfn);
 
-  for (int icyc = 1; icyc <= irk_maxcyc; icyc ++) {
+  for (long icyc = 1; icyc <= irk_maxcyc; icyc ++) {
     // update
     Field.get_value(time1, lfield);
     HPW.copy(Proc, Bas, Wfn, Wfn1);
@@ -152,7 +152,7 @@ void clirk::prop2t(const clmpi& Proc, const clbas& Bas, double time, double dtim
     // difference
     HPW.xmyz(Proc, Bas, Wfn, Wfn1, Wfn1);
     zdotc_omp_(&Wfn.size, &Wfn1.wfn[0], &Wfn1.wfn[0], &dC);
-    printf("clirk::prop2t: %10d%20.10f\n", icyc, sqrt(real(dC)));
+    printf("clirk::prop2t: %10ld%20.10f\n", icyc, sqrt(real(dC)));
     if (sqrt(real(dC)) < irk_thresh) break;
   }
 }

@@ -28,14 +28,9 @@ add_library(
         tdcc_xact2.F90
         tdcc_xact2_solved.F90
         tdcc_xact2_solveb.F90
-        tdcc_xact2_solved_itr.F90
         tdcc_bcct1.F90
         tdcc_mkbmat.F90
-        tdcc_mkbmatx.F90
         tdcc_mkden2x.F90
-        tdcc_mkamat.F90
-        tdcc_mkbmat1.F90
-        tdcc_mkbmat2.F90
         ccd_ene.F90
         ccd_t2.F90
         ccd_t2p_main.F90
@@ -171,7 +166,6 @@ add_library(
         ccdt_den2p_man26.F90
         ccdt_den2p_man27.F90
         ccdt_bmat2p.F90
-        ccdt_bmat2_main.F90
         ccdt_bmat2p_main.F90
         ccdt_bmat2p_man01.F90
         ccdt_bmat2p_man02.F90
@@ -186,19 +180,6 @@ add_library(
         ccdt_den2xp_man02.F90
         ccdt_den2xp_man03.F90
         ccdt_den2xp_man04.F90
-        ccdt_den2xp_man05.F90
-        ccdt_den2xp_man06.F90
-        ccdt_amat_main.F90
-        ccdt_amat_man01.F90
-        ccdt_amat_man02.F90
-        ccdt_amat_man03.F90
-        ccdt_amat_man04.F90
-        ccdt_amat_IIJJ.F90
-        ccdt_amat_AABB.F90
-        ccdt_amat_IAJJ.F90
-        ccdt_amat_IABB.F90
-        ccdt_amat_IIJB.F90
-        ccdt_amat_AAJB.F90
         bccdt_t1p.F90
         bccdt_t1p_main.F90
         bccdt_t1p_man01.F90

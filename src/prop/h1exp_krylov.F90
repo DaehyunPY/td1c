@@ -8,15 +8,15 @@ subroutine h1exp_krylov(isplit, igauge, lfield, dtime, maxcyc, thresh, &
   use mod_const, only : one, zero, czero
 
   implicit none
-  integer(c_int), intent(in) :: isplit, igauge, maxcyc
+  integer(c_long), intent(in) :: isplit, igauge, maxcyc
   real(c_double), intent(in) :: lfield(3), dtime, thresh
   complex(c_double_complex), intent(in) :: wfn(1:nbas, 1:*)
-  integer(c_int), intent(out) :: ntot
+  integer(c_long), intent(out) :: ntot
   real(c_double), intent(out) :: alph(1:maxcyc)
   real(c_double), intent(out) :: beta(1:maxcyc)
   complex(c_double_complex), intent(out) :: orb(1:nbas, 1:*)
 
-  integer(c_int) :: icyc, jcyc
+  integer(c_long) :: icyc, jcyc
   real(c_double) :: oores  ! one over residue (1/res)
   real(c_double) :: error  ! error?
   complex(c_double_complex) :: tmp, zfield
@@ -113,12 +113,12 @@ subroutine h1exp_krylov1(isplit, igauge, lfield, maxcyc, maxvec, norb, mmap, wfn
   use mod_const, only : one, czero
 
   implicit none
-  integer(c_int), intent(in) :: isplit, igauge
+  integer(c_long), intent(in) :: isplit, igauge
   real(c_double), intent(in) :: lfield(3)
-  integer(c_int), intent(in) :: maxcyc, maxvec, norb, mmap(1:nfun)
+  integer(c_long), intent(in) :: maxcyc, maxvec, norb, mmap(1:nfun)
   complex(c_double_complex), intent(in) :: wfn(1:nbas, 1:*)
 
-  integer(c_int), intent(out) :: ntot
+  integer(c_long), intent(out) :: ntot
   real(c_double), intent(out) :: norm(1:maxvec)
   complex(c_double_complex), intent(out) :: orb(1:nbas, 1:*)
   complex(c_double_complex), intent(out) :: hmat(1:maxvec, 1:maxvec)
@@ -126,7 +126,7 @@ subroutine h1exp_krylov1(isplit, igauge, lfield, maxcyc, maxvec, norb, mmap, wfn
   real(c_double) :: rres, oores
   complex(c_double_complex) :: crres, zfield
   real(c_double), parameter :: thrsub = 1.D-10
-  integer(c_int) :: ndone, nnew, nvec, icyc, ivec, jvec
+  integer(c_long) :: ndone, nnew, nvec, icyc, ivec, jvec
   complex(c_double_complex), allocatable :: horb(:,:)
 
   zfield = lfield(3)
@@ -212,12 +212,12 @@ real(c_double) function h1exp_krylov_error(nsub, alph, beta, dtime)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: nsub
+  integer(c_long), intent(in) :: nsub
   real(c_double), intent(in) :: alph(1:*)
   real(c_double), intent(in) :: beta(1:*)
   real(c_double), intent(in) :: dtime
 
-  integer(c_int) :: isub
+  integer(c_long) :: isub
   real(c_double) :: error
 
   error = (nsub - 1) * log(dtime)

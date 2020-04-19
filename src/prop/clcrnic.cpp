@@ -23,8 +23,8 @@ void clcrnic::gen(const clmpi& MPIP, const clio& IO, const clbas& Bas,
 {
   IO.read_info("crnic_maxcyc", LFOUR, crnic_maxcyc);
 
-  int icomp = Field.td_type;
-  int isplit = clcontrol::split_type;
+  long icomp = Field.td_type;
+  long isplit = clcontrol::split_type;
   double dt2 = Field.dtime * HALF;
   dPade.gen(MPIP, IO, Bas, dt2, CTWO, icomp, isplit);
 
@@ -53,7 +53,7 @@ void clcrnic::prop(const clmpi& Proc, const clbas& Bas,
   HPW.axpyz(Proc, Bas, cdt1, hWfn0, Wfn0, Wfn1);
   dPade.prod(Proc, Bas, time1, Field, HPW, Wfn1);
 
-  for (int icyc = 1; icyc < crnic_maxcyc; icyc ++) {
+  for (long icyc = 1; icyc < crnic_maxcyc; icyc ++) {
     Field.get_value(time1, lfield);
     HPW.htot(Proc, Bas, ONE, lfield, Wfn1, hWfn1);
     HPW.xpyz(Proc, Bas, hWfn1, hWfn0, Wfn1);
@@ -72,18 +72,18 @@ void clcrnic::prop(const clmpi& Proc, const clbas& Bas,
 //old
 //old  dPade.prod(Proc, Bas, time1, Field, HPW, Wfn1); // dC0 = C1 - C0
 //old  res_wfn = get_res(Proc, Bas, Wfn1);
-//old  printf(" clcrnic::prop: %10d%20.10e\n", LZERO, res_wfn);
+//old  printf(" clcrnic::prop: %10ld%20.10e\n", LZERO, res_wfn);
 //old  HPW.xpy(Proc, Bas, Wfn0, Wfn1);                 // C1 = C0 + dC0
 //old  HPW.copy(Proc, Bas, Wfn1, Wfn0);
 //old
-//old  for (int icyc = 1; icyc < crnic_maxcyc; icyc ++) {
+//old  for (long icyc = 1; icyc < crnic_maxcyc; icyc ++) {
 //old    Field.get_value(time1, lfield);
 //old    HPW.htot(Proc, Bas, ONE, lfield, Wfn1, hWfn1);
 //old    HPW.xmyz(Proc, Bas, hWfn1, hWfn0, Wfn1);
 //old    HPW.scal(Proc, Bas, cdt2, Wfn1);
 //old    dPade.prod(Proc, Bas, time1, Field, HPW, Wfn1); // dC(i-1) = C(i) - C(i-1)
 //old    res_wfn = get_res(Proc, Bas, Wfn1);
-//old    printf(" clcrnic::prop: %10d%20.10e\n", icyc, res_wfn);
+//old    printf(" clcrnic::prop: %10ld%20.10e\n", icyc, res_wfn);
 //old    HPW.xpy(Proc, Bas, Wfn0, Wfn1);                 // C(i) = C(i-1) + dC(i-1)
 //old    HPW.copy(Proc, Bas, Wfn1, Wfn0);
 //old    HPW.copy(Proc, Bas, hWfn1, hWfn0);
@@ -111,7 +111,7 @@ void clcrnic::prop(const clmpi& Proc, const clbas& Bas, const clfield& Field,
   HPW.axpyz(Proc, Bas, cdt1, hWfn0, Wfn0, Wfn1);
   dPade.prod(Proc, Bas, time1, Field, HPW, Wfn1);
 
-  for (int icyc = 1; icyc < crnic_maxcyc; icyc ++) {
+  for (long icyc = 1; icyc < crnic_maxcyc; icyc ++) {
     Field.get_value(time1, lfield);
     HPW.htot(Proc, Bas, ONE, lfield, Wfn1, hWfn1);
     HPW.xpyz(Proc, Bas, hWfn1, hWfn0, Wfn1);
@@ -130,18 +130,18 @@ void clcrnic::prop(const clmpi& Proc, const clbas& Bas, const clfield& Field,
 //old
 //old  dPade.prod(Proc, Bas, time1, Field, HPW, Wfn1); // dC0 = C1 - C0
 //old  res_wfn = get_res(Proc, Bas, Wfn1);
-//old  printf(" clcrnic::prop: %10d%20.10e\n", LZERO, res_wfn);
+//old  printf(" clcrnic::prop: %10ld%20.10e\n", LZERO, res_wfn);
 //old  HPW.xpy(Proc, Bas, Wfn0, Wfn1);                 // C1 = C0 + dC0
 //old  HPW.copy(Proc, Bas, Wfn1, Wfn0);
 //old
-//old  for (int icyc = 1; icyc < crnic_maxcyc; icyc ++) {
+//old  for (long icyc = 1; icyc < crnic_maxcyc; icyc ++) {
 //old    Field.get_value(time1, lfield);
 //old    HPW.htot(Proc, Bas, ONE, lfield, Wfn1, hWfn1);
 //old    HPW.xmyz(Proc, Bas, hWfn1, hWfn0, Wfn1);
 //old    HPW.scal(Proc, Bas, cdt2, Wfn1);
 //old    dPade.prod(Proc, Bas, time1, Field, HPW, Wfn1); // dC(i-1) = C(i) - C(i-1)
 //old    res_wfn = get_res(Proc, Bas, Wfn1);
-//old    printf(" clcrnic::prop: %10d%20.10e\n", icyc, res_wfn);
+//old    printf(" clcrnic::prop: %10ld%20.10e\n", icyc, res_wfn);
 //old    HPW.xpy(Proc, Bas, Wfn0, Wfn1);                 // C(i) = C(i-1) + dC(i-1)
 //old    HPW.copy(Proc, Bas, Wfn1, Wfn0);
 //old    HPW.copy(Proc, Bas, hWfn1, hWfn0);

@@ -11,13 +11,13 @@ subroutine h1itr_prop(icomp, isplit, igauge, iprojfc, lfield, dtime, maxcyc, &
   use mod_control, only : fedvr_normalized
 
   implicit none
-  integer(c_int), intent(in) :: icomp, isplit, igauge, iprojfc, maxcyc, cnpiv(1:*)
+  integer(c_long), intent(in) :: icomp, isplit, igauge, iprojfc, maxcyc, cnpiv(1:*)
   real(c_double), intent(in) :: lfield(9), dtime, thresh
   complex(c_double_complex), intent(in) :: cninv(1:*)
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
 
   complex(c_double_complex) :: zfield, zfac1, zfac2, tmp
-  integer(c_int) :: ncyc, icyc, ifun, irad, l, size1, sizef, sized
+  integer(c_long) :: ncyc, icyc, ifun, irad, l, size1, sizef, sized
   logical, parameter :: debug = .true.
   real(c_double) :: rmsres, maxres
   logical projfc
@@ -186,8 +186,8 @@ subroutine h1itr_prop_fcore(orb, torb)
   complex(c_double_complex), intent(inout) :: torb(1:nbas, 1:nfun)
 
   complex(c_double_complex) :: tmp
-  integer(c_int) :: ndfun, info, ifun, jfun
-  integer(c_int), allocatable :: ipiv(:)
+  integer(c_long) :: ndfun, info, ifun, jfun
+  integer(c_long), allocatable :: ipiv(:)
   complex(c_double_complex), allocatable :: amat(:,:)
 
  if (nfcore == 0) return
@@ -271,7 +271,7 @@ end subroutine h1itr_prop_fcrot
 !  use mod_control, only : fedvr_normalized
 !
 !  implicit none
-!  integer(c_int), intent(in) :: icomp, isplit, igauge, iprojfc, maxcyc, cnpiv(1:*)
+!  integer(c_long), intent(in) :: icomp, isplit, igauge, iprojfc, maxcyc, cnpiv(1:*)
 !  real(c_double), intent(in) :: lfield(9), dtime, thresh
 !  complex(c_double_complex), intent(in) :: cninv(1:*)
 !  complex(c_double_complex), intent(out) :: orb(1:(nrad-1), 0:lmax1, 1:nfun)
@@ -280,7 +280,7 @@ end subroutine h1itr_prop_fcrot
 !  complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
 !
 !  complex(c_double_complex) :: zfield, zfac1, zfac2, tmp
-!  integer(c_int) :: ncyc, icyc, ifun, irad, l, size1, sizef, sized
+!  integer(c_long) :: ncyc, icyc, ifun, irad, l, size1, sizef, sized
 !  logical, parameter :: debug = .true.
 !  real(c_double) :: rmsres, maxres
 !  logical projfc

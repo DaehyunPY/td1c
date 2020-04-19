@@ -51,7 +51,7 @@ void clfield::gen(const clmpi& MPIP, const clio& IO)
   double ttmpl, ttmpr;
   double tinit = ZERO;
   double tlast = ZERO;
-  for (int ifield = 0; ifield < num_field; ifield++) {
+  for (long ifield = 0; ifield < num_field; ifield++) {
     //    std::cout << "clfield::gen (1)" << std::endl;
     Fields[ifield].gen1(MPIP, IO, ifield);
     //    std::cout << "clfield::gen (2)" << std::endl;
@@ -69,7 +69,7 @@ void clfield::gen(const clmpi& MPIP, const clio& IO)
   printf("clfield::gen: t_last is %20.10f cycles of pulse #0.\n", tlast/Fields[0].period);
   printf("clfield::gen: cyctot is %20.10f cycles of pulse #0.\n", cyctot);
 
-  for (int ifield = 0; ifield < num_field; ifield++) {
+  for (long ifield = 0; ifield < num_field; ifield++) {
     Fields[ifield].gen2(MPIP, IO, tshift);
   }
 
@@ -123,10 +123,10 @@ void clfield::get_value(double ttmp, double* lfield) const
   //DEBUG
   //  printf("clfield::get_value: ttmp = %20.10f\n", ttmp);
   //DEBUG  
-  for (int i = 0; i < 9; i++) {
+  for (long i = 0; i < 9; i++) {
     lfield[i] = ZERO;
   }
-  for (int ifield = 0; ifield < num_field; ifield++) {
+  for (long ifield = 0; ifield < num_field; ifield++) {
     if (Fields[ifield].env_type.compare("pulse") == 0) {
       //if (ttmp < dtime + 1.E-10) {
       if (step == 0) {
@@ -141,10 +141,10 @@ void clfield::get_value(double ttmp, double* lfield) const
 ////////////////////////////////////////////////////////////////////////
 void clfield::get_der(double ttmp, double* dfield) const
 {
-  for (int i = 0; i < 9; i++) {
+  for (long i = 0; i < 9; i++) {
     dfield[i] = ZERO;
   }
-  for (int ifield = 0; ifield < num_field; ifield++) {
+  for (long ifield = 0; ifield < num_field; ifield++) {
     if (Fields[ifield].env_type.compare("pulse") == 0) {
     } else {
       Fields[ifield].get_der(ttmp, dfield);
@@ -154,10 +154,10 @@ void clfield::get_der(double ttmp, double* dfield) const
 ////////////////////////////////////////////////////////////////////////
 void clfield::get_evalue(double ttmp, double* efield) const
 {
-  for (int i = 0; i < 3; i++) {
+  for (long i = 0; i < 3; i++) {
     efield[i] = ZERO;
   }
-  for (int ifield = 0; ifield < num_field; ifield++) {
+  for (long ifield = 0; ifield < num_field; ifield++) {
     if (Fields[ifield].env_type.compare("pulse") == 0) {
       //if (ttmp < dtime + 1.E-10) {
       if (step == 0) {
@@ -171,10 +171,10 @@ void clfield::get_evalue(double ttmp, double* efield) const
 ////////////////////////////////////////////////////////////////////////
 void clfield::get_avalue(double ttmp, double* afield) const
 {
-  for (int i = 0; i < 3; i++) {
+  for (long i = 0; i < 3; i++) {
     afield[i] = ZERO;
   }
-  for (int ifield = 0; ifield < num_field; ifield++) {
+  for (long ifield = 0; ifield < num_field; ifield++) {
     if (Fields[ifield].env_type.compare("pulse") == 0) {
     } else {
       Fields[ifield].get_avalue(ttmp, afield);
@@ -184,10 +184,10 @@ void clfield::get_avalue(double ttmp, double* afield) const
 ////////////////////////////////////////////////////////////////////////
 void clfield::get_value(double t1, double t2, double c1, double c2, double* lfield) const
 {
-  for (int i = 0; i < 9; i++) {
+  for (long i = 0; i < 9; i++) {
     lfield[i] = ZERO;
   }
-  for (int ifield = 0; ifield < num_field; ifield++) {
+  for (long ifield = 0; ifield < num_field; ifield++) {
     if (Fields[ifield].env_type.compare("pulse") == 0) {
       //if (t1 < dtime + 1.E-10) {
       if (step == 0) {

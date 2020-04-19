@@ -16,7 +16,7 @@ subroutine hprod_mfprod_dftj(v2j, wfn, hwfn, edftj)
 
   real(c_double) :: ene
   complex(c_double_complex) :: tmp1, tmp2
-  integer(c_int) :: ifun, igrid, llg, ulg
+  integer(c_long) :: ifun, igrid, llg, ulg
 
   ene = zero
 
@@ -68,7 +68,7 @@ subroutine hprod_mfprod_dftx(rhoxc, wfn, hwfn, edftxc)
 
   real(c_double) :: ene, edftx, edftc
   complex(c_double_complex) :: tmp1
-  integer(c_int) :: ifun, ilat, irad, llr, ulr
+  integer(c_long) :: ifun, ilat, irad, llr, ulr
   real(c_double), allocatable :: rho(:,:)
   real(c_double), allocatable :: exc(:,:)
   real(c_double), allocatable :: vxc(:,:)

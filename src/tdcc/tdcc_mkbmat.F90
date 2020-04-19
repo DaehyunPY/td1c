@@ -1,10 +1,9 @@
 !################################################################################
 subroutine tdcc_mkbmat(int1e,int2e,den1,den2,cic,dcic,bmat)
 
-  use, intrinsic :: iso_c_binding
   use mod_const, only : czero
   use mod_ormas, only : nfun,nact,iprint
-  use mod_cc, only : cc_rank,optcc,bcc,optbcc,norb1
+  use mod_cc, only : cc_rank,optcc,bcc,optbcc
 
   implicit none
   complex(kind(0d0)), intent(in) :: int1e(1:nact,1:nact)
@@ -18,10 +17,6 @@ subroutine tdcc_mkbmat(int1e,int2e,den1,den2,cic,dcic,bmat)
   complex(kind(0d0)), allocatable :: bmat1(:,:)
   complex(kind(0d0)), allocatable :: bmat2(:,:)
   complex(kind(0d0)), allocatable :: bmat3(:,:)
-
-!debug
-!  integer :: a,i
-!debug
 
   allocate(bmat1(1:nact,1:nact))
   allocate(bmat2(1:nact,1:nact))
@@ -52,25 +47,17 @@ subroutine tdcc_mkbmat(int1e,int2e,den1,den2,cic,dcic,bmat)
   else
      stop 'tdcc_mkbmat supports CCD/CCDT/OBCCD/OBCCDT only'
   end if
-
   bmat = bmat1 - bmat2 + bmat3
-!debug  do a = norb1+1,nact
-!debug     do i = 1, norb1
-!debug        bmat(a,i) = bmat1(i,a) - bmat2(i,a) + bmat3(i,a)
-!debug        !bmat(i,a) = bmat1(i,a) - bmat2(i,a) + bmat3(i,a)
-!debug     end do
-!debug  end do
-
 
   if (iprint > 4) then
      write(6, "('# tdcc_mkbmat: bmat-1')")
-     call util_matoutc(nact,bmat1)
+     call util_matoutc(6,nact,bmat1)
      write(6, "('# tdcc_mkbmat: bmat-2')")
-     call util_matoutc(nact,bmat2)
+     call util_matoutc(6,nact,bmat2)
      write(6, "('# tdcc_mkbmat: bmat-3')")
-     call util_matoutc(nact,bmat3)
+     call util_matoutc(6,nact,bmat3)
      write(6, "('# tdcc_mkbmat: bmat-total')")
-     call util_matoutc(nact,bmat)
+     call util_matoutc(6,nact,bmat)
   end if
   !stop 'for debug @ tdcc_mkbmat.'
 
@@ -82,7 +69,6 @@ end subroutine tdcc_mkbmat
 !######################################################################
 subroutine tdcc_mkbmat_1(int1e, int2e, den1, den2, bmat)
 !
-  use, intrinsic :: iso_c_binding
   use mod_bas, only : mval
   use mod_const, only : czero, chalf
   use mod_ormas, only : ncore, nact
@@ -94,7 +80,7 @@ subroutine tdcc_mkbmat_1(int1e, int2e, den1, den2, bmat)
   complex(kind(0d0)), intent(in) :: den1(1:nact, 1:nact)
   complex(kind(0d0)), intent(in) :: den2(1:nact, 1:nact, 1:nact, 1:nact)
   complex(kind(0d0)), intent(out) :: bmat(1:nact, 1:nact)
-  integer(c_int) :: iact, aact, pact, qact, ract
+  integer :: iact, aact, pact, qact, ract
   complex(kind(0d0)) :: tmp1, tmp2
 
   do iact = 1, norb1
@@ -118,7 +104,6 @@ subroutine tdcc_mkbmat_1(int1e, int2e, den1, den2, bmat)
            end do
         end do
         bmat(iact, aact) = + tmp1 - tmp2
-!debug        bmat(aact, iact) = + tmp1 - tmp2
      end do
   end do
 
@@ -126,7 +111,6 @@ end subroutine tdcc_mkbmat_1
 !######################################################################
 subroutine tdcc_mkbmat_2(cic, hcic, bmat)
 
-  use, intrinsic :: iso_c_binding
   use mod_const, only : czero, runit
   use mod_ormas, only : nact, iprint
   use mod_cc, only : cc_rank, norb1, optcc, bcc, optbcc
@@ -168,7 +152,6 @@ end subroutine tdcc_mkbmat_2
 !######################################################################
 subroutine tdcc_mkbmat_3(cic, hcic, bmat)
 
-  use, intrinsic :: iso_c_binding
   use mod_const, only : czero, runit
   use mod_ormas, only : iprint, nact
   use mod_cc, only : cc_rank, norb1, optcc, bcc, optbcc

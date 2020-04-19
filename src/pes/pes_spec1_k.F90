@@ -11,7 +11,7 @@ subroutine pes_spec1_k(wfn, cic)
   complex(c_double_complex), intent(in) :: wfn(*)
   complex(c_double_complex), intent(in) :: cic(*)
   complex(c_double_complex), allocatable :: dens(:,:)
-  integer(c_int) :: ifun, iact, jact
+  integer(c_long) :: ifun, iact, jact
 
   allocate(dens(1:nfun, 1:nfun))
   dens(1:nfun, 1:nfun) = czero
@@ -49,9 +49,9 @@ subroutine pes_spec1_k_psik(wfn, psik)
   complex(c_double_complex), intent(in) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: psik(0:pes_numk, 0:lmax1, 1:nfun)
 
-  integer(c_int) :: ifun, irad, ik, l
-  integer(c_int) :: iproc, llk, ulk
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long) :: ifun, irad, ik, l
+  integer(c_long) :: iproc, llk, ulk
+  integer(c_long), external :: util_omp_iproc
   real(c_double) :: rwval
 
 !SAMPLE TO SHOW THE USAGE
@@ -109,9 +109,9 @@ subroutine pes_spec1_k_rhok(psik, rhok)
   complex(c_double_complex), intent(in) :: psik(0:pes_numk, 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: rhok(0:pes_numk, 1:nfun, 1:nfun)
 
-  integer(c_int) :: ifun, jfun, ik, l
-  integer(c_int) :: iproc, llk, ulk
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long) :: ifun, jfun, ik, l
+  integer(c_long) :: iproc, llk, ulk
+  integer(c_long), external :: util_omp_iproc
   complex(c_double_complex) :: temp
 
   temp = 16.D0 * pi * pi
@@ -151,9 +151,9 @@ subroutine pes_spec1_k_trace(dens, rhok)
   complex(c_double_complex), intent(in) :: dens(1:nfun, 1:nfun)
   complex(c_double_complex), intent(inout) :: rhok(0:pes_numk, 1:nfun, 1:nfun)
 
-  integer(c_int) :: ifun, jfun, irad, ik, l
-  integer(c_int) :: iproc, llk, ulk
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long) :: ifun, jfun, irad, ik, l
+  integer(c_long) :: iproc, llk, ulk
+  integer(c_long), external :: util_omp_iproc
   complex(c_double_complex) :: temp
   real(c_double) :: kval 
 

@@ -7,15 +7,15 @@ subroutine h1exp_prop(icomp, isplit, igauge, lfield, dtime, maxcyc, thresh, wfn)
   use mod_ormas, only : nfun, neltot
 
   implicit none
-  integer(c_int), intent(in) :: icomp, isplit, igauge, maxcyc
+  integer(c_long), intent(in) :: icomp, isplit, igauge, maxcyc
   real(c_double), intent(in) :: lfield(3), dtime, thresh
   complex(c_double_complex), intent(inout) :: wfn(1:nbas, 1:nfun)
 
-  integer(c_int), allocatable :: norb(:)
-  integer(c_int), allocatable :: mmap(:,:)
+  integer(c_long), allocatable :: norb(:)
+  integer(c_long), allocatable :: mmap(:,:)
   real(c_double), allocatable :: alph(:), beta(:)
   complex(c_double_complex), allocatable :: torb(:,:)
-  integer(c_int) :: m, maxorb, maxvec, ntot
+  integer(c_long) :: m, maxorb, maxvec, ntot
 
   ! #### for hydrogen only ####
   if (neltot(3) > 1) stop "h1exp_prop: only for one electron."
@@ -52,16 +52,16 @@ subroutine h1exp_prop1(icomp, isplit, igauge, lfield, dtime, maxcyc, wfn)
   use mod_ormas, only : nfun, neltot
 
   implicit none
-  integer(c_int), intent(in) :: icomp, isplit, igauge, maxcyc
+  integer(c_long), intent(in) :: icomp, isplit, igauge, maxcyc
   real(c_double), intent(in) :: lfield(3), dtime
   complex(c_double_complex), intent(inout) :: wfn(1:nbas, 1:nfun)
 
-  integer(c_int), allocatable :: norb(:)
-  integer(c_int), allocatable :: mmap(:,:)
+  integer(c_long), allocatable :: norb(:)
+  integer(c_long), allocatable :: mmap(:,:)
   real(c_double), allocatable :: norm(:)
   complex(c_double_complex), allocatable :: hmat(:,:)
   complex(c_double_complex), allocatable :: torb(:,:)
-  integer(c_int) :: m, maxorb, maxvec, ntot
+  integer(c_long) :: m, maxorb, maxvec, ntot
 
   ! #### for hydrogen only ####
   if (neltot(3) > 1) stop "h1exp_prop: only for one electron."
@@ -101,11 +101,11 @@ subroutine h1exp_mmap(norb, mmap, maxorb)
   use mod_ormas, only : nfcore, nfun
 
   implicit none
-  integer(c_int), intent(out) :: norb(-mmax1:mmax1)
-  integer(c_int), intent(out) :: mmap(1:nfun, -mmax1:mmax1)
-  integer(c_int), intent(out) :: maxorb
+  integer(c_long), intent(out) :: norb(-mmax1:mmax1)
+  integer(c_long), intent(out) :: mmap(1:nfun, -mmax1:mmax1)
+  integer(c_long), intent(out) :: maxorb
 
-  integer(c_int) :: m, ifun
+  integer(c_long) :: m, ifun
 
   do m = -mmax1, mmax1
      norb(m) = 0

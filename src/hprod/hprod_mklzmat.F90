@@ -12,8 +12,8 @@ subroutine hprod_mklzmat(orb, int1e)
   complex(c_double_complex), intent(in) :: orb(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: int1e(1:nfun, 1:nfun)
 
-  integer(c_int), external :: util_omp_iproc, util_omp_nproc
-  integer(c_int) :: ifun, jfun, irad, l, m, mi, mj, nproc, iproc, llr, ulr
+  integer(c_long), external :: util_omp_iproc, util_omp_nproc
+  integer(c_long) :: ifun, jfun, irad, l, m, mi, mj, nproc, iproc, llr, ulr
   complex(c_double_complex) :: tmp1z
   complex(c_double_complex), allocatable :: oazp(:,:,:)
 

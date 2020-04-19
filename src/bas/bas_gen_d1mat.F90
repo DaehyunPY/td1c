@@ -19,7 +19,7 @@ subroutine bas_gen_d1mat(d1mat)
 !
   implicit none
   complex(c_double_complex), intent(out) :: d1mat(1:(2*ndvr+1), 1:(nrad-1))
-  integer(c_int) :: ifun, irad, jrad, jll, jul, ij, jb1, ctdep1, ctdep2
+  integer(c_long) :: ifun, irad, jrad, jll, jul, ij, jb1, ctdep1, ctdep2
 
   d1mat(1:(2*ndvr+1), 1:(nrad-1)) = zero
 

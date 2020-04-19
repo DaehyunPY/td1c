@@ -5,7 +5,7 @@ subroutine hprod_fockdiag(lfield, wfn, cic, eig)
   use mod_const, only : one
   use mod_bas, only : nbas
   use mod_hprod, only : orb, h0orb, gorb
-  use mod_ormas, only : nfun, nfcore, ndcore, ncore, nact, nsub, lorb_sub
+  use mod_ormas, only : nfun
 !DEBUG
   use mod_rad, only : nrad
   use mod_sph, only : lmax1
@@ -17,10 +17,8 @@ subroutine hprod_fockdiag(lfield, wfn, cic, eig)
   complex(c_double_complex), intent(inout) :: cic(1:*)
   real(c_double), intent(out) :: eig(1:*)
 
-  integer(c_int) :: isub, llfun, ulfun
-
 !DEBUG
-!  integer(c_int) :: ifun, l, irad
+!  integer(c_long) :: ifun, l, irad
 !DEBUG
 
   write(6,"('hprod_fockdiag: use gfock instead of mpfock')")
@@ -55,26 +53,7 @@ subroutine hprod_fockdiag(lfield, wfn, cic, eig)
 !  end do
 !DEBUG
 
-  !call hprod_fockdiagx(orb, gorb, eig)
-
-  if (nfcore > 0) then
-     llfun = 1
-     ulfun = nfcore
-     call hprod_fockdiagx2(llfun, ulfun, orb, gorb, eig)
-  end if
-  if (ndcore > 0) then
-     llfun = nfcore + 1
-     ulfun = ncore
-     call hprod_fockdiagx2(llfun, ulfun, orb, gorb, eig)
-  end if
-  if (nact > 0) then
-     do isub = 1, nsub
-        llfun = ncore + lorb_sub(1, isub)
-        ulfun = ncore + lorb_sub(2, isub)
-        call hprod_fockdiagx2(llfun, ulfun, orb, gorb, eig)
-     end do
-  end if
-
+  call hprod_fockdiagx(orb, gorb, eig)
   call util_zcopy(nfun*nbas, orb, 1, wfn, 1)
 
 end subroutine hprod_fockdiag
@@ -92,12 +71,12 @@ subroutine hprod_fockdiagx(wfn, fwfn, eig)
   complex(c_double_complex), intent(inout) :: fwfn(1:nbas, 1:*)
   real(c_double), intent(out) :: eig(1:*)
 
-  integer(c_int) :: ifun, jfun
+  integer(c_long) :: ifun, jfun
   complex(c_double_complex), allocatable :: fock(:,:)
   complex(c_double_complex), allocatable :: umat(:,:)
 
-  integer(c_int) :: l, num0, iorb, jorb
-  integer(c_int) :: map_i(1:nfun), map_j(1:nfun), map_n(1:nfun)
+  integer(c_long) :: l, num0, iorb, jorb
+  integer(c_long) :: map_i(1:nfun), map_j(1:nfun), map_n(1:nfun)
 
 
   do l = 0, lmax1
@@ -195,122 +174,4 @@ subroutine hprod_fockdiagx(wfn, fwfn, eig)
   end do
 
 end subroutine hprod_fockdiagx
-!#######################################################################
-subroutine hprod_fockdiagx2(llfun, ulfun, wfn, fwfn, eig)
-
-  use, intrinsic :: iso_c_binding
-  use mod_sph, only : lmax1
-  use mod_const, only : czero
-  use mod_ormas, only : nfun
-  use mod_bas, only : nbas, nval, lval, mval
-
-  implicit none
-  integer(c_int), intent(in) :: llfun, ulfun
-  complex(c_double_complex), intent(inout) :: wfn(1:nbas, 1:*)
-  complex(c_double_complex), intent(inout) :: fwfn(1:nbas, 1:*)
-  real(c_double), intent(inout) :: eig(1:*)
-
-  integer(c_int) :: ifun, jfun
-  complex(c_double_complex), allocatable :: fock(:,:)
-  complex(c_double_complex), allocatable :: umat(:,:)
-
-  integer(c_int) :: l, num0, iorb, jorb
-  integer(c_int) :: map_i(1:nfun), map_j(1:nfun), map_n(1:nfun)
-
-
-  do l = 0, lmax1
-     num0 = 0
-     do ifun = llfun, ulfun
-        if (lval(ifun) == l .and. mval(ifun) == 0) then
-           num0 = num0 + 1
-           map_i(num0) = ifun
-           map_n(num0) = nval(ifun)
-        end if
-     end do
-
-     if (num0 == 0) cycle
-
-     do jfun = llfun, ulfun
-        if (lval(jfun) == l .and. mval(jfun) .ne. 0) then
-           do iorb = 1, num0
-              ifun = map_i(iorb)
-              if (nval(jfun) == map_n(iorb)) then
-                 map_j(jfun) = ifun
-              end if
-           end do
-        end if
-     end do
-
-     allocate(fock(1:num0, 1:num0))
-     allocate(umat(1:num0, 1:num0))
-
-     fock(1:num0, 1:num0) = czero
-     do iorb = 1, num0
-        ifun = map_i(iorb)
-        fock(iorb, iorb) = dot_product(wfn(1:nbas, ifun), fwfn(1:nbas, ifun))
-        do jorb = 1, iorb - 1
-           jfun = map_i(jorb)
-           fock(jorb, iorb) = dot_product(wfn(1:nbas, jfun), fwfn(1:nbas, ifun))
-           fock(iorb, jorb) = conjg(fock(jorb, iorb))
-        end do
-     end do
-
-!debug
-!     write(6, "('fock matrix: l = ', i5)") l
-!     do iorb = 1, num0
-!        ifun = map_i(iorb)
-!        do jorb = 1, num0
-!           jfun = map_i(jorb)
-!           write(6, "(f20.10)", advance = 'no') dble(fock(jorb, iorb))
-!        end do
-!        write(6, *)
-!     end do
-!debug
-
-     call futil_diag_comp(.false., num0, fock, umat)
-
-!debug
-!     write(6, "('transformation matrix: l = ', i5)") l
-!     do iorb = 1, num0
-!        ifun = map_i(iorb)
-!        do jorb = 1, num0
-!           jfun = map_i(jorb)
-!           write(6, "(f20.10)", advance = 'no') dble(umat(jorb, iorb))
-!        end do
-!        write(6, *)
-!     end do
-!debug
-
-     do iorb = 1, num0
-        ifun = map_i(iorb)
-        eig(ifun) = dble(fock(iorb, iorb))
-        fwfn(1:nbas, ifun) = wfn(1:nbas, ifun)
-        wfn (1:nbas, ifun) = czero
-     end do
-     do jfun = llfun, ulfun
-        if (lval(jfun) == l .and. mval(jfun) .ne. 0) then
-           eig(jfun) = eig(map_j(jfun))
-           wfn(1:nbas, jfun) = czero
-        end if
-     end do
-
-     do iorb = 1, num0
-        ifun = map_i(iorb)
-        do jorb = 1, num0
-           jfun = map_i(jorb)
-           wfn(1:nbas, ifun) = wfn(1:nbas, ifun) + fwfn(1:nbas, jfun) * umat(jorb, iorb)
-        end do
-     end do
-
-     do jfun = llfun, ulfun
-        if (lval(jfun) == l .and. mval(jfun) .ne. 0) then
-           wfn(1:nbas, jfun) = wfn(1:nbas, map_j(jfun))
-        end if
-     end do
-
-     deallocate(umat)
-     deallocate(fock)
-  end do
-
-end subroutine hprod_fockdiagx2
 !#######################################################################

@@ -15,10 +15,6 @@ subroutine hprod_htot_dft(dtime, lfield, wfn, hwfn)
   hwfn(1:nbas,1:nfun) = 0d0
   call hprod_htot_dtorb(dtime, orb, h0orb, h1orb, gorb, v2orb, hwfn)
 
-!  if (projhigh) then
-!     call hprod_projhigh(hwfn)
-!  end if
-
 end subroutine hprod_htot_dft
 !#######################################################################
 subroutine hprod_htotx_dft(dtime, lfield, wfn)
@@ -67,7 +63,7 @@ subroutine hprod_htotx_dft(dtime, lfield, wfn)
   if (iprojfc == 2) then
      call hprod_tprod_fc(orb, h0orb);
   end if
-  if (PSP) call hprod_projpp(runit, lfield, orb, h0orb)
+  if (PSP) call hprod_projpp(runit, orb, h0orb)
 
   ! laser hamiltonian
   if (ioorot .ne. 1 .or. isplit .ne. 1) then
@@ -109,10 +105,6 @@ subroutine hprod_htotx_dft(dtime, lfield, wfn)
   deallocate(v2jg)
   deallocate(v2js)
   deallocate(rhoj)
-  !debug
-  !write(6, "('hprod_htotx_dft:', 5f20.10)") ene0, ene1, edftj, edftx, ene_tot
-  !stop
-  !debug
 
 end subroutine hprod_htotx_dft
 !#######################################################################

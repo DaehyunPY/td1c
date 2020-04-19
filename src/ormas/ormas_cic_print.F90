@@ -13,8 +13,8 @@ subroutine ormas_cic_print(cic, fname)
   implicit none
   character(*), intent(in) :: fname
   complex(c_double_complex), intent(in) :: cic(1:lcic)
-  integer(c_int) :: istr, jstr, ifun, jfun
-  integer(c_int), parameter :: ioout = 1
+  integer(c_long) :: istr, jstr, ifun, jfun
+  integer(c_long), parameter :: ioout = 1
 
   if (nact == 0) return
   open(unit=ioout, file=trim(fname), status='unknown', form='formatted')
@@ -39,9 +39,9 @@ subroutine ormas_cic_printx(cic, ioout)
   use mod_ormas, only : llstr_alph_beta, nstr_alph_beta
 
   implicit none
-  integer(c_int), intent(in) :: ioout
+  integer(c_long), intent(in) :: ioout
   complex(c_double_complex), intent(in) :: cic(1:lcic)
-  integer(c_int) :: istr, jstr, ifun, jfun
+  integer(c_long) :: istr, jstr, ifun, jfun
 
   if (nact == 0) return
   do istr = 1, nstr_beta
@@ -83,7 +83,7 @@ subroutine ormas_cic_print_old(cic, fname)
   implicit none
   character(*), intent(in) :: fname
   complex(c_double_complex), intent(in) :: cic(1:*)
-  integer(c_int) :: istr1, jstr1, istr2, jstr2, ifun, jfun
+  integer(c_long) :: istr1, jstr1, istr2, jstr2, ifun, jfun
 
   if (nact == 0) return
   stop "ormas_cic_print_old no longer valid"

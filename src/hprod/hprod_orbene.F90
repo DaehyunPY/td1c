@@ -39,12 +39,12 @@ subroutine hprod_orbenex(fock_diag, wfn, fwfn, eig)
   complex(c_double_complex), intent(inout) :: fwfn(1:nbas, 1:*)
   real(c_double), intent(out) :: eig(1:*)
 
-  integer(c_int) :: ifun, jfun
+  integer(c_long) :: ifun, jfun
   real(c_double), external :: hprod_ene_dft1
   complex(c_double_complex), external :: util_zdotc
 
 !debug
-!  integer(c_int) :: ibas
+!  integer(c_long) :: ibas
 !  write(6, "('hprod_orbenex: wfn and fwfn.')")
 !  do ifun = 1, nfun
 !     do ibas = 1, nbas

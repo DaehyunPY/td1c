@@ -1,7 +1,6 @@
 !**********************************************************
 subroutine bccdt_t1p_main()
 
-  use, intrinsic :: iso_c_binding
   use mod_cc,only : cc_code,t1out
 
   implicit none

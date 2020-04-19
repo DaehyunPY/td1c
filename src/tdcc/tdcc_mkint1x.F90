@@ -1,7 +1,6 @@
 !######################################################################
 subroutine tdcc_mkint1x(int1e,int2e,int1x)
 
-  use, intrinsic :: iso_c_binding
   use mod_bas,only : smul
   use mod_ormas,only : nact,nelact
   use mod_cc,only : norb1
@@ -11,7 +10,7 @@ subroutine tdcc_mkint1x(int1e,int2e,int1x)
   complex(kind(0d0)),intent(in) :: int2e(1:nact,1:nact,1:nact,1:nact)
   complex(kind(0d0)),intent(out) :: int1x(1:nact,1:nact,1:2)
 
-  integer(c_int) :: iact,jact,kact
+  integer :: iact,jact,kact
   complex(kind(0d0)) :: refjk
 
   int1x(1:nact,1:nact,1) = 0d0

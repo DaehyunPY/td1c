@@ -79,9 +79,9 @@ subroutine hprod_invwrad(wfn, llfun, ulfun, llr, ulr)
   use mod_sph, only : lmax1
 
   implicit none
-  integer(c_int), intent(in) :: llfun, ulfun, llr, ulr
+  integer(c_long), intent(in) :: llfun, ulfun, llr, ulr
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:*)
-  integer(c_int) :: llrp, ulrp
+  integer(c_long) :: llrp, ulrp
 
   !$omp parallel default(shared) private(llrp, ulrp)
   !###########################
@@ -100,10 +100,10 @@ subroutine hprod_invwradp(wfn, llfun, ulfun, llrp, ulrp)
   use mod_rad, only : nrad, wrad
 
   implicit none
-  integer(c_int), intent(in) :: llfun, ulfun, llrp, ulrp
+  integer(c_long), intent(in) :: llfun, ulfun, llrp, ulrp
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:*)
 
-  integer(c_int) :: ifun, l, m, irad
+  integer(c_long) :: ifun, l, m, irad
 
   do ifun = llfun, ulfun
      m = mval(ifun)

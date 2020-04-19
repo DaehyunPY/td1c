@@ -23,7 +23,7 @@ subroutine wfn_ladapto(orb)
 
   implicit none
   complex(c_double_complex), intent(inout) :: orb(1:(nrad-1), 0:lmax1, 1:nfun)
-  integer(c_int) :: l, irad, ifun
+  integer(c_long) :: l, irad, ifun
 
   do ifun = 1, nfun
      do l = 0, lmax1
@@ -53,7 +53,7 @@ subroutine wfn_ladaptc(cic)
 
   implicit none
   complex(c_double_complex), intent(inout) :: cic(1:lcic)
-  integer(c_int) :: idet, istr, jstr, suma, sumb, iela, ielb
+  integer(c_long) :: idet, istr, jstr, suma, sumb, iela, ielb
 
   if (nact == 0) return
   if (ltot /= 0) return
@@ -109,7 +109,7 @@ subroutine wfn_ladapt_core(orb)
   implicit none
   complex(c_double_complex), intent(inout) :: orb(1:(nrad-1), 0:lmax1, 1:nfun)
 
-  integer(c_int) :: ifun, l, li, irad
+  integer(c_long) :: ifun, l, li, irad
 
   do ifun = 1, ncore
      li = lval(ifun)

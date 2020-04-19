@@ -11,7 +11,7 @@ real(c_double) function hprod_ene_act(int1e, int2e, den1, den2)
   complex(c_double_complex), intent(in) :: den1(1:nact, 1:nact)
   complex(c_double_complex), intent(in) :: den2(1:nact, 1:nact, 1:nact, 1:nact)
 
-  integer(c_int) :: iact, jact, kact, lact
+  integer(c_long) :: iact, jact, kact, lact
   complex(c_double_complex) :: tmp1, tmp2
 
 !DEBUG
@@ -45,9 +45,6 @@ real(c_double) function hprod_ene_act(int1e, int2e, den1, den2)
      end do
   end do
 
-!  write(6,"('hprod_ene_act: int1 = ', f20.10)") dble(int1e(1,1))
-!  write(6,"('hprod_ene_act: den1 = ', f20.10)") dble(den1(1,1))
-!  write(6,"('hprod_ene_act: ene1 = ', f20.10)") dble(tmp1)
   hprod_ene_act = dble(tmp1) + dble(tmp2) * half
   return
 
@@ -63,7 +60,7 @@ real(c_double) function hprod_ene_act1(int1e, den1)
   complex(c_double_complex), intent(in) :: int1e(1:nact, 1:nact)
   complex(c_double_complex), intent(in) :: den1(1:nact, 1:nact)
 
-  integer(c_int) :: iact, jact
+  integer(c_long) :: iact, jact
   complex(c_double_complex) :: tmp1
 
   tmp1 = czero

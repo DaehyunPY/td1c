@@ -20,7 +20,7 @@ subroutine hprod_htot_sum(dtime, orb, h0orb, h1orb, gorb, v2orb, dcic)
   complex(c_double_complex), intent(inout) :: dcic(1:lcic)
 
   complex(c_double_complex) :: tfac
-  integer(c_int) :: idet, ifun, jfun, irad, l, llr, ulr
+  integer(c_long) :: idet, ifun, jfun, irad, l, llr, ulr
 
   if (icomp == 0) then
      tfac = - runit * dtime
@@ -117,7 +117,7 @@ subroutine hprod_htoto_sum(dtime, orb, h0orb, h1orb, gorb, v2orb)
   complex(c_double_complex), intent(inout) :: v2orb(1:(nrad-1), 0:lmax1, 1:nfun)
 
   complex(c_double_complex) :: tfac
-  integer(c_int) :: ifun, jfun, irad, l, llr, ulr
+  integer(c_long) :: ifun, jfun, irad, l, llr, ulr
 
   if (icomp == 0) then
      tfac = - runit * dtime
@@ -205,7 +205,7 @@ subroutine hprod_htot_sum0(dtime, orb, h0orb, h1orb, gorb, v2orb, dcic)
   complex(c_double_complex), intent(inout) :: dcic(1:lcic)
 
   complex(c_double_complex) :: tfac
-  integer(c_int) :: idet, ifun, jfun, irad, l, llr, ulr
+  integer(c_long) :: idet, ifun, jfun, irad, l, llr, ulr
 
   if (icomp == 0) then
      tfac = - runit * dtime

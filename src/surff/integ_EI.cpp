@@ -36,14 +36,14 @@ void Integ_EI::prop(const clmpi& MPIP, const clbas& Bas, const clfield& Field, c
   eigen_decompose(dt, v2xmat, eval, evl, evr);
 
   static int nstep = 0;
-  //  int pstep = 100;
-  //  if(nstep % pstep == 0){
-  //    printf("eig%d", pstep);
-  //    for(int i = 0; i < norb; ++i){
-  //      printf("%20.10E %20.10E ", eval[i].real(), eval[i].imag());
-  //    }
-  //    std::cout << std::endl;
-  //  }
+  int pstep = 100;
+  if(nstep % pstep == 0){
+    printf("eig%d", pstep);
+    for(int i = 0; i < norb; ++i){
+      printf("%20.10E %20.10E ", eval[i].real(), eval[i].imag());
+    }
+    std::cout << std::endl;
+  }
   ++ nstep;
 
   static std::vector<dcomplex> exp_eval(norb);
@@ -66,12 +66,12 @@ void Integ_EI::prop(const clmpi& MPIP, const clbas& Bas, const clfield& Field, c
   std::fill(tmp_homo_opes.begin(), tmp_homo_opes.end(), 0.0);
 #pragma omp parallel default(shared)
   {
-    int ithr = omp_get_thread_num();
-    int llk, ulk;
+    long ithr = omp_get_thread_num();
+    long llk, ulk;
     MPIP.omp_divide(ithr, 0, ksize, llk, ulk);
 
-    for(int iorb = 0; iorb < norb; ++iorb){
-      for(int jorb = 0; jorb < norb; ++jorb){
+    for(long iorb = 0; iorb < norb; ++iorb){
+      for(long jorb = 0; jorb < norb; ++jorb){
 	//	if(Bas.mval[iorb] == Bas.mval[jorb]){
 	  ////////////////////////
 	  // omp parallelized
@@ -93,12 +93,12 @@ void Integ_EI::prop(const clmpi& MPIP, const clbas& Bas, const clfield& Field, c
   std::fill(homo_opes.begin(), homo_opes.end(), 0.0);
 #pragma omp parallel default(shared)
   {
-    int ithr = omp_get_thread_num();
-    int llk, ulk;
+    long ithr = omp_get_thread_num();
+    long llk, ulk;
     MPIP.omp_divide(ithr, 0, ksize, llk, ulk);
 
-    for(int iorb = 0; iorb < norb; ++iorb){
-      for(int jorb = 0; jorb < norb; ++jorb){
+    for(long iorb = 0; iorb < norb; ++iorb){
+      for(long jorb = 0; jorb < norb; ++jorb){
 	//	if(Bas.mval[iorb] == Bas.mval[jorb]){
 	////////////////////////
 	// omp parallelized
@@ -126,12 +126,12 @@ void Integ_EI::prop(const clmpi& MPIP, const clbas& Bas, const clfield& Field, c
   std::fill(tmp_inhomo_opes.begin(), tmp_inhomo_opes.end(), 0.0);
 #pragma omp parallel default(shared)
   {
-    int ithr = omp_get_thread_num();
-    int llk, ulk;
+    long ithr = omp_get_thread_num();
+    long llk, ulk;
     MPIP.omp_divide(ithr, 0, ksize, llk, ulk);
 
-    for(int iorb = 0; iorb < norb; ++iorb){
-      for(int jorb = 0; jorb < norb; ++jorb){
+    for(long iorb = 0; iorb < norb; ++iorb){
+      for(long jorb = 0; jorb < norb; ++jorb){
 	//if(Bas.mval[iorb] == Bas.mval[jorb]){
 	////////////////////////
 	// omp parallelized
@@ -152,12 +152,12 @@ void Integ_EI::prop(const clmpi& MPIP, const clbas& Bas, const clfield& Field, c
   std::fill(inhomo_opes.begin(), inhomo_opes.end(), 0.0);
 #pragma omp parallel default(shared)
   {
-    int ithr = omp_get_thread_num();
-    int llk, ulk;
+    long ithr = omp_get_thread_num();
+    long llk, ulk;
     MPIP.omp_divide(ithr, 0, ksize, llk, ulk);
 
-    for(int iorb = 0; iorb < norb; ++iorb){
-      for(int jorb = 0; jorb < norb; ++jorb){
+    for(long iorb = 0; iorb < norb; ++iorb){
+      for(long jorb = 0; jorb < norb; ++jorb){
 	//if(Bas.mval[iorb] == Bas.mval[jorb]){
 	////////////////////////
 	// omp parallelized
@@ -182,8 +182,8 @@ void Integ_EI::prop(const clmpi& MPIP, const clbas& Bas, const clfield& Field, c
     static std::vector<dcomplex> old_den1((norb - Bas.ORMAS.ncore) * (norb - Bas.ORMAS.ncore), 0.0);
 #pragma omp parallel default(shared)
     {
-      int ithr = omp_get_thread_num();
-      int llk, ulk;
+      long ithr = omp_get_thread_num();
+      long llk, ulk;
       MPIP.omp_divide(ithr, 0, ksize, llk, ulk);
       int ncore = Bas.ORMAS.ncore;
       std::vector<dcomplex> old_rhok(norb * norb, 0.0);
@@ -196,13 +196,13 @@ void Integ_EI::prop(const clmpi& MPIP, const clbas& Bas, const clfield& Field, c
 	std::fill(new_rhok.begin(), new_rhok.end(), 0.0);
 	old_norm = 0.0;
 	new_norm = 0.0;
-	for(int iorb = 0; iorb < norb; ++iorb){
-	  for(int jorb = 0; jorb < norb; ++jorb){
+	for(long iorb = 0; iorb < norb; ++iorb){
+	  for(long jorb = 0; jorb < norb; ++jorb){
 	    old_rhok[iorb * norb + jorb] = conj(opes[iorb * ksize + ik]) * opes[jorb * ksize + ik];
 	    new_rhok[iorb * norb + jorb] = conj(homo_opes[iorb * ksize + ik]) * homo_opes[jorb * ksize + ik];
 	  }
 	}
-	for(int iorb = 0; iorb < ncore; ++iorb){
+	for(long iorb = 0; iorb < ncore; ++iorb){
 	  old_norm += 2.0 * old_rhok[iorb * norb + iorb];
 	  new_norm += 2.0 * new_rhok[iorb * norb + iorb];
 	}
@@ -225,11 +225,11 @@ void Integ_EI::prop(const clmpi& MPIP, const clbas& Bas, const clfield& Field, c
 
 #pragma omp parallel default(shared)
   {
-    int ithr = omp_get_thread_num();
-    int llk, ulk;
+    long ithr = omp_get_thread_num();
+    long llk, ulk;
     MPIP.omp_divide(ithr, 0, ksize, llk, ulk);
 
-    for(int iorb = 0; iorb < norb; ++iorb){
+    for(long iorb = 0; iorb < norb; ++iorb){
       ////////////////////////
       // omp parallelized
       ////////////////////////
@@ -315,15 +315,15 @@ void Integ_EI::calc_pade2(std::vector<dcomplex> &eval, std::vector<dcomplex> &pa
 //////////////////////////////////////////////////////////////////////////
 void Integ_EI::inv_mat(std::vector<dcomplex> &inv_mat)
 {
-  //static int int dim = norb;
-  //static int int lda= norb;
-  //  static std::vector<int long> ipiv(norb);
-  //static int int lwork = norb;
-  //static std::vector<dcomplex>  work(norb*norb);
-  //static int int info;
+  static long long dim = norb;
+  static long long lda= norb;
+  static std::vector<long long> ipiv(norb);
+  static long long lwork = norb;
+  static std::vector<dcomplex>  work(norb*norb);
+  static long long info;
   
 // Sato_TSURFF
-  int norbl = norb;
+  long norbl = norb;
   futil_gmatinv_(&norbl, &ZERO, &inv_mat[0], &inv_mat[0]);
 //  zgetrf(&dim, &dim, &inv_mat[0], &lda, &ipiv[0], &info);
 //  if(info != 0){
@@ -351,18 +351,18 @@ void Integ_EI::eigen_decompose(double dt, const std::vector<dcomplex> &v2xmat, s
     }
   }
 
-  //static int int dim = norb;
-  //static int int lda= norb;
+  static long long dim = norb;
+  static long long lda= norb;
 
-  //static int int lwork = 2 * norb * norb;
-  //static std::vector<dcomplex>  work(lwork);
-  //static std::vector<double> rwork(2 * norb);
-  //static int int info;
+  static long long lwork = 2 * norb * norb;
+  static std::vector<dcomplex>  work(lwork);
+  static std::vector<double> rwork(2 * norb);
+  static long long info;
 
 // Sato_TSURFF
 //  std::cout << "surff::integ_EI: CHECK here!" << std::endl; abort();
 //  zgeev("V", "V", &dim, &dt_v2xmat[0], &lda, &eval[0], &evl[0], &dim, &evr[0], &dim, &work[0], &lwork, &rwork[0], &info);
-  int norbl = norb;
+  long norbl = norb;
   bool dsc = false;
   futil_gdiag_comp_(&dsc, &norbl, &dt_v2xmat[0], &evl[0], &evr[0]);
   for (int iorb = 0; iorb < norb; ++iorb) eval[iorb] = dt_v2xmat[iorb*norb+iorb];
@@ -393,17 +393,17 @@ void Integ_EI::eigen_decompose(double dt, const std::vector<dcomplex> &v2xmat, s
 //   printf("\n");
 
 
-//   static int int dim = norb;
-//   static int int lda= norb;
+//   static long long dim = norb;
+//   static long long lda= norb;
 //   static std::vector<dcomplex> eval(norb);
 //   static std::vector<dcomplex> evl(norb*norb);
 //   static std::vector<dcomplex> evr(norb*norb);
 
-//   static int int lwork = norb * norb;
+//   static long long lwork = norb * norb;
 //   static std::vector<dcomplex>  work(lwork);
 //   static std::vector<double> rwork(2 * norb);
 
-//   static int int info;
+//   static long long info;
 //   zgeev("V", "V", &dim, &dt_v2xmat[0], &lda, &eval[0], &evl[0], &dim, &evr[0], &dim, &work[0], &lwork, &rwork[0], &info);
 //   if(info != 0){
 //     std::cout << "zzeev_ failed at Integ_EI::prop" << std::endl;

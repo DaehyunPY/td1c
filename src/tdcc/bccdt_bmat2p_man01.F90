@@ -4,7 +4,6 @@ subroutine bccdt_bmat2p_man01(i0,work1,work2)
 !  i0 ( i a )_ydt + = +1 * Sum ( j b ) 
 !  * y ( j b )_y * dt ( a b i j )_dt 0
 
-  use, intrinsic :: iso_c_binding
   use mod_bas, only : mval
   use mod_ormas,only : nact,ncore
   use mod_cc,only : norb1,g1inp,dt2inp
@@ -14,7 +13,7 @@ subroutine bccdt_bmat2p_man01(i0,work1,work2)
   complex(kind(0d0)),intent(inout) :: i0(1:nact,1:nact)
   complex(kind(0d0)),intent(inout) :: work1(1),work2(1)
 
-  integer(c_int) :: icc,jcc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,jcc,a,b,c,d,e,i,j,k,l,m
 
   !$omp parallel default(shared) private(icc,jcc,i,j,k,l,a,b,c,d)
   !$omp do

@@ -8,7 +8,7 @@ subroutine bas_pp_gen_trailneeds()
   implicit none
   !--------------------------------------------------------------------
   !--------------------------------------------------------------------
-  integer(c_int) :: ipar, irad, label
+  integer(c_long) :: ipar, irad, label
   real(c_double) :: Par(1:8,1:2,0:2), V(0:2)
 
   label = znuc

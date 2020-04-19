@@ -4,8 +4,7 @@ subroutine ccdt_t3p_man06(i0,work1,work2,work3)
 ! i0 ( a b c i j k )_vt + = -1 * P( 9 ) * Sum ( l d ) 
 !  * t ( a b d i j l )_t * i1 ( l c k d )_v 2
 
-  use, intrinsic :: iso_c_binding
-  use mod_ormas, only : nact,act1_ll,act1_ul
+  use mod_ormas, only : nact
   use mod_cc, only : t3inp,ncc3aaa,ncc3aab,norb1
   use mod_cc, only : h1_cc3aaa,h2_cc3aaa,h3_cc3aaa,p1_cc3aaa,p2_cc3aaa,p3_cc3aaa 
   use mod_cc, only : h1_cc3aab,h2_cc3aab,h3_cc3aab,p1_cc3aab,p2_cc3aab,p3_cc3aab 
@@ -19,7 +18,7 @@ subroutine ccdt_t3p_man06(i0,work1,work2,work3)
        work2(1:norb1,(norb1+1):nact,1:norb1,(norb1+1):nact), &
        work3(1:norb1,(norb1+1):nact,1:norb1,(norb1+1):nact)
 
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   work1 = 0d0
   work2 = 0d0
@@ -36,8 +35,8 @@ subroutine ccdt_t3p_man06(i0,work1,work2,work3)
      i = h1_cc3aaa(icc)
      j = h2_cc3aaa(icc)
      k = h3_cc3aaa(icc)
-     do l = act1_ll,norb1
-     do d = norb1+1,act1_ul
+     do l = 1,norb1
+     do d = norb1+1,nact
         i0(a,b,c,i,j,k,1) = i0(a,b,c,i,j,k,1) &
              + t3inp(a,b,d,i,j,l,spin_t3aaa) * work1(l,c,k,d) + t3inp(a,b,d,i,j,l,spin_t3aab) * work3(l,c,k,d) &
              + t3inp(a,b,d,l,j,k,spin_t3aaa) * work1(l,c,i,d) - t3inp(a,b,d,k,j,l,spin_t3aab) * work3(l,c,i,d)&
@@ -62,8 +61,8 @@ subroutine ccdt_t3p_man06(i0,work1,work2,work3)
      i = h1_cc3aab(icc)
      j = h2_cc3aab(icc)
      k = h3_cc3aab(icc)
-     do l = act1_ll,norb1
-     do d = norb1+1,act1_ul
+     do l = 1,norb1
+     do d = norb1+1,nact
         i0(a,b,c,i,j,k,2) = i0(a,b,c,i,j,k,2) &
              + t3inp(a,b,d,i,j,l,spin_t3aaa) * work3(l,c,k,d) + t3inp(a,b,d,i,j,l,spin_t3aab) * work1(l,c,k,d) &
              + t3inp(a,b,d,l,j,k,spin_t3aab) * work2(l,c,i,d) &
@@ -88,7 +87,6 @@ subroutine ccdt_t3p_man06_1(i1aa,i1ab,i1ba)
 ! i1 ( i a j b )_vt + = Sum ( k c ) 
 !  * t ( a c j k )_t * v ( i k b c )_v 0
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact
   use mod_cc,only : norb1,t2inp,int2x
   use mod_cc2
@@ -99,7 +97,7 @@ subroutine ccdt_t3p_man06_1(i1aa,i1ab,i1ba)
        i1ab(1:norb1,(norb1+1):nact,1:norb1,(norb1+1):nact), &
        i1ba(1:norb1,(norb1+1):nact,1:norb1,(norb1+1):nact)
 
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   !$omp parallel default(shared) private(icc,i,j,k,l,m,a,b,c,d,e)
   !$omp do

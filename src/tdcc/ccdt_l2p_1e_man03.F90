@@ -4,7 +4,6 @@ subroutine ccdt_l2p_1e_man03(i0,work1,work2)
 ! i0 ( i j a b )_fty + = 1/2 * P( 2 ) * Sum ( c k l ) 
 !  * y ( i k l a b c )_y * i1 ( j c k l )_ft 1
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact
   use mod_cc,only : fock,int2x,norb1,ncc2aa,ncc2ab,t2inp,g2inp,t3inp,g3inp
   use mod_cc,only : h1_cc2aa,h2_cc2aa,p1_cc2aa,p2_cc2aa
@@ -18,7 +17,7 @@ subroutine ccdt_l2p_1e_man03(i0,work1,work2)
        work1(1:norb1,(norb1+1):nact,1:norb1,1:norb1),&
        work2(1:norb1,(norb1+1):nact,1:norb1,1:norb1)
 
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   work1 = 0d0
   work2 = 0d0
@@ -86,7 +85,6 @@ subroutine ccdt_l2p_1e_man03_1(i1aa,i1ab)
 ! i1 ( i a j k )_ft + = -1 * Sum ( b ) 
 !  * t ( b a j k )_t * f ( i b )_f 0
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact
   use mod_cc,only : norb1,t2inp,fock
   use mod_cc2
@@ -95,7 +93,7 @@ subroutine ccdt_l2p_1e_man03_1(i1aa,i1ab)
   complex(kind(0d0)),intent(inout) :: &
        i1aa(1:norb1,(norb1+1):nact,1:norb1,1:norb1), &
        i1ab(1:norb1,(norb1+1):nact,1:norb1,1:norb1)
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   !$omp parallel default(shared) private(icc,i,j,k,l,m,a,b,c,d,e)
   !$omp do

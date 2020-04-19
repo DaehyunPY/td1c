@@ -5,12 +5,12 @@ subroutine hprod_proj2(mpi_gll, mpi_gul, tmat, orb1, orb2)
   use mod_ormas, only : nfun
 
   implicit none
-  integer(c_int), intent(in) :: mpi_gll, mpi_gul
+  integer(c_long), intent(in) :: mpi_gll, mpi_gul
   complex(c_double_complex), intent(in) :: tmat(1:nfun, 1:nfun)
   complex(c_double_complex), intent(in) :: orb1(mpi_gll:mpi_gul, 1:nfun)
   complex(c_double_complex), intent(inout) :: orb2(mpi_gll:mpi_gul, 1:nfun)
 
-  integer(c_int) :: ifun, jfun, igrid, llg, ulg
+  integer(c_long) :: ifun, jfun, igrid, llg, ulg
 
   !$omp parallel default(shared) private(llg, ulg)
   !###########################

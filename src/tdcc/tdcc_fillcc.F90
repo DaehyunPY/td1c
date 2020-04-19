@@ -9,7 +9,7 @@ subroutine tdcc_fillooooaa(i0)
   implicit none
   complex(c_double_complex), intent(inout) :: &
        i0(1:norb1,1:norb1,1:norb1,1:norb1)
-  integer(c_int) :: icc,i,j,k,l
+  integer(c_long) :: icc,i,j,k,l
 
   do icc = 1, nooooaa
      i = h1_ooooaa(icc)
@@ -33,7 +33,7 @@ subroutine tdcc_fillooovaa(i0)
   implicit none
   complex(c_double_complex), intent(inout) :: &
        i0(1:norb1,1:norb1,1:norb1,(norb1+1):nact)
-  integer(c_int) :: icc,i,j,k,a
+  integer(c_long) :: icc,i,j,k,a
 
   do icc = 1, nooovaa
      i = h1_ooovaa(icc)
@@ -55,7 +55,7 @@ subroutine tdcc_filloovoaa(i0)
   implicit none
   complex(c_double_complex), intent(inout) :: &
        i0(1:norb1,1:norb1,(norb1+1):nact,1:norb1)       
-  integer(c_int) :: icc,i,j,a,k
+  integer(c_long) :: icc,i,j,a,k
 
   do icc = 1, nooovaa
      i = h1_ooovaa(icc)
@@ -77,7 +77,7 @@ subroutine tdcc_fillovooaa(i0)
   implicit none
   complex(c_double_complex), intent(inout) :: &
        i0(1:norb1,(norb1+1):nact,1:norb1,1:norb1)       
-  integer(c_int) :: icc,i,j,a,k
+  integer(c_long) :: icc,i,j,a,k
 
   do icc = 1, nooovaa
      i = h3_ooovaa(icc)
@@ -99,7 +99,7 @@ subroutine tdcc_fillvvovaa(i0)
   implicit none
   complex(c_double_complex), intent(inout) :: &
        i0((norb1+1):nact,(norb1+1):nact,1:norb1,(norb1+1):nact)
-  integer(c_int) :: icc,i,a,b,c
+  integer(c_long) :: icc,i,a,b,c
 
   do icc = 1, novvvaa
      a = p3_ovvvaa(icc)
@@ -121,7 +121,7 @@ subroutine tdcc_fillovvvaa(i0)
   implicit none
   complex(c_double_complex), intent(inout) :: &
        i0(1:norb1,(norb1+1):nact,(norb1+1):nact,(norb1+1):nact)
-  integer(c_int) :: icc,i,a,b,c
+  integer(c_long) :: icc,i,a,b,c
 
   do icc = 1, novvvaa
      i = h1_ovvvaa(icc)
@@ -143,7 +143,7 @@ subroutine tdcc_fillvvvvaa(i0)
   implicit none
   complex(c_double_complex), intent(inout) :: &
        i0((norb1+1):nact,(norb1+1):nact,(norb1+1):nact,(norb1+1):nact)
-  integer(c_int) :: icc,a,b,c,d
+  integer(c_long) :: icc,a,b,c,d
 
   do icc = 1, nvvvvaa
      a = p1_vvvvaa(icc)
@@ -160,17 +160,13 @@ end subroutine tdcc_fillvvvvaa
 subroutine tdcc_filltcc3aaa(tcc3)
 
   use, intrinsic :: iso_c_binding
-  use mod_ormas, only : nact,act1_ll,act1_ul
+  use mod_ormas, only : nact
   use mod_cc, only : norb1,ncc3aaa
   use mod_cc, only : h1_cc3aaa,h2_cc3aaa,h3_cc3aaa,p1_cc3aaa,p2_cc3aaa,p3_cc3aaa
   implicit none
   complex(c_double_complex), intent(inout) :: &
-       tcc3((norb1+1):nact,(norb1+1):nact,(norb1+1):nact,&
-       1:norb1,1:norb1,1:norb1)
-!  complex(c_double_complex), intent(inout) :: &
-!       tcc3((norb1+1):act1_ul,(norb1+1):act1_ul,(norb1+1):act1_ul,&
-!       act1_ll:norb1,act1_ll:norb1,act1_ll:norb1)
-  integer(c_int) :: icc,p1,p2,p3,h1,h2,h3
+       tcc3((norb1+1):nact,(norb1+1):nact,(norb1+1):nact,1:norb1,1:norb1,1:norb1)
+  integer(c_long) :: icc,p1,p2,p3,h1,h2,h3
 
   ! (+++|+++)
   do icc = 1, ncc3aaa
@@ -228,17 +224,13 @@ end subroutine tdcc_filltcc3aaa
 subroutine tdcc_filltcc3aab(tcc3)
 
   use, intrinsic :: iso_c_binding
-  use mod_ormas, only : nact,act1_ll,act1_ul
+  use mod_ormas, only : nact
   use mod_cc, only : norb1,ncc3aab
   use mod_cc, only : h1_cc3aab,h2_cc3aab,h3_cc3aab,p1_cc3aab,p2_cc3aab,p3_cc3aab
   implicit none
   complex(c_double_complex), intent(inout) :: &
-       tcc3((norb1+1):nact,(norb1+1):nact,(norb1+1):nact,&
-       1:norb1,1:norb1,1:norb1)
-!  complex(c_double_complex), intent(inout) :: &
-!       tcc3((norb1+1):act1_ul,(norb1+1):act1_ul,(norb1+1):act1_ul,&
-!       act1_ll:norb1,act1_ll:norb1,act1_ll:norb1)
-  integer(c_int) :: icc,p1,p2,p3,h1,h2,h3,idet
+       tcc3((norb1+1):nact,(norb1+1):nact,(norb1+1):nact,1:norb1,1:norb1,1:norb1)
+  integer(c_long) :: icc,p1,p2,p3,h1,h2,h3,idet
 
   do icc = 1, ncc3aab
      p1 = p1_cc3aab(icc)

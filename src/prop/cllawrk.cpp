@@ -21,7 +21,7 @@ void cllawrk::gen(const clmpi& MPIP, const clio& IO, const clbas& Bas,
 		  const clfield& Field, const clhprod& HPW)
 {
   IO.read_info("lawrk_order", LFOUR, lawrk_order);
-  IO.read_info("lawrk_npade", 11, lawrk_npade);
+  IO.read_info("lawrk_npade", (long) 11, lawrk_npade);
 
   if (lawrk_npade != 11 &&
       lawrk_npade != 12 &&
@@ -37,8 +37,8 @@ void cllawrk::gen(const clmpi& MPIP, const clio& IO, const clbas& Bas,
     abort();
   }
 
-  int icomp = Field.td_type;
-  int isplit = clcontrol::split_type;
+  long icomp = Field.td_type;
+  long isplit = clcontrol::split_type;
   lawrk_dt1 = Field.dtime;
   lawrk_dt2 = Field.dtime * HALF;
 

@@ -18,7 +18,7 @@ subroutine bas_gen_pmat(pmat)
 !
   implicit none
   complex(c_double_complex), intent(out) :: pmat(1:(2*ndvr+1), 1:(nrad-1))
-  integer(c_int) :: ifun, irad, jrad, jll, jul, ij, jb1, ctdep1, ctdep2
+  integer(c_long) :: ifun, irad, jrad, jll, jul, ij, jb1, ctdep1, ctdep2
 
   pmat(1:(2*ndvr+1), 1:(nrad-1)) = zero
   

@@ -1,13 +1,13 @@
 !###########################################################
-integer(c_int) function util_omp_nproc()
+integer(c_long) function util_omp_nproc()
 
   use, intrinsic :: iso_c_binding
 
   implicit none
   ! local
-  integer(c_int) :: iproc, nproc
-  integer(c_int), external :: omp_get_num_threads
-  integer(c_int), external :: omp_get_thread_num
+  integer(c_long) :: iproc, nproc
+  integer, external :: omp_get_num_threads
+  integer, external :: omp_get_thread_num
 
   !$omp parallel default(shared) private(iproc)
   iproc = omp_get_thread_num()

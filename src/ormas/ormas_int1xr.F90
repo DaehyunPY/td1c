@@ -45,24 +45,24 @@ subroutine ormas_int1xr_spin(nel, min_sub, max_sub, ndist, dist, &
   use mod_ormas, only : ncore, nact, nsub, lorb_sub
 
   implicit none
-  integer(c_int), intent(in) :: nel, nstr, ndist
-  integer(c_int), intent(in) :: min_sub(1:*)
-  integer(c_int), intent(in) :: max_sub(1:*)
-  integer(c_int), intent(in) :: arc(1:nact, 1:*)
-  integer(c_int), intent(in) :: onv(1:nact, 1:*)
-  integer(c_int), intent(in) :: dist(1:nsub, 1:*)
-  integer(c_int), intent(in) :: nstr_dist(1:*)
-  integer(c_int), intent(in) :: nstr_dist_sub(1:nsub, 1:*)
-  integer(c_int), intent(in) :: dist_str(1:2, 1:*)
-  integer(c_int), intent(out) :: n1xr(1:nact, 1:nact)
-  integer(c_int), intent(out) :: r1xr(1:nstr, 1:nact, 1:nact)
-  integer(c_int), intent(out) :: l1xr(1:nstr, 1:nact, 1:nact)
-  integer(c_int), intent(out) :: sgn1xr(1:nstr, 1:nact, 1:nact)
+  integer(c_long), intent(in) :: nel, nstr, ndist
+  integer(c_long), intent(in) :: min_sub(1:*)
+  integer(c_long), intent(in) :: max_sub(1:*)
+  integer(c_long), intent(in) :: arc(1:nact, 1:*)
+  integer(c_long), intent(in) :: onv(1:nact, 1:*)
+  integer(c_long), intent(in) :: dist(1:nsub, 1:*)
+  integer(c_long), intent(in) :: nstr_dist(1:*)
+  integer(c_long), intent(in) :: nstr_dist_sub(1:nsub, 1:*)
+  integer(c_long), intent(in) :: dist_str(1:2, 1:*)
+  integer(c_long), intent(out) :: n1xr(1:nact, 1:nact)
+  integer(c_long), intent(out) :: r1xr(1:nstr, 1:nact, 1:nact)
+  integer(c_long), intent(out) :: l1xr(1:nstr, 1:nact, 1:nact)
+  integer(c_long), intent(out) :: sgn1xr(1:nstr, 1:nact, 1:nact)
 
-  integer(c_int), external :: ormas_map1x, ormas_sgn1x
-  integer(c_int), allocatable :: tocc(:)
-  integer(c_int) :: istr, ifun, jfun, idist
-  integer(c_int) :: isub, jsub, neli, nelj, lli, uli, llj, ulj
+  integer(c_long), external :: ormas_map1x, ormas_sgn1x
+  integer(c_long), allocatable :: tocc(:)
+  integer(c_long) :: istr, ifun, jfun, idist
+  integer(c_long) :: isub, jsub, neli, nelj, lli, uli, llj, ulj
 
   allocate(tocc(1:nact))
 
@@ -144,15 +144,15 @@ subroutine ormas_int1xr_print_spin(nel, nact, nstr, onv, n1xr, r1xr, l1xr, &
   use mod_ormas, only : iprint
 
   implicit none
-  integer(c_int), intent(in) :: nel, nact, nstr
-  integer(c_int), intent(in) :: onv(1:nact, *)
-  integer(c_int), intent(in) :: n1xr  (        1:nact, 1:nact)
-  integer(c_int), intent(in) :: r1xr  (1:nstr, 1:nact, 1:nact)
-  integer(c_int), intent(in) :: l1xr  (1:nstr, 1:nact, 1:nact)
-  integer(c_int), intent(in) :: sgn1xr(1:nstr, 1:nact, 1:nact)
+  integer(c_long), intent(in) :: nel, nact, nstr
+  integer(c_long), intent(in) :: onv(1:nact, *)
+  integer(c_long), intent(in) :: n1xr  (        1:nact, 1:nact)
+  integer(c_long), intent(in) :: r1xr  (1:nstr, 1:nact, 1:nact)
+  integer(c_long), intent(in) :: l1xr  (1:nstr, 1:nact, 1:nact)
+  integer(c_long), intent(in) :: sgn1xr(1:nstr, 1:nact, 1:nact)
 
-  integer(c_int), allocatable :: tocc(:)
-  integer(c_int) :: istr, ifun, jfun, i1xr
+  integer(c_long), allocatable :: tocc(:)
+  integer(c_long) :: istr, ifun, jfun, i1xr
 
   allocate(tocc(1:nact))
 

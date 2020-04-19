@@ -37,7 +37,7 @@ void clh1adi::gen(const clmpi& MPIP, const clio& IO, const clbas& Bas,
     abort();
   }
 
-  int size;
+  long size;
   size = (2 * Bas.GRad.nmax + 1) * (Bas.GRad.nrad - 1) * (Bas.GAng.lmax1 + 1);
   tadi1.resize(size);
   size = (3 * Bas.GRad.nmax + 1) * (Bas.GRad.nrad - 1) * (Bas.GAng.lmax1 + 1);
@@ -57,7 +57,7 @@ void clh1adi::gen(const clmpi& MPIP, const clio& IO, const clbas& Bas,
 }
 ////////////////////////////////////////////////////////////////////////
 void clh1adi::prop(const clmpi& Proc, const clbas& Bas, const clfield& Field,
-		   int STEP, clhprod& HPW, clwfn& Wfn)
+		   long STEP, clhprod& HPW, clwfn& Wfn)
 {
   if (Field.lgauge) {
     propl(Proc, Bas, Field, STEP, HPW, Wfn);
@@ -74,7 +74,7 @@ void clh1adi::prop(const clmpi& Proc, const clbas& Bas, const clfield& Field,
 }
 ////////////////////////////////////////////////////////////////////////
 void clh1adi::propl(const clmpi& Proc, const clbas& Bas, const clfield& Field,
-		    int STEP, clhprod& HPW, clwfn& Wfn)
+		    long STEP, clhprod& HPW, clwfn& Wfn)
 {
   double time, tnow;
   double dt2 = HALF * Field.dtime;
@@ -99,7 +99,7 @@ void clh1adi::propl(const clmpi& Proc, const clbas& Bas, const clfield& Field,
 }
 ////////////////////////////////////////////////////////////////////////
 void clh1adi::propv(const clmpi& Proc, const clbas& Bas, const clfield& Field,
-		    int STEP, clhprod& HPW, clwfn& Wfn)
+		    long STEP, clhprod& HPW, clwfn& Wfn)
 {
   double time, tnow;
   double dt2 = HALF * Field.dtime;
@@ -133,7 +133,7 @@ void clh1adi::t_implicit(const clmpi& MPIP, const clbas& Bas, clhprod& HPW, clwf
   adi_t_implicit_(&tadi2[0], &tpiv2[0], &Wfn.wfn[0]);
 }
 //////////////////////////////////////////////////////////////////////////
-void clh1adi::laser_lgauge(const clmpi& MPIP, const clbas& Bas, int istag, 
+void clh1adi::laser_lgauge(const clmpi& MPIP, const clbas& Bas, long istag, 
 			   double time, double dt, const clfield& Field, clwfn& Wfn)
 {
   double lfield[9];
@@ -141,7 +141,7 @@ void clh1adi::laser_lgauge(const clmpi& MPIP, const clbas& Bas, int istag,
   adi_laser_lgauge_(&Field.td_type, &istag, &dt, lfield, &Wfn.wfn[0]);
 }
 //////////////////////////////////////////////////////////////////////////
-void clh1adi::laser_vgauge(const clmpi& MPIP, const clbas& Bas, int istag, 
+void clh1adi::laser_vgauge(const clmpi& MPIP, const clbas& Bas, long istag, 
 			   double time, double dt, const clfield& Field, clwfn& Wfn)
 {
   double lfield[9];

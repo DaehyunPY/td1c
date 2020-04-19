@@ -19,8 +19,8 @@ module mod_ppatom
   public ppatom_rmax
 
   private
-  integer(c_int) :: ncenter
-  integer(c_int), allocatable :: zeff(:)
+  integer(c_long) :: ncenter
+  integer(c_long), allocatable :: zeff(:)
   real(c_double), allocatable :: rmin(:),rmax(:),rcut(:),seig(:),peig(:)
   type(fgsl_interp_accel), allocatable :: vs_acc(:),vp_acc(:),vloc_acc(:),sfun_acc(:),pfun_acc(:)
   type(fgsl_spline), allocatable :: vs_spline(:),vp_spline(:),vloc_spline(:),sfun_spline(:),pfun_spline(:)
@@ -29,10 +29,10 @@ module mod_ppatom
   !##########
   subroutine ppatom_init(natom, ppfile)
     !-----
-    integer(c_int), intent(in) :: natom
+    integer(c_long), intent(in) :: natom
     character(len=256), intent(in) :: ppfile(1:natom)
     !-----
-    integer(c_int) :: A
+    integer(c_long) :: A
 
 #ifdef FGSL_OLD
     stop 'ppatom_init nyi @ beagle, change interface to fgsl_spline_init.'
@@ -66,15 +66,15 @@ module mod_ppatom
        vs_acc1,vp_acc1,vloc_acc1,sfun_acc1,pfun_acc1,vs_spline1, &
        vp_spline1,vloc_spline1,sfun_spline1,pfun_spline1)
     !-----
-    integer(c_int), intent(in) :: A
+    integer(c_long), intent(in) :: A
     character(len=256), intent(in) :: ppfile1
-    integer(c_int), intent(out) :: zeff1
+    integer(c_long), intent(out) :: zeff1
     real(c_double), intent(out) :: rmin1,rmax1,rcut1,seig1,peig1
     type(fgsl_interp_accel), intent(out) :: vs_acc1,vp_acc1,vloc_acc1,sfun_acc1,pfun_acc1
     type(fgsl_spline), intent(out) :: vs_spline1,vp_spline1,vloc_spline1,sfun_spline1,pfun_spline1
     !-----
     character(len=256) :: sdum
-    integer(c_int) :: irad, nrad, nlast
+    integer(c_long) :: irad, nrad, nlast
     real(c_double), allocatable :: rad(:)
     real(c_double), allocatable :: ppot(:,:)
     real(c_double), allocatable :: pwfn(:,:)
@@ -206,7 +206,7 @@ module mod_ppatom
   end subroutine ppatom_init1
   !##########
   subroutine ppatom_final
-    integer(c_int) :: A
+    integer(c_long) :: A
     do A = 1, ncenter
        call fgsl_spline_free(vs_spline(A))
        call fgsl_spline_free(vp_spline(A))
@@ -239,7 +239,7 @@ module mod_ppatom
   !##########
   real(c_double) function ppatom_getvs(A,r)
     !----------
-    integer(c_int), intent(in) :: A
+    integer(c_long), intent(in) :: A
     real(c_double), intent(in) :: r
     !----------
     real(fgsl_double) :: xi,yi
@@ -254,7 +254,7 @@ module mod_ppatom
   !##########
   real(c_double) function ppatom_getvp(A,r)
     !----------
-    integer(c_int), intent(in) :: A
+    integer(c_long), intent(in) :: A
     real(c_double), intent(in) :: r
     !----------
     real(fgsl_double) :: xi,yi
@@ -269,7 +269,7 @@ module mod_ppatom
   !##########
   real(c_double) function ppatom_getvloc(A,r)
     !----------
-    integer(c_int), intent(in) :: A
+    integer(c_long), intent(in) :: A
     real(c_double), intent(in) :: r
     !----------
     real(fgsl_double) :: xi,yi
@@ -284,7 +284,7 @@ module mod_ppatom
   !##########
   real(c_double) function ppatom_getd1vloc(A,r)
     !----------
-    integer(c_int), intent(in) :: A
+    integer(c_long), intent(in) :: A
     real(c_double), intent(in) :: r
     !----------
     real(fgsl_double) :: xi,dyi
@@ -295,7 +295,7 @@ module mod_ppatom
   !##########
   real(c_double) function ppatom_getsfun(A,r)
     !----------
-    integer(c_int), intent(in) :: A
+    integer(c_long), intent(in) :: A
     real(c_double), intent(in) :: r
     !----------
     real(fgsl_double) :: xi,yi
@@ -310,7 +310,7 @@ module mod_ppatom
   !##########
   real(c_double) function ppatom_getpfun(A,r)
     !----------
-    integer(c_int), intent(in) :: A
+    integer(c_long), intent(in) :: A
     real(c_double), intent(in) :: r
     !----------
     real(fgsl_double) :: xi,yi
@@ -325,35 +325,35 @@ module mod_ppatom
   !##########
   real(c_double) function ppatom_seig(A)
     !----------
-    integer(c_int), intent(in) :: A
+    integer(c_long), intent(in) :: A
     !----------
     ppatom_seig = seig(A)
   end function ppatom_seig
   !##########
   real(c_double) function ppatom_peig(A)
     !----------
-    integer(c_int), intent(in) :: A
+    integer(c_long), intent(in) :: A
     !----------
     ppatom_peig = peig(A)
   end function ppatom_peig
   !##########
   real(c_double) function ppatom_rcut(A)
     !----------
-    integer(c_int), intent(in) :: A
+    integer(c_long), intent(in) :: A
     !----------
     ppatom_rcut = rcut(A)
   end function ppatom_rcut
   !##########
   real(c_double) function ppatom_rmax(A)
     !----------
-    integer(c_int), intent(in) :: A
+    integer(c_long), intent(in) :: A
     !----------
     ppatom_rmax = rmax(A)
   end function ppatom_rmax
   !##########
   real(c_double) function ppatom_rmin(A)
     !----------
-    integer(c_int), intent(in) :: A
+    integer(c_long), intent(in) :: A
     !----------
     ppatom_rmin = rmin(A)
   end function ppatom_rmin
@@ -363,7 +363,7 @@ module mod_ppatom
 !    character(len=256), intent(in) :: ppfile
 !    !-----
 !    character(len=256) :: sdum
-!    integer(c_int) :: irad, nrad, nlast
+!    integer(c_long) :: irad, nrad, nlast
 !    real(c_double), allocatable :: rad(:)
 !    real(c_double), allocatable :: ppot(:,:)
 !    real(c_double), allocatable :: pwfn(:,:)

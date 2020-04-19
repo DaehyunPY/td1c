@@ -30,7 +30,7 @@ subroutine hprod_gfock(lfield, wfn, cic)
   zfield = lfield(3, 1)
 ! call hprod_tprod_ene(orb, h0orb)
   call hprod_tprod_all(orb, h0orb)
-  if (PSP) call hprod_projpp(runit, lfield, orb, h0orb)
+  if (PSP) call hprod_projpp(runit, orb, h0orb)
 
   if (igauge == 0) call hprod_zprod_all(zfield, orb, h1orb)
   if (igauge == 1) call hprod_pzprod_all(zfield, orb, h1orb)
@@ -67,14 +67,11 @@ subroutine hprod_gfock(lfield, wfn, cic)
 
   ! gfock vector
   call hprod_gfock_sum()
-!  if (projhigh) then
-!     call hprod_projhigh(gorb)
-!  end if
 
 !DEBUG
 !  use mod_rad, only : nrad
 !  use mod_sph, only : lmax1, lmax2
-!  integer(c_int) :: isph, irad, ifun
+!  integer(c_long) :: isph, irad, ifun
 !  write(6, "('gorb and v2orb:')")
 !  do isph = 0, lmax1
 !     do irad = 1, nrad - 1
@@ -89,8 +86,7 @@ subroutine hprod_gfock(lfield, wfn, cic)
 !  do isph = 0, lmax2
 !     do irad = 1, nrad - 1
 !        write(6, "(2i5)", advance = 'no') isph, irad
-!        write(6, "(8f20.10)", advance = 'no') &
-!  rho2(irad, isph, 1,1), rho2(irad, isph, 1,2), rho2(irad, isph, 2,1), rho2(irad, isph, 2,2)
+!        write(6, "(8f20.10)", advance = 'no') rho2(irad, isph, 1,1), rho2(irad, isph, 1,2), rho2(irad, isph, 2,1), rho2(irad, isph, 2,2)
 !        write(6, *)
 !     end do
 !  end do
@@ -98,8 +94,7 @@ subroutine hprod_gfock(lfield, wfn, cic)
 !  do isph = 0, lmax2
 !     do irad = 1, nrad - 1
 !        write(6, "(2i5)", advance = 'no') isph, irad
-!        write(6, "(8f20.10)", advance = 'no') &
-! v2sph(irad, isph, 1,1), v2sph(irad, isph, 1,2), v2sph(irad, isph, 2,1), v2sph(irad, isph, 2,2)
+!        write(6, "(8f20.10)", advance = 'no') v2sph(irad, isph, 1,1), v2sph(irad, isph, 1,2), v2sph(irad, isph, 2,1), v2sph(irad, isph, 2,2)
 !        write(6, *)
 !     end do
 !  end do
@@ -161,7 +156,7 @@ subroutine hprod_gfock_nofcx(lfield, wfn, cic)
 !DEBUG
 !  use mod_rad, only : nrad
 !  use mod_sph, only : lmax1, lmax2
-!  integer(c_int) :: isph, irad, ifun
+!  integer(c_long) :: isph, irad, ifun
 !  write(6, "('gorb and v2orb:')")
 !  do isph = 0, lmax1
 !     do irad = 1, nrad - 1
@@ -176,8 +171,7 @@ subroutine hprod_gfock_nofcx(lfield, wfn, cic)
 !  do isph = 0, lmax2
 !     do irad = 1, nrad - 1
 !        write(6, "(2i5)", advance = 'no') isph, irad
-!        write(6, "(8f20.10)", advance = 'no') &
-!  rho2(irad, isph, 1,1), rho2(irad, isph, 1,2), rho2(irad, isph, 2,1), rho2(irad, isph, 2,2)
+!        write(6, "(8f20.10)", advance = 'no') rho2(irad, isph, 1,1), rho2(irad, isph, 1,2), rho2(irad, isph, 2,1), rho2(irad, isph, 2,2)
 !        write(6, *)
 !     end do
 !  end do
@@ -185,8 +179,7 @@ subroutine hprod_gfock_nofcx(lfield, wfn, cic)
 !  do isph = 0, lmax2
 !     do irad = 1, nrad - 1
 !        write(6, "(2i5)", advance = 'no') isph, irad
-!        write(6, "(8f20.10)", advance = 'no') &
-!  v2sph(irad, isph, 1,1), v2sph(irad, isph, 1,2), v2sph(irad, isph, 2,1), v2sph(irad, isph, 2,2)
+!        write(6, "(8f20.10)", advance = 'no') v2sph(irad, isph, 1,1), v2sph(irad, isph, 1,2), v2sph(irad, isph, 2,1), v2sph(irad, isph, 2,2)
 !        write(6, *)
 !     end do
 !  end do
@@ -204,7 +197,7 @@ subroutine hprod_gfock_sum()
   use mod_hprod, only : h0orb, h1orb, gorb, v2orb
 
   implicit none
-  integer(c_int) :: ifun, irad, l, llrf, ulrf, llrd, ulrd
+  integer(c_long) :: ifun, irad, l, llrf, ulrf, llrd, ulrd
 
   !$omp parallel default(shared) private(llrf, ulrf, llrd, ulrd)
   !###########################

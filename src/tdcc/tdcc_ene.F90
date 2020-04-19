@@ -1,7 +1,6 @@
 !######################################################################
 real(kind(0d0)) function tdcc_enec(int1e, int1x)
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas, only : nact
   use mod_cc, only : norb1
 
@@ -9,7 +8,7 @@ real(kind(0d0)) function tdcc_enec(int1e, int1x)
   complex(kind(0d0)), intent(in) :: int1e(1:nact, 1:nact)
   complex(kind(0d0)), intent(in) :: int1x(1:nact, 1:nact)
 
-  integer(c_int) :: iact
+  integer :: iact
   complex(kind(0d0)) :: ene
 
   ene = 0d0
@@ -26,7 +25,6 @@ complex(kind(0d0)) function tdcc_ene2()
 !
 ! fock,int2x,t1inp,t2inp should be loaded before calling me
 !
-  use, intrinsic :: iso_c_binding
   use mod_cc, only : cc_rank,optcc,bcc,optbcc
 
   implicit none

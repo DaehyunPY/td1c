@@ -33,8 +33,8 @@ subroutine ormas_spin_ras_s2(cic, s2)
 
   real(c_double) :: s2p
   complex(c_double_complex) :: tmp
-  integer(c_int) :: istr,jstr,kstr,lstr,ifun,jfun,kfun,lfun,i1x_m,i1x,j1x_m,j1x,m_ij,m_kl
-  integer(c_int) :: idist,jdist,kdist,ldist,lla,ula,idet
+  integer(c_long) :: istr,jstr,kstr,lstr,ifun,jfun,kfun,lfun,i1x_m,i1x,j1x_m,j1x,m_ij,m_kl
+  integer(c_long) :: idist,jdist,kdist,ldist,lla,ula,idet
 
   !$omp parallel default(shared) private(jstr,istr,m_kl,i1x,ifun,jfun,j1x,kfun,lfun,kstr,lstr,tmp,s2p) reduction(+:s2)
   s2p = zero

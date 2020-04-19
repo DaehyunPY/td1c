@@ -8,7 +8,7 @@ subroutine hprod_getprojhigh()
   use mod_hprod, only : projhigh_orbs, projhigh_eigs, projhigh_cutoff, projhigh_nfun, projhigh_ncut
 
   implicit none
-  integer(c_int) :: l, dim,idim,ifun
+  integer(c_long) :: l, dim,idim,ifun
   complex(c_double_complex), allocatable :: fock(:,:,:)
   complex(c_double_complex), allocatable :: orbs(:,:,:)
   real(c_double_complex), allocatable :: eigs(:,:)
@@ -51,7 +51,6 @@ subroutine hprod_getprojhigh()
   end do
 
 !debug
-  write(6, "('hprod_getprojhigh_diag: removed high-energy states')")
   do l = 0, lmax1
      write(6,"('# l = ',i5,', ncut = ',i5)") l,projhigh_ncut(l)
      do ifun = 1, projhigh_ncut(l)
@@ -83,8 +82,8 @@ subroutine hprod_getprojhigh_diag(fock, orbs, eigs)
 
   ! ### local ###
   character(len = 9), parameter :: fname = "HFOrb.dat"
-  integer(c_int), parameter :: iow = 10
-  integer(c_int) :: dim, l, ifun, irad
+  integer(c_long), parameter :: iow = 10
+  integer(c_long) :: dim, l, ifun, irad
   complex(c_double_complex), allocatable :: ftmp(:,:), utmp(:,:)
 
   dim = nrad - 1
@@ -104,16 +103,20 @@ subroutine hprod_getprojhigh_diag(fock, orbs, eigs)
      orbs(:,:,l) = utmp(:,:)
   end do
 
-  !debug
-  write(6, "('hprod_getprojhigh_diag: Eigenvalues')")
-  do ifun = 1, dim
-     write(6, "(i5)", advance ='no') ifun
-     do l = 0, min(10,lmax1)
-        write(6, "(e15.7)", advance='no') eigs(ifun,l)
-     end do
-     write(6, *)
-  end do
-  !debug
+!debug  write(6, "('hprod_getprojhigh_diag: Eigenvalues')")
+!debug  do ifun = 1, dim
+!debug     write(6, "(i5)", advance ='no') ifun
+!debug     do l = 0, min(10,lmax1)
+!debug        write(6, "(e15.7)", advance='no') eigs(ifun,l)
+!debug     end do
+!debug     write(6, *)
+!debug  end do
+
+!  do ifun = 1, dim
+!     do irad = 1, nrad - 1
+!        write(iow, "(2E25.15)") utmp(irad, ifun)
+!     end do
+!  end do
 
   deallocate(utmp)
   deallocate(ftmp)

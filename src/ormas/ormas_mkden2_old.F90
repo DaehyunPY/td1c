@@ -10,11 +10,11 @@ subroutine ormas_mkden2_old(cic, den1, den2)
   complex(c_double_complex) , intent(in) :: den1(1:nact, 1:nact)
   complex(c_double_complex) , intent(out) :: den2(1:nact, 1:nact, 1:nact, 1:nact)
 
-  integer(c_int) :: nact4, lwork
-  integer(c_int) :: nproc,iproc,iact,jact,kact,lact
+  integer(c_long) :: nact4, lwork
+  integer(c_long) :: nproc,iproc,iact,jact,kact,lact
   complex(c_double_complex) , allocatable :: work(:,:)
   complex(c_double_complex) , allocatable :: den2p(:,:,:,:,:)
-  integer(c_int), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_nproc
 
   nact4 = nact ** 4
   nproc = util_omp_nproc()
@@ -66,14 +66,14 @@ subroutine ormas_mkden2_old_bbp(cic, lwork, work, den2p, nproc)
   use mod_ormas, only : nstr_beta, dist_str_beta, n1x_beta, p1x_beta, h1x_beta, eq1x_beta, sgn1x_beta
 
   implicit none
-  integer(c_int), intent(in) :: lwork, nproc
+  integer(c_long), intent(in) :: lwork, nproc
   complex(c_double_complex) , intent(in) :: cic(1:nstr_alph, 1:nstr_beta)
   complex(c_double_complex) , intent(inout) :: work(1:lwork, 0:(nproc-1))
   complex(c_double_complex) , intent(inout) :: den2p(1:nact, 1:nact, 1:nact, 1:nact, 0:(nproc-1))
 
-  integer(c_int) :: nact4, istr, jstr, kstr, lstr, i1x, j1x, iact, jact, kact, lact, &
+  integer(c_long) :: nact4, istr, jstr, kstr, lstr, i1x, j1x, iact, jact, kact, lact, &
        & iord, jord, idist, jdist, lla, ula, iproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_iproc
 
   nact4 = nact ** 4
 
@@ -140,14 +140,14 @@ subroutine ormas_mkden2_old_aap(cic, lwork, work, den2p, nproc)
   use mod_ormas, only : ndist_beta, nstr_beta, lstr_beta_dist
 
   implicit none
-  integer(c_int), intent(in) :: lwork, nproc
+  integer(c_long), intent(in) :: lwork, nproc
   complex(c_double_complex) , intent(in) :: cic(1:nstr_alph, 1:nstr_beta)
   complex(c_double_complex) , intent(inout) :: work(1:lwork, 0:(nproc-1))
   complex(c_double_complex) , intent(inout) :: den2p(1:nact, 1:nact, 1:nact, 1:nact, 0:(nproc-1))
 
-  integer(c_int) :: nact4, istr, jstr, kstr, lstr, i1x, j1x, iact, jact, kact, lact, &
+  integer(c_long) :: nact4, istr, jstr, kstr, lstr, i1x, j1x, iact, jact, kact, lact, &
        & iord, jord, idist, jdist, lla, ula, llb, ulb, iproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_iproc
 
   nact4 = nact ** 4
 
@@ -219,14 +219,14 @@ subroutine ormas_mkden2_old_abp(cic, lwork, work, den2p, nproc)
        & n1x_beta, p1x_beta, h1x_beta, eq1x_beta, sgn1x_beta
 
   implicit none
-  integer(c_int), intent(in) :: lwork, nproc
+  integer(c_long), intent(in) :: lwork, nproc
   complex(c_double_complex) , intent(in) :: cic(1:nstr_alph, 1:nstr_beta)
   complex(c_double_complex) , intent(inout) :: work(1:lwork, 0:(nproc-1))
   complex(c_double_complex) , intent(inout) :: den2p(1:nact, 1:nact, 1:nact, 1:nact, 0:(nproc-1))
 
-  integer(c_int) :: nact4, istr, jstr, kstr, lstr, i1x, j1x, iact, jact, kact, lact, &
+  integer(c_long) :: nact4, istr, jstr, kstr, lstr, i1x, j1x, iact, jact, kact, lact, &
        & iord, jord, idist, jdist, lla, ula, llb, ulb, iproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_iproc
 
   nact4 = nact ** 4
 
@@ -287,14 +287,14 @@ subroutine ormas_mkden2_old_bap(cic, lwork, work, den2p, nproc)
        & n1x_beta, p1x_beta, h1x_beta, eq1x_beta, sgn1x_beta
 
   implicit none
-  integer(c_int), intent(in) :: lwork, nproc
+  integer(c_long), intent(in) :: lwork, nproc
   complex(c_double_complex) , intent(in) :: cic(1:nstr_alph, 1:nstr_beta)
   complex(c_double_complex) , intent(inout) :: work(1:lwork, 0:(nproc-1))
   complex(c_double_complex) , intent(inout) :: den2p(1:nact, 1:nact, 1:nact, 1:nact, 0:(nproc-1))
 
-  integer(c_int) :: nact4, istr, jstr, kstr, lstr, i1x, j1x, iact, jact, kact, lact, &
+  integer(c_long) :: nact4, istr, jstr, kstr, lstr, i1x, j1x, iact, jact, kact, lact, &
        & iord, jord, idist, jdist, lla, ula, llb, ulb, iproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_iproc
 
   nact4 = nact ** 4
 
@@ -353,12 +353,12 @@ subroutine ormas_mkden2_old_sum(den1, den2p, den2, nproc)
   use mod_ormas, only : nact
 
   implicit none
-  integer(c_int), intent(in) :: nproc
+  integer(c_long), intent(in) :: nproc
   complex(c_double_complex) , intent(in) :: den1(1:nact, 1:nact)
   complex(c_double_complex) , intent(in) :: den2p(1:nact, 1:nact, 1:nact, 1:nact, 0:(nproc-1))
   complex(c_double_complex) , intent(out) :: den2(1:nact, 1:nact, 1:nact, 1:nact)
 
-  integer(c_int) :: nact4, iact, jact, kact, lact, iord, jord, iproc
+  integer(c_long) :: nact4, iact, jact, kact, lact, iord, jord, iproc
 
   nact4 = nact ** 4
   do iproc = 0, nproc - 1

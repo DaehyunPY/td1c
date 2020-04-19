@@ -9,8 +9,8 @@ subroutine hprod_mfprod()
   use mod_rad, only : ecs_flag
 
   implicit none
-  integer(c_int) :: iproc, lll, ull
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long) :: iproc, lll, ull
+  integer(c_long), external :: util_omp_iproc
   
   !$omp parallel default(shared) private(iproc, lll, ull)
   !###########################
@@ -44,8 +44,8 @@ subroutine hprod_mfprod_ene()
   use mod_control, only : jfc_implicit, xfc_implicit
 
   implicit none
-  integer(c_int) :: iproc, lll, ull
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long) :: iproc, lll, ull
+  integer(c_long), external :: util_omp_iproc
   
   !$omp parallel default(shared) private(iproc, lll, ull)
   !###########################
@@ -76,8 +76,8 @@ subroutine hprod_mfprod_gfock()
   use mod_const, only : ctrue, cfalse
 
   implicit none
-  integer(c_int) :: iproc, lll, ull
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long) :: iproc, lll, ull
+  integer(c_long), external :: util_omp_iproc
 
   stop 'hprod_mfprod_gfock is obsolete.'
   
@@ -106,8 +106,8 @@ subroutine hprod_mfprod_gfock_nofcx()
   use mod_const, only : ctrue, cfalse
 
   implicit none
-  integer(c_int) :: iproc, lll, ull
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long) :: iproc, lll, ull
+  integer(c_long), external :: util_omp_iproc
   
   !$omp parallel default(shared) private(iproc, lll, ull)
   !###########################
@@ -143,8 +143,8 @@ subroutine hprod_mfprod_mp()
   use mod_control, only : jfc_implicit, xfc_implicit
 
   implicit none
-  integer(c_int) :: iproc, lll, ull
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long) :: iproc, lll, ull
+  integer(c_long), external :: util_omp_iproc
   
   !$omp parallel default(shared) private(iproc, lll, ull)
   !###########################
@@ -175,8 +175,8 @@ subroutine hprod_mfprod_fcj(dofc, g1wfn, lll, ull)
   implicit none
   logical(c_bool), intent(in) :: dofc
   complex(c_double_complex), intent(inout) :: g1wfn(1:(nrad-1), 1:nlat, 1:nfun)
-  integer(c_int), intent(in) :: lll, ull
-  integer(c_int) :: ifun, ilat, irad
+  integer(c_long), intent(in) :: lll, ull
+  integer(c_long) :: ifun, ilat, irad
 
   if (nfcore == 0) return
 
@@ -214,8 +214,8 @@ subroutine hprod_mfprod_fcx1(dofc, g1wfn, lll, ull)
   implicit none
   logical(c_bool), intent(in) :: dofc
   complex(c_double_complex), intent(inout) :: g1wfn(1:(nrad-1), 1:nlat, 1:nfun)
-  integer(c_int), intent(in) :: lll, ull
-  integer(c_int) :: ifun, jfun, ilat, irad
+  integer(c_long), intent(in) :: lll, ull
+  integer(c_long) :: ifun, jfun, ilat, irad
 
   if (nfcore1 == 0) return
 
@@ -255,8 +255,8 @@ subroutine hprod_mfprod_fcx2(dofc, g1wfn, lll, ull)
   implicit none
   logical(c_bool), intent(in) :: dofc
   complex(c_double_complex), intent(inout) :: g1wfn(1:(nrad-1), 1:nlat, 1:nfun)
-  integer(c_int), intent(in) :: lll, ull
-  integer(c_int) :: ifun, jfun, ilat, irad
+  integer(c_long), intent(in) :: lll, ull
+  integer(c_long) :: ifun, jfun, ilat, irad
 
   if (nfcore2 == 0) return
 
@@ -311,8 +311,8 @@ subroutine hprod_mfprod_dcj(dofc, g1wfn, lll, ull)
   implicit none
   logical(c_bool), intent(in) :: dofc
   complex(c_double_complex), intent(inout) :: g1wfn(1:(nrad-1), 1:nlat, 1:nfun)
-  integer(c_int), intent(in) :: lll, ull
-  integer(c_int) :: ifun, jfun, ilat, irad
+  integer(c_long), intent(in) :: lll, ull
+  integer(c_long) :: ifun, jfun, ilat, irad
   complex(c_double_complex), allocatable :: d2v(:,:)
 
   if (ndcore == 0) return
@@ -364,8 +364,8 @@ subroutine hprod_mfprod_dcx(dofc, g1wfn, lll, ull)
   implicit none
   logical(c_bool), intent(in) :: dofc
   complex(c_double_complex), intent(inout) :: g1wfn(1:(nrad-1), 1:nlat, 1:nfun)
-  integer(c_int), intent(in) :: lll, ull
-  integer(c_int) :: ifun, jfun, ilat, irad
+  integer(c_long), intent(in) :: lll, ull
+  integer(c_long) :: ifun, jfun, ilat, irad
 
   if (ndcore == 0) return
 
@@ -408,8 +408,8 @@ subroutine hprod_mfprod_actj(dofc, g2wfn, lll, ull)
   implicit none
   logical(c_bool), intent(in) :: dofc
   complex(c_double_complex), intent(inout) :: g2wfn(1:(nrad-1), 1:nlat, 1:nfun)
-  integer(c_int), intent(in) :: lll, ull
-  integer(c_int) :: ifun, jfun, kfun, jact, kact, ilat, irad
+  integer(c_long), intent(in) :: lll, ull
+  integer(c_long) :: ifun, jfun, kfun, jact, kact, ilat, irad
   complex(c_double_complex) :: dens
   complex(c_double_complex), allocatable :: d2v(:,:)
   
@@ -468,8 +468,8 @@ subroutine hprod_mfprod_actx(dofc, g2wfn, lll, ull)
   implicit none
   logical(c_bool), intent(in) :: dofc
   complex(c_double_complex), intent(inout) :: g2wfn(1:(nrad-1), 1:nlat, 1:nfun)
-  integer(c_int), intent(in) :: lll, ull
-  integer(c_int) :: ifun, jfun, kfun, jact, kact, ilat, irad
+  integer(c_long), intent(in) :: lll, ull
+  integer(c_long) :: ifun, jfun, kfun, jact, kact, ilat, irad
   complex(c_double_complex) :: dens
   complex(c_double_complex), allocatable :: d2v(:,:)
   
@@ -528,8 +528,8 @@ subroutine hprod_mfprod_actjall(dofc, g2wfn, lll, ull)
   implicit none
   logical(c_bool), intent(in) :: dofc
   complex(c_double_complex), intent(inout) :: g2wfn(1:(nrad-1), 1:nlat, 1:nfun)
-  integer(c_int), intent(in) :: lll, ull
-  integer(c_int) :: ifun, jfun, kfun, jact, kact, ilat, irad
+  integer(c_long), intent(in) :: lll, ull
+  integer(c_long) :: ifun, jfun, kfun, jact, kact, ilat, irad
   complex(c_double_complex) :: dens
   complex(c_double_complex), allocatable :: d2v(:,:)
   
@@ -577,8 +577,8 @@ subroutine hprod_mfprod_actxall(dofc, g2wfn, lll, ull)
   implicit none
   logical(c_bool), intent(in) :: dofc
   complex(c_double_complex), intent(inout) :: g2wfn(1:(nrad-1), 1:nlat, 1:nfun)
-  integer(c_int), intent(in) :: lll, ull
-  integer(c_int) :: ifun, jfun, kfun, jact, kact, ilat, irad
+  integer(c_long), intent(in) :: lll, ull
+  integer(c_long) :: ifun, jfun, kfun, jact, kact, ilat, irad
   complex(c_double_complex) :: dens
   complex(c_double_complex), allocatable :: d2v(:,:)
   
@@ -626,8 +626,8 @@ subroutine hprod_mfprod_act2(g2wfn, lll, ull)
 
   implicit none
   complex(c_double_complex), intent(inout) :: g2wfn(1:(nrad-1), 1:nlat, 1:nfun)
-  integer(c_int), intent(in) :: lll, ull
-  integer(c_int) :: ifun, jfun, kfun, lfun, iact, jact, kact, lact, irad, ilat
+  integer(c_long), intent(in) :: lll, ull
+  integer(c_long) :: ifun, jfun, kfun, lfun, iact, jact, kact, lact, irad, ilat
   complex(c_double_complex) :: dens, tmp
   complex(c_double_complex), allocatable :: d2v(:,:)
   
@@ -706,8 +706,8 @@ subroutine hprod_mfprod_act2_ecs(g2wfn, lll, ull)
 
   implicit none
   complex(c_double_complex), intent(inout) :: g2wfn(1:(nrad-1), 1:nlat, 1:nfun)
-  integer(c_int), intent(in) :: lll, ull
-  integer(c_int) :: ifun, jfun, kfun, lfun, iact, jact, kact, lact, irad, ilat
+  integer(c_long), intent(in) :: lll, ull
+  integer(c_long) :: ifun, jfun, kfun, lfun, iact, jact, kact, lact, irad, ilat
   complex(c_double_complex) :: dens, tmp
   complex(c_double_complex), allocatable :: d2v(:,:)
   

@@ -11,19 +11,19 @@ subroutine adi_gen_tadi(icomp, dokin, donuc, dtime, tadi1, tadi2, tpiv2)
 ! atomic hamiltonian and its lu decomposition in banded matrices
 !
   implicit none
-  integer(c_int), intent(in) :: icomp, dokin, donuc
+  integer(c_long), intent(in) :: icomp, dokin, donuc
   real(c_double), intent(in) :: dtime
   complex(c_double_complex), intent(out) :: tadi1(1:(2*ndvr+1), 1:(nrad-1), 0:lmax1)
   complex(c_double_complex), intent(out) :: tadi2(1:(3*ndvr+1), 1:(nrad-1), 0:lmax1)
-  integer(c_int), intent(out) :: tpiv2(1:(nrad-1), 0:lmax1)
+  integer(c_long), intent(out) :: tpiv2(1:(nrad-1), 0:lmax1)
 
-  integer(c_int) :: irad, jrad, l, l2, jll, jul, ib1, ib2
-  integer(c_int) :: dim, nsub, ld1, ld2, info
+  integer(c_long) :: irad, jrad, l, l2, jll, jul, ib1, ib2
+  integer(c_long) :: dim, nsub, ld1, ld2, info
   complex(c_double_complex) :: fac, fradk
   real(c_double) :: oor, zor
 
 !debug
-!  integer(c_int) :: ld
+!  integer(c_long) :: ld
 !  real(c_double), allocatable :: teig(:), rwork(:)  
 !  complex(c_double_complex), allocatable :: f1(:,:,:), work(:), zz(:,:)
 !debug

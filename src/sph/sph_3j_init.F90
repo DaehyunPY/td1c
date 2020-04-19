@@ -7,7 +7,7 @@ subroutine sph_3j_init()
   use fgsl
 
   implicit none
-  integer(c_int) :: l1,l2,l12,m1,m2,m12
+  integer(c_long) :: l1,l2,l12,m1,m2,m12
   integer(fgsl_int), parameter :: fgsl0 = 0
   integer(fgsl_int) :: tl1,tl2,tl12,tm1,tm2,tm12
   real(c_double) :: lfac, lmfac

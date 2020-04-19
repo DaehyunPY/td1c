@@ -53,8 +53,8 @@ module mod_hprod
   complex(c_double_complex), save, allocatable :: bmat(:,:)
   complex(c_double_complex), save, allocatable :: xmat(:,:)
 
-  integer(c_int), save :: projhigh_nfun
-  integer(c_int), save, allocatable :: projhigh_ncut(:)
+  integer(c_long), save :: projhigh_nfun
+  integer(c_long), save, allocatable :: projhigh_ncut(:)
   complex(c_double_complex), save, allocatable :: projhigh_orbs(:,:,:)
   real(c_double), save, allocatable :: projhigh_eigs(:,:)
 
@@ -62,16 +62,6 @@ module mod_hprod
   complex(c_double_complex), save, allocatable :: h0orb_out(:,:,:)
   complex(c_double_complex), save, allocatable :: h1orb_out(:,:,:)
 ! Sato_ECS
-! tdcis-teramura
-  real(c_double), save, allocatable :: tdcis_eig(:)
-  complex(c_double_complex), save, allocatable :: h0orb0(:,:,:)
-  complex(c_double_complex), save, allocatable :: h1orb0(:,:,:)
-  complex(c_double_complex), save, allocatable :: ezphi(:,:,:)
-  complex(c_double_complex), save, allocatable :: orb0rot(:,:,:)
-  complex(c_double_complex), save, allocatable :: orb0rotg(:,:,:)
-  complex(c_double_complex), save, allocatable :: v2ang0(:,:,:,:)
-  complex(c_double_complex), save, allocatable :: ridm_tdcis(:,:)
-! tdcis-teramura
 
 end module mod_hprod
 !################################################################################

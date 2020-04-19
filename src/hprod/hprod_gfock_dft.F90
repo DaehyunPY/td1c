@@ -33,7 +33,7 @@ subroutine hprod_gfock_dft(lfield, wfn, cic)
   ! 1e operators
   zfield = lfield(3, 1)
   call hprod_tprod_all(orb, h0orb)
-  if (PSP) call hprod_projpp(runit, lfield, orb, h0orb)
+  if (PSP) call hprod_projpp(runit, orb, h0orb)
 
   if (igauge == 0) call hprod_zprod_all(zfield, orb, h1orb)
   if (igauge == 1) call hprod_pzprod_all(zfield, orb, h1orb)
@@ -60,7 +60,7 @@ subroutine hprod_gfock_dft(lfield, wfn, cic)
 !DEBUG
 !  use mod_rad, only : nrad
 !  use mod_sph, only : lmax1, lmax2
-!  integer(c_int) :: isph, irad, ifun
+!  integer(c_long) :: isph, irad, ifun
 !  write(6, "('gorb and v2orb:')")
 !  do isph = 0, lmax1
 !     do irad = 1, nrad - 1

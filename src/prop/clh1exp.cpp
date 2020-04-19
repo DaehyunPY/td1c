@@ -43,7 +43,7 @@ void clh1exp::gen(const clmpi& MPIP, const clio& IO, const clbas& Bas,
 }
 ////////////////////////////////////////////////////////////////////////
 void clh1exp::prop(const clmpi& Proc, const clbas& Bas, const clfield& Field, 
-		   int STEP, clhprod& HPW, clwfn& Wfn)
+		   long STEP, clhprod& HPW, clwfn& Wfn)
 {
   double time;
   double lfield[9];

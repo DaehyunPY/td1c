@@ -13,7 +13,7 @@ subroutine adi_t_explicit(tadi, wfn)
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), allocatable :: twfn(:,:,:)
 
-  integer(c_int) :: ifun, l, dim, ld, lll, ull
+  integer(c_long) :: ifun, l, dim, ld, lll, ull
   dim = nrad - 1
   ld = 2 * ndvr + 1
   allocate(twfn(1:(nrad-1), 0:lmax1, 1:nfun))

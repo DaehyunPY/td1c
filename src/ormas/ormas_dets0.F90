@@ -6,11 +6,11 @@ complex(c_double_complex) function ormas_dets0(istr, jstr, ncore, nel, nela, nfu
 
   implicit none
   !--------------------------------------------------------------------
-  integer(c_int), intent(in) :: istr, jstr, ncore, nel, nela, nfun, orb(0:nela, *)
+  integer(c_long), intent(in) :: istr, jstr, ncore, nel, nela, nfun, orb(0:nela, *)
   complex(c_double_complex), intent(in) :: ovlp(1:nfun, 1:nfun)
   complex(c_double_complex), intent(out) :: work(1:nel, 1:nel)
   !--------------------------------------------------------------------
-  integer(c_int) :: iel, jel, iact, jact, ifun, jfun
+  integer(c_long) :: iel, jel, iact, jact, ifun, jfun
   complex(c_double_complex), external :: util_det
 
   ! active - active

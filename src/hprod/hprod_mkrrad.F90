@@ -9,13 +9,13 @@ subroutine hprod_mkrrad(rho_type, wfn, cic, rrad, rradpw)
   use mod_hprod, only : orb, orbg, den1
 
   implicit none
-  integer(c_int), intent(in) :: rho_type
+  integer(c_long), intent(in) :: rho_type
   complex(c_double_complex), intent(in) :: wfn(1:*)
   complex(c_double_complex), intent(in) :: cic(1:*)
   complex(c_double_complex), intent(out) :: rrad(0:nrad)
   complex(c_double_complex), intent(out) :: rradpw(0:nrad, 0:lmax1)
 
-  integer(c_int) :: sizel
+  integer(c_long) :: sizel
 
   sizel = nbas * nfun;
   call ormas_mkden1(cic, den1)
@@ -43,14 +43,14 @@ subroutine hprod_mkrrad0(rho_type, rad_ipx, wfn, cic, rrad, rradpw)
   use mod_hprod, only : orb, orbg, ovlp, den1
 
   implicit none
-  integer(c_int), intent(in) :: rho_type
+  integer(c_long), intent(in) :: rho_type
   real(c_double), intent(in) :: rad_ipx
   complex(c_double_complex), intent(in) :: wfn(1:*)
   complex(c_double_complex), intent(in) :: cic(1:*)
   complex(c_double_complex), intent(out) :: rrad(0:nrad)
   complex(c_double_complex), intent(out) :: rradpw(0:nrad, 0:lmax1)
 
-  integer(c_int) :: sizel, ifun
+  integer(c_long) :: sizel, ifun
 
   sizel = nbas * nfun;
   call hprod_mkovlp(rad_ipx, wfn, wfn, ovlp);
@@ -69,14 +69,14 @@ subroutine hprod_mkrrad1(rho_type, rad_ipx, wfn, cic, rrad, rradpw)
   use mod_hprod, only : orb, orbg, ovlp, den1
 
   implicit none
-  integer(c_int), intent(in) :: rho_type
+  integer(c_long), intent(in) :: rho_type
   real(c_double), intent(in) :: rad_ipx
   complex(c_double_complex), intent(in) :: wfn(1:*)
   complex(c_double_complex), intent(in) :: cic(1:*)
   complex(c_double_complex), intent(out) :: rrad(0:nrad)
   complex(c_double_complex), intent(out) :: rradpw(0:nrad, 0:lmax1)
 
-  integer(c_int) :: sizel, ifun
+  integer(c_long) :: sizel, ifun
 
   sizel = nbas * nfun;
   call hprod_mkovlp(rad_ipx, wfn, wfn, ovlp);
@@ -100,14 +100,14 @@ subroutine hprod_mkrrad2(rho_type, rion, r2in, r2out, wfn, cic, rrad, rradpw)
   use mod_hprod, only : orb, orbg, ovlp, den1
 
   implicit none
-  integer(c_int), intent(in) :: rho_type
+  integer(c_long), intent(in) :: rho_type
   real(c_double), intent(in) :: rion, r2in, r2out
   complex(c_double_complex), intent(in) :: wfn(1:*)
   complex(c_double_complex), intent(in) :: cic(1:*)
   complex(c_double_complex), intent(out) :: rrad(0:nrad)
   complex(c_double_complex), intent(out) :: rradpw(0:nrad, 0:lmax1)
 
-  integer(c_int) :: ifun, iact
+  integer(c_long) :: ifun, iact
   real(c_double) :: neeff, ene1, lfield(1:3,1:3)
   real(c_double), external :: hprod_energy1
 
@@ -143,14 +143,14 @@ subroutine hprod_mkrrad3(rho_type, rion, k2in, k2out, wfn, cic, rrad, rradpw)
   use mod_hprod, only : orb, orbg, ovlp, den1
 
   implicit none
-  integer(c_int), intent(in) :: rho_type
+  integer(c_long), intent(in) :: rho_type
   real(c_double), intent(in) :: rion, k2in, k2out
   complex(c_double_complex), intent(in) :: wfn(1:*)
   complex(c_double_complex), intent(in) :: cic(1:*)
   complex(c_double_complex), intent(out) :: rrad(0:nrad)
   complex(c_double_complex), intent(out) :: rradpw(0:nrad, 0:lmax1)
 
-  integer(c_int) :: ifun, iact
+  integer(c_long) :: ifun, iact
   real(c_double) :: neeff, ene1, lfield(1:3,1:3)
   real(c_double), external :: hprod_energy1
 
@@ -187,12 +187,12 @@ subroutine hprod_mkrradp(rho_type, orb, rrad, rradpw)
   use mod_hprod, only : den1
 
   implicit none
-  integer(c_int), intent(in) :: rho_type
+  integer(c_long), intent(in) :: rho_type
   complex(c_double_complex), intent(in) :: orb(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: rrad(0:nrad)
   complex(c_double_complex), intent(out) :: rradpw(0:nrad, 0:lmax1)
 
-  integer(c_int) :: llr, ulr, ifun, jfun, iact, jact, l, irad
+  integer(c_long) :: llr, ulr, ifun, jfun, iact, jact, l, irad
   complex(c_double_complex) :: num_elec, tmp, numep, fac, facp, facm
 
   num_elec = czero
@@ -276,11 +276,11 @@ subroutine hprod_mkrradp_old(rho_type, orbg, rrad)
   use mod_hprod, only : den1
 
   implicit none
-  integer(c_int), intent(in) :: rho_type
+  integer(c_long), intent(in) :: rho_type
   complex(c_double_complex), intent(in) :: orbg(1:(nrad-1), 1:nlat, 1:nfun)
   complex(c_double_complex), intent(out) :: rrad(1:(nrad-1))
 
-  integer(c_int) :: ifun_ll, ifun_ul, llr, ulr, ifun, jfun, iact, jact, ilat, irad
+  integer(c_long) :: ifun_ll, ifun_ul, llr, ulr, ifun, jfun, iact, jact, ilat, irad
   complex(c_double_complex) :: num_elec, tmp, numep, fac
 
   if (rho_type == 0) then

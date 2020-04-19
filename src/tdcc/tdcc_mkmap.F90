@@ -4,8 +4,8 @@ subroutine tdcc_mkmap()
   use, intrinsic :: iso_c_binding
 
   use mod_ormas, only : iprint, nact, ncore, nelact, ntot_alph_beta
-  use mod_ormas, only : nstr_alph, onv_alph, orb_alph
-  use mod_ormas, only : nstr_beta, onv_beta, orb_beta
+  use mod_ormas, only : nstr_alph, dist_str_alph, onv_alph, orb_alph
+  use mod_ormas, only : nstr_beta, dist_str_beta, onv_beta, orb_beta
   use mod_ormas, only : mval_alph, mval_beta
   use mod_ormas, only : llstr_alph_beta, nstr_alph_beta
   use mod_cc, only : cc_rank,ncc0,ncc1a,ncc2aa,ncc2ab,ncc3aaa,ncc3aab,norb1
@@ -16,15 +16,8 @@ subroutine tdcc_mkmap()
   use mod_cc, only : h1_cc3aaa,h2_cc3aaa,h3_cc3aaa,p1_cc3aaa,p2_cc3aaa,p3_cc3aaa
   use mod_cc, only : h1_cc3aab,h2_cc3aab,h3_cc3aab,p1_cc3aab,p2_cc3aab,p3_cc3aab
 
-  use mod_ormas, only : act1_ll,act1_ul
-  use mod_cc, only : ncc2aa_act1,ncc2ab_act1
-  use mod_cc, only : map_cc2aa_act1,map_cc2ab_act1
-  use mod_cc, only : h1_cc2aa_act1,h2_cc2aa_act1,p1_cc2aa_act1,p2_cc2aa_act1
-  use mod_cc, only : h1_cc2ab_act1,h2_cc2ab_act1,p1_cc2ab_act1,p2_cc2ab_act1
-
   implicit none
-  integer(c_int) :: istr,jstr,ax,bx,idet,icc,a,b,c,d,e,i,j,k,l,m
-  integer(c_int) :: ap1,bp1,ah1,bh1
+  integer(c_long) :: istr,jstr,ax,bx,idet,icc,a,b,c,d,e,i,j,k,l,m
 
   ! count nonzero tensors
   call tdcc_mkmap_oo
@@ -50,20 +43,10 @@ subroutine tdcc_mkmap()
   ncc2ab = 0
   ncc3aaa = 0
   ncc3aab = 0
-  ncc2aa_act1 = 0
-  ncc2ab_act1 = 0
   do istr = 1, nstr_beta
      do jstr = llstr_alph_beta(istr), llstr_alph_beta(istr)+nstr_alph_beta(istr)-1
-!old        ax = dist_str_alph(1,jstr)-1
-!old        bx = dist_str_beta(1,istr)-1
-        ax = sum(onv_alph(norb1+1:nact,jstr))
-        bx = sum(onv_beta(norb1+1:nact,istr))
-
-        ap1 = sum(onv_alph(norb1+1:act1_ul,jstr))
-        bp1 = sum(onv_beta(norb1+1:act1_ul,istr))
-        ah1 = norb1-act1_ll+1-sum(onv_alph(act1_ll:norb1,jstr))
-        bh1 = norb1-act1_ll+1-sum(onv_beta(act1_ll:norb1,istr))
-
+        ax = dist_str_alph(1,jstr)-1
+        bx = dist_str_beta(1,istr)-1
         idet = ntot_alph_beta(istr)+jstr
 
         !write(6, "('tdcc: ',3i10,' ')", advance = 'no') idet, jstr, istr
@@ -80,16 +63,9 @@ subroutine tdcc_mkmap()
         else if (ax == 2 .and. bx == 0) then
            ncc2aa = ncc2aa + 1
            !write(6,"('   2aa')")
-           if (ah1 == 2 .and. ap1 == 2) then
-              ncc2aa_act1 = ncc2aa_act1 + 1
-           end if
         else if (ax == 1 .and. bx == 1) then
            ncc2ab = ncc2ab + 1
            !write(6,"('   2ab')")
-           if (ah1 == 1 .and. ap1 == 1 .and. &
-               bh1 == 1 .and. bp1 == 1) then
-              ncc2ab_act1 = ncc2ab_act1 + 1
-           end if
         else if (ax == 3 .and. bx == 0) then
            ncc3aaa = ncc3aaa + 1
            !write(6,"('  3aaa')")
@@ -99,7 +75,6 @@ subroutine tdcc_mkmap()
         else
            !write(6,"('  else')")
         end if
-
      end do
   end do
 
@@ -109,8 +84,6 @@ subroutine tdcc_mkmap()
   write(6,"('tdcc_mkmap: ncc2ab  = ',i5)") ncc2ab
   write(6,"('tdcc_mkmap: ncc3aaa = ',i5)") ncc3aaa
   write(6,"('tdcc_mkmap: ncc3aab = ',i5)") ncc3aab
-  write(6,"('tdcc_mkmap: ncc2aa_act1  = ',i5)") ncc2aa_act1
-  write(6,"('tdcc_mkmap: ncc2ab_act1  = ',i5)") ncc2ab_act1
   allocate(map_cc0(1:ncc0,1:3))
   if (cc_rank >= 1) then
      allocate(map_cc1a(1:ncc1a,1:3))
@@ -144,16 +117,6 @@ subroutine tdcc_mkmap()
      allocate(p1_cc3aab (1:ncc3aab))
      allocate(p2_cc3aab (1:ncc3aab))
      allocate(p3_cc3aab (1:ncc3aab))
-     allocate(map_cc2aa_act1(1:ncc2aa_act1,1:3))
-     allocate(map_cc2ab_act1(1:ncc2ab_act1,1:3))
-     allocate(h1_cc2aa_act1 (1:ncc2aa_act1))
-     allocate(h2_cc2aa_act1 (1:ncc2aa_act1))
-     allocate(p1_cc2aa_act1 (1:ncc2aa_act1))
-     allocate(p2_cc2aa_act1 (1:ncc2aa_act1))
-     allocate(h1_cc2ab_act1 (1:ncc2ab_act1))
-     allocate(h2_cc2ab_act1 (1:ncc2ab_act1))
-     allocate(p1_cc2ab_act1 (1:ncc2ab_act1))
-     allocate(p2_cc2ab_act1 (1:ncc2ab_act1))
   end if
 
   ncc0 = 0
@@ -162,20 +125,11 @@ subroutine tdcc_mkmap()
   ncc2ab = 0
   ncc3aaa = 0
   ncc3aab = 0
-  ncc2aa_act1 = 0
-  ncc2ab_act1 = 0
 
   do istr = 1, nstr_beta
      do jstr = llstr_alph_beta(istr), llstr_alph_beta(istr)+nstr_alph_beta(istr)-1
-!old        ax = dist_str_alph(1,jstr)-1
-!old        bx = dist_str_beta(1,istr)-1
-        ax = sum(onv_alph(norb1+1:nact,jstr))
-        bx = sum(onv_beta(norb1+1:nact,istr))
-        ap1 = sum(onv_alph(norb1+1:act1_ul,jstr))
-        bp1 = sum(onv_beta(norb1+1:act1_ul,istr))
-        ah1 = norb1-act1_ll+1-sum(onv_alph(act1_ll:norb1,jstr))
-        bh1 = norb1-act1_ll+1-sum(onv_beta(act1_ll:norb1,istr))
-
+        ax = dist_str_alph(1,jstr)-1
+        bx = dist_str_beta(1,istr)-1
         idet = ntot_alph_beta(istr)+jstr
         if (ax == 0 .and. bx == 0) then
            ncc0 = ncc0 + 1
@@ -198,16 +152,6 @@ subroutine tdcc_mkmap()
            call tdcc_mkmap_hpcc2aa(onv_alph(1,jstr), &
                 h1_cc2aa(ncc2aa),h2_cc2aa(ncc2aa), &
                 p1_cc2aa(ncc2aa),p2_cc2aa(ncc2aa))
-           if (cc_rank >= 3 .and. &
-               ah1 == 2 .and. ap1 == 2) then
-              ncc2aa_act1 = ncc2aa_act1 + 1
-              map_cc2aa_act1(ncc2aa_act1,1) = jstr
-              map_cc2aa_act1(ncc2aa_act1,2) = istr
-              map_cc2aa_act1(ncc2aa_act1,3) = idet
-              call tdcc_mkmap_hpcc2aa_act1(onv_alph(1,jstr), &
-                   h1_cc2aa_act1(ncc2aa_act1),h2_cc2aa_act1(ncc2aa_act1), &
-                   p1_cc2aa_act1(ncc2aa_act1),p2_cc2aa_act1(ncc2aa_act1))
-           end if
         else if (ax == 1 .and. bx == 1) then
            ncc2ab = ncc2ab + 1
            map_cc2ab(ncc2ab,1) = jstr
@@ -216,17 +160,6 @@ subroutine tdcc_mkmap()
            call tdcc_mkmap_hpcc2ab(onv_alph(1,jstr),onv_beta(1,istr), &
                 h1_cc2ab(ncc2ab),h2_cc2ab(ncc2ab), &
                 p1_cc2ab(ncc2ab),p2_cc2ab(ncc2ab))
-           if (cc_rank >= 3 .and. &
-               ah1 == 1 .and. ap1 == 1 .and. &
-               bh1 == 1 .and. bp1 == 1) then
-              ncc2ab_act1 = ncc2ab_act1 + 1
-              map_cc2ab_act1(ncc2ab_act1,1) = jstr
-              map_cc2ab_act1(ncc2ab_act1,2) = istr
-              map_cc2ab_act1(ncc2ab_act1,3) = idet
-              call tdcc_mkmap_hpcc2ab_act1(onv_alph(1,jstr),onv_beta(1,istr), &
-                   h1_cc2ab_act1(ncc2ab_act1),h2_cc2ab_act1(ncc2ab_act1), &
-                   p1_cc2ab_act1(ncc2ab_act1),p2_cc2ab_act1(ncc2ab_act1))
-           end if
         else if (ax == 3 .and. bx == 0) then
            ncc3aaa = ncc3aaa + 1
            map_cc3aaa(ncc3aaa,1) = jstr
@@ -282,28 +215,6 @@ subroutine tdcc_mkmap()
         write(6,"(4i5)") h1_cc2ab(icc),h2_cc2ab(icc), &
                          p1_cc2ab(icc),p2_cc2ab(icc)
      end do
-     if (cc_rank >= 3) then
-        do icc = 1, ncc2aa_act1
-           write(6,"('tdcc_mkmap:  2aa_act1 ',4i10)",advance='no') &
-                icc,map_cc2aa_act1(icc,1),map_cc2aa_act1(icc,2),map_cc2aa_act1(icc,3)
-           write(6, "('   ')", advance = 'no')
-           call ormas_occvec_print(6, .false., nact,onv_alph(1,map_cc2aa_act1(icc,1)))
-           write(6, "(' x ')", advance = 'no')
-           call ormas_occvec_print(6, .false., nact,onv_beta(1,map_cc2aa_act1(icc,2)))
-           write(6,"(4i5)") h1_cc2aa_act1(icc),h2_cc2aa_act1(icc), &
-                            p1_cc2aa_act1(icc),p2_cc2aa_act1(icc)
-        end do
-        do icc = 1, ncc2ab_act1
-           write(6,"('tdcc_mkmap:  2ab_act1 ',4i10)",advance='no') &
-                icc,map_cc2ab_act1(icc,1),map_cc2ab_act1(icc,2),map_cc2ab_act1(icc,3)
-           write(6, "('   ')", advance = 'no')
-           call ormas_occvec_print(6, .false., nact,onv_alph(1,map_cc2ab_act1(icc,1)))
-           write(6, "(' x ')", advance = 'no')
-           call ormas_occvec_print(6, .false., nact,onv_beta(1,map_cc2ab_act1(icc,2)))
-           write(6,"(4i5)") h1_cc2ab_act1(icc),h2_cc2ab_act1(icc), &
-                            p1_cc2ab_act1(icc),p2_cc2ab_act1(icc)
-        end do
-     end if
      do icc = 1, ncc3aaa
         write(6,"('tdcc_mkmap: 3aaa ',4i10)",advance='no') icc,map_cc3aaa(icc,1),map_cc3aaa(icc,2),map_cc3aaa(icc,3)
         write(6, "('   ')", advance = 'no')
@@ -333,9 +244,9 @@ subroutine tdcc_mkmap_hpcc1a(onva,h1,p1)
   use mod_cc2
 
   implicit none
-  integer(c_int), intent(in) :: onva(1:nact)
-  integer(c_int), intent(out) :: h1,p1
-  integer(c_int) :: iact
+  integer(c_long), intent(in) :: onva(1:nact)
+  integer(c_long), intent(out) :: h1,p1
+  integer(c_long) :: iact
 
   do iact = 1, norb1
      if (onva(iact) == 0) then
@@ -360,9 +271,9 @@ subroutine tdcc_mkmap_hpcc2aa(onva,h1,h2,p1,p2)
   use mod_cc2
 
   implicit none
-  integer(c_int), intent(in) :: onva(1:nact)
-  integer(c_int), intent(out) :: h1,h2,p1,p2
-  integer(c_int) :: iact
+  integer(c_long), intent(in) :: onva(1:nact)
+  integer(c_long), intent(out) :: h1,h2,p1,p2
+  integer(c_long) :: iact
 
   do iact = 1, norb1
      if (onva(iact) == 0) then
@@ -399,9 +310,9 @@ subroutine tdcc_mkmap_hpcc2ab(onva,onvb,h1,h2,p1,p2)
   use mod_cc2
 
   implicit none
-  integer(c_int), intent(in) :: onva(1:nact),onvb(1:nact)
-  integer(c_int), intent(out) :: h1,h2,p1,p2
-  integer(c_int) :: iact
+  integer(c_long), intent(in) :: onva(1:nact),onvb(1:nact)
+  integer(c_long), intent(out) :: h1,h2,p1,p2
+  integer(c_long) :: iact
 
   do iact = 1, norb1
      if (onva(iact) == 0) then
@@ -431,100 +342,18 @@ subroutine tdcc_mkmap_hpcc2ab(onva,onvb,h1,h2,p1,p2)
 
 end subroutine tdcc_mkmap_hpcc2ab
 !################################################################################
-subroutine tdcc_mkmap_hpcc2aa_act1(onva,h1,h2,p1,p2)
-  use, intrinsic :: iso_c_binding
-  use mod_ormas, only : act1_ll,act1_ul
-  use mod_ormas, only : nact
-  use mod_cc, only : norb1
-  use mod_cc2
-
-  implicit none
-  integer(c_int), intent(in) :: onva(1:nact)
-  integer(c_int), intent(out) :: h1,h2,p1,p2
-  integer(c_int) :: iact
-
-  do iact = act1_ll, norb1
-     if (onva(iact) == 0) then
-        h1 = iact
-        exit
-     end if
-  end do
-  do iact = h1+1, norb1
-     if (onva(iact) == 0) then
-        h2 = iact
-        exit
-     end if
-  end do
-
-  do iact = norb1+1, act1_ul
-     if (onva(iact) == 1) then
-        p1 = iact
-        exit
-     end if
-  end do
-  do iact = p1+1, act1_ul
-     if (onva(iact) == 1) then
-        p2 = iact
-        exit
-     end if
-  end do
-
-end subroutine tdcc_mkmap_hpcc2aa_act1
-!################################################################################
-subroutine tdcc_mkmap_hpcc2ab_act1(onva,onvb,h1,h2,p1,p2)
-  use, intrinsic :: iso_c_binding
-  use mod_ormas, only : act1_ll,act1_ul
-  use mod_ormas, only : nact
-  use mod_cc, only : norb1
-  use mod_cc2
-
-  implicit none
-  integer(c_int), intent(in) :: onva(1:nact),onvb(1:nact)
-  integer(c_int), intent(out) :: h1,h2,p1,p2
-  integer(c_int) :: iact
-
-  do iact = act1_ll, norb1
-     if (onva(iact) == 0) then
-        h1 = iact
-        exit
-     end if
-  end do
-  do iact = act1_ll, norb1
-     if (onvb(iact) == 0) then
-        h2 = iact
-        exit
-     end if
-  end do
-
-  do iact = norb1+1, act1_ul
-     if (onva(iact) == 1) then
-        p1 = iact
-        exit
-     end if
-  end do
-  do iact = norb1+1, act1_ul
-     if (onvb(iact) == 1) then
-        p2 = iact
-        exit
-     end if
-  end do
-
-end subroutine tdcc_mkmap_hpcc2ab_act1
-!################################################################################
 subroutine tdcc_mkmap_hpcc3aaa(onva,h1,h2,h3,p1,p2,p3)
   use, intrinsic :: iso_c_binding
-  use mod_ormas, only : act1_ll,act1_ul
+  use mod_ormas, only : nact
   use mod_cc, only : norb1
   use mod_cc2
 
   implicit none
-  integer(c_int), intent(in) :: onva(1:*)
-  integer(c_int), intent(out) :: h1,h2,h3,p1,p2,p3
-  integer(c_int) :: iact
+  integer(c_long), intent(in) :: onva(1:nact)
+  integer(c_long), intent(out) :: h1,h2,h3,p1,p2,p3
+  integer(c_long) :: iact
 
-!dplus
-!  do iact = 1, norb1
-  do iact = act1_ll, norb1
+  do iact = 1, norb1
      if (onva(iact) == 0) then
         h1 = iact
         exit
@@ -543,25 +372,19 @@ subroutine tdcc_mkmap_hpcc3aaa(onva,h1,h2,h3,p1,p2,p3)
      end if
   end do
 
-!dplus
-!  do iact = norb1+1, nact
-  do iact = norb1+1, act1_ul
+  do iact = norb1+1, nact
      if (onva(iact) == 1) then
         p1 = iact
         exit
      end if
   end do
-!dplus
-!  do iact = p1+1, nact
-  do iact = p1+1, act1_ul
+  do iact = p1+1, nact
      if (onva(iact) == 1) then
         p2 = iact
         exit
      end if
   end do
-!dplus
-!  do iact = p2+1, nact
-  do iact = p2+1, act1_ul
+  do iact = p2+1, nact
      if (onva(iact) == 1) then
         p3 = iact
         exit
@@ -572,18 +395,16 @@ end subroutine tdcc_mkmap_hpcc3aaa
 !################################################################################
 subroutine tdcc_mkmap_hpcc3aab(onva,onvb,h1,h2,h3,p1,p2,p3)
   use, intrinsic :: iso_c_binding
-  use mod_ormas, only : act1_ll,act1_ul
+  use mod_ormas, only : nact
   use mod_cc, only : norb1
   use mod_cc2
 
   implicit none
-  integer(c_int), intent(in) :: onva(1:*),onvb(1:*)
-  integer(c_int), intent(out) :: h1,h2,h3,p1,p2,p3
-  integer(c_int) :: iact
+  integer(c_long), intent(in) :: onva(1:nact),onvb(1:nact)
+  integer(c_long), intent(out) :: h1,h2,h3,p1,p2,p3
+  integer(c_long) :: iact
 
-!dplus
-!  do iact = 1, norb1
-  do iact = act1_ll, norb1
+  do iact = 1, norb1
      if (onva(iact) == 0) then
         h1 = iact
         exit
@@ -595,34 +416,26 @@ subroutine tdcc_mkmap_hpcc3aab(onva,onvb,h1,h2,h3,p1,p2,p3)
         exit
      end if
   end do
-!dplus
-!  do iact = 1, norb1
-  do iact = act1_ll, norb1
+  do iact = 1, norb1
      if (onvb(iact) == 0) then
         h3 = iact
         exit
      end if
   end do
 
-!dplus
-!  do iact = norb1+1, nact
-  do iact = norb1+1, act1_ul
+  do iact = norb1+1, nact
      if (onva(iact) == 1) then
         p1 = iact
         exit
      end if
   end do
-!dplus
-!  do iact = p1+1, nact
-  do iact = p1+1, act1_ul
+  do iact = p1+1, nact
      if (onva(iact) == 1) then
         p2 = iact
         exit
      end if
   end do
-!dplus
-!  do iact = norb1+1, nact
-  do iact = norb1+1, act1_ul
+  do iact = norb1+1, nact
      if (onvb(iact) == 1) then
         p3 = iact
         exit
@@ -639,7 +452,7 @@ subroutine tdcc_mkmap_oo()
   use mod_cc2
 
   implicit none
-  integer(c_int) :: i,j
+  integer(c_long) :: i,j
 
   noo = 0
   do i = 1,norb1
@@ -673,7 +486,7 @@ subroutine tdcc_mkmap_ov()
   use mod_cc2
 
   implicit none
-  integer(c_int) :: i,a
+  integer(c_long) :: i,a
 
   nov = 0
   do i = 1,norb1
@@ -707,7 +520,7 @@ subroutine tdcc_mkmap_vv()
   use mod_cc2
 
   implicit none
-  integer(c_int) :: a,b
+  integer(c_long) :: a,b
 
   nvv = 0
   do a = norb1+1,nact
@@ -741,7 +554,7 @@ subroutine tdcc_mkmap_ooooaa()
   use mod_cc2
 
   implicit none
-  integer(c_int) :: i,j,k,l
+  integer(c_long) :: i,j,k,l
 
   ! count nonzero tensors
   nooooaa = 0
@@ -790,7 +603,7 @@ subroutine tdcc_mkmap_ooooab()
   use mod_cc2
 
   implicit none
-  integer(c_int) :: i,j,k,l
+  integer(c_long) :: i,j,k,l
 
   ! count nonzero tensors
   nooooab = 0
@@ -839,7 +652,7 @@ subroutine tdcc_mkmap_ooovaa()
   use mod_cc2
 
   implicit none
-  integer(c_int) :: i,j,k,a
+  integer(c_long) :: i,j,k,a
 
   ! count nonzero tensors
   nooovaa = 0
@@ -888,7 +701,7 @@ subroutine tdcc_mkmap_ooovab()
   use mod_cc2
 
   implicit none
-  integer(c_int) :: i,j,k,a
+  integer(c_long) :: i,j,k,a
 
   ! count nonzero tensors
   nooovab = 0
@@ -937,7 +750,7 @@ subroutine tdcc_mkmap_oovvaa()
   use mod_cc2
 
   implicit none
-  integer(c_int) :: i,j,a,b
+  integer(c_long) :: i,j,a,b
 
   ! count nonzero tensors
   noovvaa = 0
@@ -986,7 +799,7 @@ subroutine tdcc_mkmap_oovvab()
   use mod_cc2
 
   implicit none
-  integer(c_int) :: i,j,a,b
+  integer(c_long) :: i,j,a,b
 
   ! count nonzero tensors
   noovvab = 0
@@ -1035,7 +848,7 @@ subroutine tdcc_mkmap_ovovaa()
   use mod_cc2
 
   implicit none
-  integer(c_int) :: i,j,a,b
+  integer(c_long) :: i,j,a,b
 
   ! count nonzero tensors
   novovaa = 0
@@ -1084,7 +897,7 @@ subroutine tdcc_mkmap_ovovab()
   use mod_cc2
 
   implicit none
-  integer(c_int) :: i,j,a,b
+  integer(c_long) :: i,j,a,b
 
   ! count nonzero tensors
   novovab = 0
@@ -1133,7 +946,7 @@ subroutine tdcc_mkmap_ovvvaa()
   use mod_cc2
 
   implicit none
-  integer(c_int) :: i,b,c,d
+  integer(c_long) :: i,b,c,d
 
   ! count nonzero tensors
   novvvaa = 0
@@ -1182,7 +995,7 @@ subroutine tdcc_mkmap_ovvvab()
   use mod_cc2
 
   implicit none
-  integer(c_int) :: i,b,c,d
+  integer(c_long) :: i,b,c,d
 
   ! count nonzero tensors
   novvvab = 0
@@ -1231,7 +1044,7 @@ subroutine tdcc_mkmap_vvvvaa()
   use mod_cc2
 
   implicit none
-  integer(c_int) :: a,b,c,d
+  integer(c_long) :: a,b,c,d
 
   ! count nonzero tensors
   nvvvvaa = 0
@@ -1280,7 +1093,7 @@ subroutine tdcc_mkmap_vvvvab()
   use mod_cc2
 
   implicit none
-  integer(c_int) :: a,b,c,d
+  integer(c_long) :: a,b,c,d
 
   ! count nonzero tensors
   nvvvvab = 0

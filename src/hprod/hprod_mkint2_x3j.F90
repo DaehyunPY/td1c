@@ -11,9 +11,9 @@ subroutine hprod_mkint2_x3j(rho2, v2sph)
   complex(c_double_complex), intent(in) :: rho2 (1:nbas2, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(in) :: v2sph(1:nbas2, 1:nfun, 1:nfun)
 
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
-  integer(c_int) :: nproc, iproc, ifun, jfun, kfun, lfun, iact, jact, kact, lact, ibas, llb, ulb
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
+  integer(c_long) :: nproc, iproc, ifun, jfun, kfun, lfun, iact, jact, kact, lact, ibas, llb, ulb
   complex(c_double_complex) :: tmp
   complex(c_double_complex), allocatable :: int2p(:,:,:,:,:)
   complex(c_double_complex), external :: zdotu

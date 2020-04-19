@@ -4,7 +4,6 @@ subroutine ccdt_den2xp_man02(i0,work1,work2)
 ! i0 ( a b i j )_ytt + = -1/2 * Sum ( k ) 
 !  * i1 ( k j )_yt * t ( a b i k )_t 1
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact
   use mod_cc,only : norb1,t2inp,g2inp,t3inp,g3inp
   use mod_cc2
@@ -14,7 +13,7 @@ subroutine ccdt_den2xp_man02(i0,work1,work2)
   complex(kind(0d0)),intent(inout) :: &!work1(1),work2(1)
        work1(1:norb1,1:norb1),work2(1)
 
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   work1 = 0d0
   call ccdt_den2xp_man02_1(work1)
@@ -45,7 +44,6 @@ subroutine ccdt_den2xp_man02_1(i1)
 ! i1 ( i j )_yt + = +1 * Sum ( k a b ) 
 !  * y ( i k a b )_y * t ( a b j k )_t 0
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact
   use mod_cc,only : norb1,t2inp,g2inp,t3inp,g3inp
   use mod_cc2
@@ -53,7 +51,7 @@ subroutine ccdt_den2xp_man02_1(i1)
   implicit none
   complex(kind(0d0)),intent(inout) :: i1(1:norb1,1:norb1)
 
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   !$omp parallel default(shared)
   !$omp do collapse(2)

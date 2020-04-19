@@ -1,24 +1,24 @@
 !#######################################################################
-integer(c_int) function ormas_map1x(nelec, norb, ndist, dist, nstr_dist, &
+integer(c_long) function ormas_map1x(nelec, norb, ndist, dist, nstr_dist, &
      & nstr_dist_sub, arc, occvec)
 
   use, intrinsic :: iso_c_binding
   use mod_ormas, only : nact, nsub, norb_sub, lorb_sub
 
   implicit none
-  integer(c_int), intent(in) :: nelec, norb, ndist
-  integer(c_int), intent(in) :: dist(1:nsub, 1:ndist)
-  integer(c_int), intent(in) :: nstr_dist(1:ndist)
-  integer(c_int), intent(in) :: nstr_dist_sub(1:nsub, 1:ndist)
-  integer(c_int), intent(in) :: arc(1:nact, 1:*)
-  integer(c_int), intent(in) :: occvec(1:*)
+  integer(c_long), intent(in) :: nelec, norb, ndist
+  integer(c_long), intent(in) :: dist(1:nsub, 1:ndist)
+  integer(c_long), intent(in) :: nstr_dist(1:ndist)
+  integer(c_long), intent(in) :: nstr_dist_sub(1:nsub, 1:ndist)
+  integer(c_long), intent(in) :: arc(1:nact, 1:*)
+  integer(c_long), intent(in) :: occvec(1:*)
 
-  integer(c_int), allocatable :: disvec(:)
-  integer(c_int), allocatable :: substr(:)
+  integer(c_long), allocatable :: disvec(:)
+  integer(c_long), allocatable :: substr(:)
   logical :: found
-  integer(c_int) :: xdist, offset, nel, llorb, ulorb, rest
-  integer(c_int) :: idist, isub, jsub, iorb, imap
-  integer(c_int), external :: ormas_map1x_sub
+  integer(c_long) :: xdist, offset, nel, llorb, ulorb, rest
+  integer(c_long) :: idist, isub, jsub, iorb, imap
+  integer(c_long), external :: ormas_map1x_sub
 
   if (nelec == 0) then
      ormas_map1x = 1
@@ -80,18 +80,18 @@ integer(c_int) function ormas_map1x(nelec, norb, ndist, dist, nstr_dist, &
 end function ormas_map1x
 !#######################################################################
 !#######################################################################
-integer(c_int) function ormas_map1x_sub(nelec, norb, arc, occvec)
+integer(c_long) function ormas_map1x_sub(nelec, norb, arc, occvec)
 
   use, intrinsic :: iso_c_binding
   use mod_ormas, only : nact
 
   implicit none
-  integer(c_int), intent(in) :: nelec, norb
-  integer(c_int), intent(in) :: arc(1:nact, 1:*)
-  integer(c_int), intent(in) :: occvec(1:*)
+  integer(c_long), intent(in) :: nelec, norb
+  integer(c_long), intent(in) :: arc(1:nact, 1:*)
+  integer(c_long), intent(in) :: occvec(1:*)
 
-  integer(c_int), allocatable :: string(:)
-  integer(c_int) :: iorb, iel, nel, imap
+  integer(c_long), allocatable :: string(:)
+  integer(c_long) :: iorb, iel, nel, imap
 
   if (nelec == 0) then
      ormas_map1x_sub = 1

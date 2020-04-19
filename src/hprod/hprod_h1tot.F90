@@ -14,7 +14,7 @@ subroutine hprod_h1tot(dofc, lfield, wfn, hwfn)
   complex(c_double_complex), intent(inout) :: hwfn(1:nbas,1:*)
   
   logical(c_bool) :: dofcx
-  integer(c_int) :: ifun
+  integer(c_long) :: ifun
   complex(c_double_complex) :: zfield
   complex(c_double_complex), allocatable :: h1wfn(:,:)
 
@@ -39,16 +39,12 @@ subroutine hprod_h1tot(dofc, lfield, wfn, hwfn)
   end if
 
   ! pseudopotential
-  if (PSP) call hprod_projpp(runit, lfield, wfn, h1wfn)
+  if (PSP) call hprod_projpp(runit, wfn, h1wfn)
 
   do ifun = nfcore + 1, nfun
      if (froz(ifun) < 0) cycle
      hwfn(1:nbas,ifun) = hwfn(1:nbas,ifun) + h1wfn(1:nbas,ifun)
   end do
-
-!  if (projhigh) then
-!     call hprod_projhigh(hwfn)
-!  end if
 
 end subroutine hprod_h1tot
 !#######################################################################

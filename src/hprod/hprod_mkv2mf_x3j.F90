@@ -39,7 +39,7 @@ subroutine hprod_mkv2mf_x3j_poisson(v2_type, rho2, v2sph)
   character(len=*), intent(in) :: v2_type
   complex(c_double_complex), intent(in) ::     rho2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(inout) :: v2sph(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
-  integer(c_int) :: dim, ifun_ll, ifun_ul, jfun_ll, jfun_ul, lll, ull
+  integer(c_long) :: dim, ifun_ll, ifun_ul, jfun_ll, jfun_ul, lll, ull
 
   if (trim(v2_type) == 'tot') then
      dim = nrad - 1
@@ -110,13 +110,13 @@ subroutine hprod_mkv2mf_x3j_poissonp(rho2, v2sph, dim, lll, ull, ifun_ll, ifun_u
   use mod_bas, only : mval, d2ll, bas_d2fac1, bas_d2fac2, bas_d2invr, bas_d2rpl0, bas_d2rpl1
 
   implicit none
-  integer(c_int), intent(in) :: dim, lll, ull, ifun_ll, ifun_ul, jfun_ll, jfun_ul
+  integer(c_long), intent(in) :: dim, lll, ull, ifun_ll, ifun_ul, jfun_ll, jfun_ul
   complex(c_double_complex), intent(in) ::     rho2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(inout) :: v2sph(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
 
   real(c_double) :: tmpr, tmpi
   real(c_double), allocatable :: rrho2(:,:)
-  integer(c_int) :: ifun, jfun, l, m, irad, ld, info
+  integer(c_long) :: ifun, jfun, l, m, irad, ld, info
 
   ld = ndvr + 1
   allocate(rrho2(1:dim, 1:2))
@@ -176,14 +176,14 @@ subroutine hprod_mkv2mf_x3j_poissonp2(rho2, v2sph, dim, lll, ull, ifun_ll, ifun_
   use mod_bas, only : mval, d2ll, bas_d2fac2, bas_d2invr, bas_d2rpl0, bas_d2rpl1
 
   implicit none
-  integer(c_int), intent(in) :: dim, lll, ull, ifun_ll, ifun_ul, jfun_ll, jfun_ul
+  integer(c_long), intent(in) :: dim, lll, ull, ifun_ll, ifun_ul, jfun_ll, jfun_ul
   complex(c_double_complex), intent(in) ::     rho2(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
   complex(c_double_complex), intent(inout) :: v2sph(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
 
   real(c_double) :: tmpr(1:nfun*nfun), tmpi(1:nfun*nfun), bas_d2fac1
   real(c_double), allocatable :: rrho2(:,:,:)
-  integer(c_int) :: ifun, jfun, l, m, irad, ld, info
-  integer(c_int) :: ij, nij, mapij(1:2, 1:nfun*nfun)
+  integer(c_long) :: ifun, jfun, l, m, irad, ld, info
+  integer(c_long) :: ij, nij, mapij(1:2, 1:nfun*nfun)
   
   ld = ndvr + 1
   allocate(rrho2(1:dim, 1:2, 1:nfun*nfun))
@@ -251,8 +251,8 @@ subroutine hprod_mkv2mf_x3j_herm(v2_type, v2sph)
   character(len=*), intent(in) :: v2_type
   complex(c_double_complex), intent(inout) :: v2sph(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
 
-  integer(c_int) :: l, ilat, ifun, jfun, irad, mfac
-  integer(c_int) :: dim, ifun_ll, ifun_ul, jfun_ll, jfun_ul, llr, ulr
+  integer(c_long) :: l, ilat, ifun, jfun, irad, mfac
+  integer(c_long) :: dim, ifun_ll, ifun_ul, jfun_ll, jfun_ul, llr, ulr
 
   if (trim(v2_type) == 'tot') then
      dim = nrad - 1

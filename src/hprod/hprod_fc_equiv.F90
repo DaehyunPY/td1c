@@ -11,7 +11,7 @@ subroutine hprod_fc_equiv(wfn)
   implicit none
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), allocatable :: twfn(:,:)
-  integer(c_int) :: llr, ulr, ifun, jfun
+  integer(c_long) :: llr, ulr, ifun, jfun
 
   if (nfcore == 0) return
   write(6, "('# FC orbitals are explicitly spherical-symmetry adapted.')")

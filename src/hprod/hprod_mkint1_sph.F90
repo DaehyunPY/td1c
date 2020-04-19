@@ -16,11 +16,11 @@ subroutine hprod_mkint1_sph(doall, orb, h0orb, h1orb, gorb)
   complex(c_double_complex), intent(in) :: h1orb(1:nbas, 1:nfun)
   complex(c_double_complex), intent(in) ::  gorb(1:nbas, 1:nfun)
 
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
   complex(c_double_complex) :: tmp, h01
   complex(c_double_complex), allocatable :: int1p(:,:,:)
-  integer(c_int) :: nproc, iproc, iact, jact, ifun, jfun, ibas, llb, ulb
+  integer(c_long) :: nproc, iproc, iact, jact, ifun, jfun, ibas, llb, ulb
 
 ! Orimo_ECS
   if (ecs_flag == 1) then
@@ -121,11 +121,11 @@ subroutine hprod_mkint1_sph_inner(rion, orb, h0orb, h1orb, gorb)
   complex(c_double_complex), intent(in) :: h1orb(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(in) ::  gorb(1:(nrad-1), 0:lmax1, 1:nfun)
 
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
   complex(c_double_complex) :: tmp, h01
   complex(c_double_complex), allocatable :: int1p(:,:,:)
-  integer(c_int) :: nproc, iproc, iact, jact, ifun, jfun, l, irad, max_irad, llr, ulr
+  integer(c_long) :: nproc, iproc, iact, jact, ifun, jfun, l, irad, max_irad, llr, ulr
 
 
   int1e(1:nact, 1:nact) = czero
@@ -233,11 +233,11 @@ subroutine hprod_mkint1_sph_ecs(doall, orb, h0orb, h1orb, gorb)
   complex(c_double_complex), intent(in) :: h1orb(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(in) ::  gorb(1:(nrad-1), 0:lmax1, 1:nfun)
 
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
   complex(c_double_complex) :: tmp, h01
   complex(c_double_complex), allocatable :: int1p(:,:,:)
-  integer(c_int) :: nproc, iproc, iact, jact, ifun, jfun, l, irad, llr, ulr
+  integer(c_long) :: nproc, iproc, iact, jact, ifun, jfun, l, irad, llr, ulr
 
 
   int1e(1:nact, 1:nact) = czero
@@ -334,11 +334,11 @@ subroutine hprod_mkint1_sph_ecs2(doall, orb, h0orb, h1orb, gorb)
   complex(c_double_complex), intent(in) :: h1orb(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(in) ::  gorb(1:(nrad-1), 0:lmax1, 1:nfun)
 
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
   complex(c_double_complex) :: tmp, h01
   complex(c_double_complex), allocatable :: int1p(:,:,:)
-  integer(c_int) :: nproc, iproc, iact, jact, ifun, jfun, irad, l, llr, ulr, jrad
+  integer(c_long) :: nproc, iproc, iact, jact, ifun, jfun, irad, l, llr, ulr, jrad
 
   int1e(1:nact, 1:nact) = czero
   nproc = util_omp_nproc()

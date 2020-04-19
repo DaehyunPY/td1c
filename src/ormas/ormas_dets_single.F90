@@ -7,11 +7,11 @@ complex(c_double_complex) function ormas_dets_single(ifun, jfun, nel, occi, occj
 
   implicit none
   !--------------------------------------------------------------------
-  integer(c_int), intent(in) :: ifun, jfun, nel, occi(1:nact), occj(1:nact)
+  integer(c_long), intent(in) :: ifun, jfun, nel, occi(1:nact), occj(1:nact)
   complex(c_double_complex), intent(in) :: s0(1:nel, 1:nel)
   complex(c_double_complex), intent(out) :: work(1:nel-1, 1:nel-1)
   !--------------------------------------------------------------------
-  integer(c_int) :: iel, jel, iorb, jorb, iact, jact
+  integer(c_long) :: iel, jel, iorb, jorb, iact, jact
   complex(c_double_complex), external :: util_det
 
   ormas_dets_single = czero

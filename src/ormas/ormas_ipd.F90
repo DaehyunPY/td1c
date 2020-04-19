@@ -6,12 +6,12 @@ subroutine ormas_ipd(max_ipd, ovlp, cic, ipd)
 
   implicit none
   !--------------------------------------------------------------------
-  integer(c_int), intent(in) :: max_ipd
+  integer(c_long), intent(in) :: max_ipd
   complex(c_double_complex), intent(in) :: ovlp(1:nfun, 1:nfun)
   complex(c_double_complex), intent(in) :: cic(1:*)
   real(c_double), intent(out) :: ipd(0:*)
   !--------------------------------------------------------------------
-  integer(c_int) :: iact, jact, kact, lact, ifun, jfun, kfun, lfun
+  integer :: iact, jact, kact, lact, ifun, jfun, kfun, lfun
   real(kind(0d0)) :: p0, p1, p2
   complex(kind(0d0)) :: s0, s1, s2, s1c, s1a, s2cc, s2ca, s2aa, tmp
   complex(kind(0d0)), allocatable :: ovlx(:,:)      ! outer region overlap

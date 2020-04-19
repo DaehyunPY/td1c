@@ -1,7 +1,6 @@
 !**********************************************************
 subroutine bccd_t1p_main()
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact
   use mod_cc,only : norb1,cc_code,t1out
   use mod_cc2

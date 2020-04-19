@@ -3,7 +3,6 @@ subroutine ccdt_den2p_man02(i0ab,i0ba,work1,work2,work3)
 
 !  i0 ( i j k l )_yt + = +1/2 * Sum ( a b ) * y ( i j a b )_y * t ( a b k l )_t 0
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact
   use mod_cc,only : norb1,t2inp,g2inp,t3inp,g3inp
   use mod_cc2
@@ -14,7 +13,7 @@ subroutine ccdt_den2p_man02(i0ab,i0ba,work1,work2,work3)
   complex(kind(0d0)),intent(inout) :: work1(1),work2(1),work3(1)
   complex(kind(0d0)) :: tmp
 
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   !$omp parallel default(shared) private(icc,i,j,k,l,a,b,c,d,tmp)
   !$omp do

@@ -11,7 +11,7 @@ subroutine hprod_symlm(wfn)
   implicit none
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), allocatable :: twfn(:,:)
-  integer(c_int) :: llr, ulr, ifun, jfun
+  integer(c_long) :: llr, ulr, ifun, jfun
 
   write(6, "('# Orbitals are explicitly spherical-symmetry adapted.')")
   allocate(twfn(1:(nrad-1), 1:nfun))

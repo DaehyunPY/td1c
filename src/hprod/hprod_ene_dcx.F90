@@ -9,9 +9,9 @@ real(c_double) function hprod_ene_dcx()
   use mod_const, only : zero, two, four, third, quart, fac_lda, pi
 
   implicit none
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
-  integer(c_int) :: iproc, nproc, irad, ilat, llr, ulr
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
+  integer(c_long) :: iproc, nproc, irad, ilat, llr, ulr
   real(c_double) :: etmp1, etmp2, enep
 
   if (ndcore == 0) then

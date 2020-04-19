@@ -13,8 +13,7 @@ subroutine ccdt_l3p_man08(i0,work1,work2,work3)
 ! i0 ( i j k a b c )_yv + = 1/2 * P( 3 ) * Sum ( d e ) 
 !  * y ( i j k a d e )_y * v ( d e b c )_v 0
 
-  use, intrinsic :: iso_c_binding
-  use mod_ormas,only : nact,act1_ll,act1_ul
+  use mod_ormas,only : nact
   use mod_cc,only : fock,int2x,norb1,ncc3aaa,ncc3aab,t2inp,g2inp,t3inp,g3inp
   use mod_cc,only : h1_cc3aaa,h2_cc3aaa,h3_cc3aaa,p1_cc3aaa,p2_cc3aaa,p3_cc3aaa
   use mod_cc,only : h1_cc3aab,h2_cc3aab,h3_cc3aab,p1_cc3aab,p2_cc3aab,p3_cc3aab
@@ -25,7 +24,7 @@ subroutine ccdt_l3p_man08(i0,work1,work2,work3)
        i0(1:norb1,1:norb1,1:norb1,(norb1+1):nact,(norb1+1):nact,(norb1+1):nact,1:2)
   complex(kind(0d0)) :: work1(1),work2(1),work3(1)
 
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   !##################################################
   !$omp parallel default(shared) private(a,b,c,i,j,k)
@@ -75,7 +74,7 @@ subroutine ccdt_l3p_man08(i0,work1,work2,work3)
              - g2inp(i,k,c,d,spin_g2aa)*int2x(j,d,b,a,spin_int2aa)
      end do
      ! diagram 8
-     do d = norb1+1,act1_ul
+     do d = norb1+1,nact
         do e = norb1+1,d-1
            i0(i,j,k,a,b,c,1) = i0(i,j,k,a,b,c,1) &
                 + g3inp(i,j,k,a,d,e,spin_g3aaa)*int2x(d,e,b,c,spin_int2aa) &
@@ -126,8 +125,8 @@ subroutine ccdt_l3p_man08(i0,work1,work2,work3)
              + g2inp(i,k,d,c,spin_g2ab)*int2x(j,d,b,a,spin_int2aa)
      end do
      ! diagram 8
-     do d = norb1+1,act1_ul
-        do e = norb1+1,act1_ul
+     do d = norb1+1,nact
+        do e = norb1+1,nact
            i0(i,j,k,a,b,c,2) = i0(i,j,k,a,b,c,2) &
                 + g3inp(i,j,k,a,d,e,spin_g3aab)*int2x(d,e,b,c,spin_int2ab) &
                 - g3inp(i,j,k,b,d,e,spin_g3aab)*int2x(d,e,a,c,spin_int2ab)

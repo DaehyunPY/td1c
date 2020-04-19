@@ -7,21 +7,20 @@ subroutine ccdt_l2p_diagram17_1(sh3,sh4,sp1,sp2,i0)
 
 ! i0 ( h3 h4 p1 p2 )_vty + = 1/12 * Sum ( p5 h8 h9 h10 ) * y ( h8 h9 h10 p1 p2 p5 )_y * i1 ( h3 h4 p5 h8 h9 h10 )_vt 1
 
-  use, intrinsic :: iso_c_binding
   use mod_const,only : czero,runit
   use mod_ormas,only : nact
   use mod_cc,only : g3inp,norb1
 
   implicit none
-  integer(c_int),intent(in) :: sh3,sh4,sp1,sp2
+  integer,intent(in) :: sh3,sh4,sp1,sp2
   complex(kind(0d0)),intent(inout) :: &
        i0(1:norb1,1:norb1,(norb1+1):nact,(norb1+1):nact)
-  integer(c_int) :: h3,h4,p1,p2
-  integer(c_int) :: p5,h8,h9,h10,sp5,sh8,sh9,sh10
-  integer(c_int) :: spin_g3inp
-  integer(c_int) :: spin_itm_hhphhh
-  integer(c_int),external :: tdcc_spin_g3inp
-  integer(c_int),external :: tdcc_spin_dummy3
+  integer :: h3,h4,p1,p2
+  integer :: p5,h8,h9,h10,sp5,sh8,sh9,sh10
+  integer :: spin_g3inp
+  integer :: spin_itm_hhphhh
+  integer,external :: tdcc_spin_g3inp
+  integer,external :: tdcc_spin_dummy3
   complex(kind(0d0)),allocatable :: itm_hhphhh(:,:,:,:,:,:)
   complex(kind(0d0)),parameter :: fact = 1.0d+0 / 12.0d+0 * runit
 !
@@ -75,22 +74,21 @@ subroutine ccdt_l2p_diagram17_1_1(sh3,sh4,sp5,sh8,sh9,sh10,i1)
 
 !     i1 ( h3 h4 p5 h8 h9 h10 )_vt + = 1 * Sum ( p6 p7 ) * t ( p5 p6 p7 h8 h9 h10 )_t * v ( h3 h4 p6 p7 )_v 0
 
-  use, intrinsic :: iso_c_binding
   use mod_const,only : czero,runit
   use mod_ormas,only : nact
   use mod_cc,only : t3inp,norb1
   use mod_cc,only : int2x
 
   implicit none
-  integer(c_int),intent(in) :: sh3,sh4,sp5,sh8,sh9,sh10
+  integer,intent(in) :: sh3,sh4,sp5,sh8,sh9,sh10
   complex(kind(0d0)),intent(inout) :: &
        i1(1:norb1,1:norb1,(norb1+1):nact,1:norb1,1:norb1,1:norb1)
-  integer(c_int) :: h3,h4,p5,h8,h9,h10
-  integer(c_int) :: p6,p7,sp6,sp7
-  integer(c_int) :: spin_t3inp
-  integer(c_int) :: spin_int2x
-  integer(c_int),external :: tdcc_spin_t3inp
-  integer(c_int),external :: tdcc_spin_int2x
+  integer :: h3,h4,p5,h8,h9,h10
+  integer :: p6,p7,sp6,sp7
+  integer :: spin_t3inp
+  integer :: spin_int2x
+  integer,external :: tdcc_spin_t3inp
+  integer,external :: tdcc_spin_int2x
   complex(kind(0d0)),parameter :: fact = 1.0d+0 * runit
 !
 ! Demanding: ORDER-8
@@ -135,21 +133,20 @@ subroutine ccdt_l2p_diagram17_2(sh3,sh4,sp1,sp2,i0)
 
 ! i0 ( h3 h4 p1 p2 )_vty + = 1/12 * Sum ( p6 p7 ) * i1 ( p6 p7 p1 p2 )_yt * v ( h3 h4 p6 p7 )_v 1
 
-  use, intrinsic :: iso_c_binding
   use mod_const,only : czero,runit
   use mod_ormas,only : nact
   use mod_cc,only : int2x,norb1
 
   implicit none
-  integer(c_int),intent(in) :: sh3,sh4,sp1,sp2
+  integer,intent(in) :: sh3,sh4,sp1,sp2
   complex(kind(0d0)),intent(inout) :: &
        i0(1:norb1,1:norb1,(norb1+1):nact,(norb1+1):nact)
-  integer(c_int) :: h3,h4,p1,p2
-  integer(c_int) :: p6,p7,sp6,sp7
-  integer(c_int) :: spin_itm_pppp
-  integer(c_int) :: spin_int2x
-  integer(c_int),external :: tdcc_spin_dummy2
-  integer(c_int),external :: tdcc_spin_int2x
+  integer :: h3,h4,p1,p2
+  integer :: p6,p7,sp6,sp7
+  integer :: spin_itm_pppp
+  integer :: spin_int2x
+  integer,external :: tdcc_spin_dummy2
+  integer,external :: tdcc_spin_int2x
   complex(kind(0d0)),allocatable :: itm_pppp(:,:,:,:)
   complex(kind(0d0)),parameter :: fact = 1.0d+0 / 12.0d+0 * runit
 
@@ -193,22 +190,21 @@ subroutine ccdt_l2p_diagram17_2_1(sp6,sp7,sp1,sp2,i1)
 
 !     i1 ( p6 p7 p1 p2 )_yt + = 1 * Sum ( p5 h8 h9 h10 ) * y ( h8 h9 h10 p1 p2 p5 )_y * t ( p5 p6 p7 h8 h9 h10 )_t 0
 
-  use, intrinsic :: iso_c_binding
   use mod_const,only : czero,runit
   use mod_ormas,only : nact
   use mod_cc,only : g3inp,norb1
   use mod_cc,only : t3inp
 
   implicit none
-  integer(c_int),intent(in) :: sp6,sp7,sp1,sp2
+  integer,intent(in) :: sp6,sp7,sp1,sp2
   complex(kind(0d0)),intent(inout) :: &
        i1((norb1+1):nact,(norb1+1):nact,(norb1+1):nact,(norb1+1):nact)
-  integer(c_int) :: p6,p7,p1,p2
-  integer(c_int) :: p5,h8,h9,h10,sp5,sh8,sh9,sh10
-  integer(c_int) :: spin_g3inp
-  integer(c_int) :: spin_t3inp
-  integer(c_int),external :: tdcc_spin_g3inp
-  integer(c_int),external :: tdcc_spin_t3inp
+  integer :: p6,p7,p1,p2
+  integer :: p5,h8,h9,h10,sp5,sh8,sh9,sh10
+  integer :: spin_g3inp
+  integer :: spin_t3inp
+  integer,external :: tdcc_spin_g3inp
+  integer,external :: tdcc_spin_t3inp
   complex(kind(0d0)),parameter :: fact = 1.0d+0 * runit
 !
 ! Demanding: ORDER-8
@@ -254,7 +250,6 @@ end subroutine ccdt_l2p_diagram17_2_1
 !**********************************************************
 subroutine ccdt_l2p_diagram17_main()
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact
   use mod_cc,only : g2out,norb1
 

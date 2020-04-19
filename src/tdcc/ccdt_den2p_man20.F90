@@ -4,7 +4,6 @@ subroutine ccdt_den2p_man20(i0ab,i0ba,work1,work2,work3)
 !4:  i0 ( a b i j )_ytt + = P( i j ) * P( a b ) * Sum ( k c ) * i1 ( k a c i )_yt * t ( b c j k )_t 1
 !20: i0 ( a b i j )_ytt + = P( i j ) * P( a b ) * Sum ( k c ) * i1 ( k a c i )_yt * t ( b c j k )_t 1
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact
   use mod_cc,only : norb1,t2inp,g2inp,t3inp,g3inp
   use mod_cc2
@@ -18,7 +17,7 @@ subroutine ccdt_den2p_man20(i0ab,i0ba,work1,work2,work3)
        work3(1:norb1,(norb1+1):nact,(norb1+1):nact,1:norb1)
   complex(kind(0d0)) :: tmp
 
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   work1 = 0d0
   work2 = 0d0
@@ -57,8 +56,7 @@ subroutine ccdt_den2p_man20_1(i1aa,i1ab,i1ba)
 ! i1 ( i a b j )_yt + = +1 * Sum ( k l c d ) 
 !  * y ( k l i c d a )_y * t ( c d b k l j )_t 0
 
-  use, intrinsic :: iso_c_binding
-  use mod_ormas,only : nact,act1_ll,act1_ul
+  use mod_ormas,only : nact
   use mod_cc,only : norb1,t2inp,g2inp,t3inp,g3inp
   use mod_cc2
 
@@ -68,7 +66,7 @@ subroutine ccdt_den2p_man20_1(i1aa,i1ab,i1ba)
        i1ab(1:norb1,(norb1+1):nact,(norb1+1):nact,1:norb1), &
        i1ba(1:norb1,(norb1+1):nact,(norb1+1):nact,1:norb1)
   complex(kind(0d0)) :: tmp_aa,tmp_ab,tmp_ba
-  integer(c_int) :: icc,a,b,c,d,e,i,j,k,l,m
+  integer(c_long) :: icc,a,b,c,d,e,i,j,k,l,m
 
   !$omp parallel default(shared) private(i,a,b,j,k,c,tmp_aa,tmp_ab,tmp_ba)
   !$omp do
@@ -98,9 +96,9 @@ subroutine ccdt_den2p_man20_1(i1aa,i1ab,i1ba)
      i1ba(i,a,b,j) = i1ba(i,a,b,j) + tmp_ba*0.5d0
 
      ! diagram 20
-     do k = act1_ll,norb1
-     do c = norb1+1,act1_ul
-        do l = act1_ll,k-1
+     do k = 1,norb1
+     do c = norb1+1,nact
+        do l = 1,k-1
         do d = norb1+1,c-1
            i1aa(i,a,b,j) = i1aa(i,a,b,j) &
                 + g3inp(k,l,i,c,d,b,spin_g3aaa)*t3inp(c,d,a,k,l,j,spin_t3aaa) &
@@ -111,15 +109,15 @@ subroutine ccdt_den2p_man20_1(i1aa,i1ab,i1ba)
         end do
         end do
 
-        do l = act1_ll,norb1
+        do l = 1,norb1
         do d = norb1+1,c-1
            i1ba(i,a,b,j) = i1ba(i,a,b,j) &
                 + g3inp(k,i,l,c,d,b,spin_g3aab)*t3inp(c,d,a,k,j,l,spin_t3aab)
         end do
         end do
 
-        do l = act1_ll,k-1
-        do d = norb1+1,act1_ul
+        do l = 1,k-1
+        do d = norb1+1,nact
            i1ba(i,a,b,j) = i1ba(i,a,b,j) &
                 + g3inp(k,l,i,d,b,c,spin_g3aab)*t3inp(d,a,c,k,l,j,spin_t3aab)
         end do

@@ -35,7 +35,7 @@ subroutine tdcc_printcc1(cic)
   use mod_cc, only : h1_cc1a,p1_cc1a,map_cc1a
   implicit none
   complex(c_double_complex), intent(in) :: cic(1:ndetx,1:2)
-  integer(c_int) :: icc,p1,h1,idet
+  integer(c_long) :: icc,p1,h1,idet
 
   do icc = 1, ncc1a
      p1 = p1_cc1a(icc)
@@ -56,7 +56,7 @@ subroutine tdcc_printcc2(cic)
   use mod_cc, only : h1_cc2ab,h2_cc2ab,p1_cc2ab,p2_cc2ab
   implicit none
   complex(c_double_complex), intent(in) :: cic(1:ndetx,1:2)
-  integer(c_int) :: icc,p1,p2,h1,h2,idet
+  integer(c_long) :: icc,p1,p2,h1,h2,idet
 
   do icc = 1, ncc2aa
      p1 = p1_cc2aa(icc)
@@ -82,13 +82,13 @@ end subroutine tdcc_printcc2
 subroutine tdcc_printcc3(cic)
 
   use, intrinsic :: iso_c_binding
-  use mod_ormas, only : nact,act1_ll,act1_ul,ndetx
+  use mod_ormas, only : nact,ndetx
   use mod_cc, only : norb1,ncc3aaa,ncc3aab,map_cc3aaa,map_cc3aab
   use mod_cc, only : h1_cc3aaa,h2_cc3aaa,h3_cc3aaa,p1_cc3aaa,p2_cc3aaa,p3_cc3aaa
   use mod_cc, only : h1_cc3aab,h2_cc3aab,h3_cc3aab,p1_cc3aab,p2_cc3aab,p3_cc3aab
   implicit none
   complex(c_double_complex), intent(in) :: cic(1:ndetx,1:2)
-  integer(c_int) :: icc,p1,p2,p3,h1,h2,h3,idet
+  integer(c_long) :: icc,p1,p2,p3,h1,h2,h3,idet
 
   do icc = 1, ncc3aaa
      p1 = p1_cc3aaa(icc)

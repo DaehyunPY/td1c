@@ -6,12 +6,12 @@ subroutine futil_hforb_read(nval, lval, nrad, chirad)
 ! construct atomic hamiltonian in the fedvr basis
 !
   implicit none
-  integer(c_int), intent(in) :: nval, lval, nrad
+  integer(c_long), intent(in) :: nval, lval, nrad
   complex(c_double_complex), intent(inout) :: chirad(0:nrad)
 
   character(len = 9), parameter :: fname = "HFOrb.dat"
-  integer(c_int), parameter :: ior = 20
-  integer(c_int) :: nrad0, maxfun, lmax, l, ifun, irad
+  integer(c_long), parameter :: ior = 20
+  integer(c_long) :: nrad0, maxfun, lmax, l, ifun, irad
   complex(c_double_complex) :: trash
   complex(c_double_complex), parameter :: czero = (0.d+0, 0.d+0)
   complex(c_double_complex), parameter :: runit = (1.d+0, 0.d+0)

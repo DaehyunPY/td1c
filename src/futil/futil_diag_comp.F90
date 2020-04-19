@@ -6,11 +6,11 @@ subroutine futil_diag_comp(dsc, n, a, u)
 
   implicit none
   logical, intent(in) :: dsc
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   complex(c_double_complex), intent(inout) :: a(1:n, 1:n)
   complex(c_double_complex), intent(out) :: u(1:n, 1:n)
 
-  integer(c_int) :: info, lwork, i, len
+  integer(c_long) :: info, lwork, i, len
   complex(c_double_complex) :: clwork
 
   complex(c_double_complex), allocatable :: tmpa(:, :)

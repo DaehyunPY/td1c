@@ -11,7 +11,7 @@ subroutine h1rat_prodci(do_numer, do_denom, zfac, dtime, dimn, dimd, &
   logical(c_bool), intent(in) :: do_numer, do_denom
   complex(c_double_complex), intent(in) :: zfac
   real(c_double), intent(in) :: dtime, eref
-  integer(c_int), intent(in) :: dimn, dimd, h1type
+  integer(c_long), intent(in) :: dimn, dimd, h1type
   complex(c_double_complex), intent(in) :: ncoeff(0:dimn)
   complex(c_double_complex), intent(in) :: dcoeff0(1:dimd), dcoeff1(1:dimd)
   complex(c_double_complex), intent(in) :: hdiag(1:lcic)
@@ -27,7 +27,7 @@ subroutine h1rat_prodci(do_numer, do_denom, zfac, dtime, dimn, dimd, &
   complex(c_double_complex), allocatable :: tcic2(:)
   complex(c_double_complex), allocatable :: d0inv(:)
   complex(c_double_complex) :: tfac, zfac0, zfac1, cres
-  integer(c_int) :: idim, ncyc, icyc, idet, ldet
+  integer(c_long) :: idim, ncyc, icyc, idet, ldet
 
   tfac = dtime
   ldet = lcic

@@ -10,10 +10,10 @@ subroutine ormas_madapt(mtot)
        n1x_m_beta, map1x_m_beta, max1x_beta, max1x_m_beta
   
   implicit none
-  integer(c_int), intent(in) :: mtot
+  integer(c_long), intent(in) :: mtot
 
-!tmp  integer(c_int) :: max1x_alph, max1x_m_alph
-!tmp  integer(c_int) :: max1x_beta, max1x_m_beta
+!tmp  integer(c_long) :: max1x_alph, max1x_m_alph
+!tmp  integer(c_long) :: max1x_beta, max1x_m_beta
 
   call ormas_max1x_m_spin(nstr_alph, max1x_alph, n1x_alph, p1x_alph, h1x_alph, max1x_m_alph)
   allocate(n1x_m_alph(-mmax2:mmax2, 1:nstr_alph))
@@ -39,13 +39,13 @@ subroutine ormas_max1x_m_spin(nstr, max1x, n1x, p1x, h1x, max1x_m)
   use mod_ormas, only : ncore, nact, nfun, mval
 
   implicit none
-  integer(c_int), intent(in) :: nstr
-  integer(c_int), intent(in) :: max1x, n1x(-3:1, 1:*)
-  integer(c_int), intent(in) :: p1x(1:nact*nact, 1:*)
-  integer(c_int), intent(in) :: h1x(1:nact*nact, 1:*)
-  integer(c_int), intent(out) :: max1x_m
+  integer(c_long), intent(in) :: nstr
+  integer(c_long), intent(in) :: max1x, n1x(-3:1, 1:*)
+  integer(c_long), intent(in) :: p1x(1:nact*nact, 1:*)
+  integer(c_long), intent(in) :: h1x(1:nact*nact, 1:*)
+  integer(c_long), intent(out) :: max1x_m
 
-  integer(c_int) :: istr, i1x, ifun, jfun, m_ij, i1x_m, n1xm(-mmax2:mmax2)
+  integer(c_long) :: istr, i1x, ifun, jfun, m_ij, i1x_m, n1xm(-mmax2:mmax2)
 
   max1x_m = 0
   do istr = 1, nstr
@@ -75,15 +75,15 @@ subroutine ormas_madapt_int1x_spin(nstr, max1x, n1x, p1x, h1x, max1x_m, n1x_m, m
   use mod_ormas, only : ncore, nact, nfun, mval
 
   implicit none
-  integer(c_int), intent(in) :: nstr
-  integer(c_int), intent(in) :: max1x, max1x_m
-  integer(c_int), intent(in) :: n1x(-3:1, 1:*)
-  integer(c_int), intent(in) :: p1x(1:nact*nact, 1:*)
-  integer(c_int), intent(in) :: h1x(1:nact*nact, 1:*)
-  integer(c_int), intent(out) :: n1x_m(-mmax2:mmax2, 1:*)
-  integer(c_int), intent(out) :: map1x_m(1:max1x_m, -mmax2:mmax2, 1:*)
+  integer(c_long), intent(in) :: nstr
+  integer(c_long), intent(in) :: max1x, max1x_m
+  integer(c_long), intent(in) :: n1x(-3:1, 1:*)
+  integer(c_long), intent(in) :: p1x(1:nact*nact, 1:*)
+  integer(c_long), intent(in) :: h1x(1:nact*nact, 1:*)
+  integer(c_long), intent(out) :: n1x_m(-mmax2:mmax2, 1:*)
+  integer(c_long), intent(out) :: map1x_m(1:max1x_m, -mmax2:mmax2, 1:*)
 
-  integer(c_int) :: istr, i1x, ifun, jfun, m_ij, i1x_m, maxn1x_m
+  integer(c_long) :: istr, i1x, ifun, jfun, m_ij, i1x_m, maxn1x_m
 
   n1x_m(-mmax2:mmax2, 1:nstr) = 0
   map1x_m(1:max1x_m, -mmax2:mmax2, 1:nstr) = 0
@@ -139,29 +139,23 @@ subroutine ormas_madapt_str(mtot)
   use mod_ormas, only : nstr_dist_m_beta, llstr_dist_m_beta
 
   implicit none
-  integer(c_int), intent(in) :: mtot
+  integer(c_long), intent(in) :: mtot
   logical(c_bool) :: found
-  integer(c_int) :: isub, istr, jstr, ifun, jfun, iel, idet, ndety, mvalc, tmp, ii, iact, jact
-  integer(c_int) :: mval_str, istr_m, istr2, jstr2, idist, jdist, i1x, i1x_m, m_ij, lls, uls, mstra, mstrb
-  integer(c_int) :: max_nstr_m_alph, max_nstr_m_beta
-  integer(c_int), allocatable :: tocc(:), mval_alph2(:), mval_beta2(:)
-  integer(c_int), allocatable :: strmap_m_alph(:,:), str_dist_m_alph(:,:,:)
-  integer(c_int), allocatable :: strmap_m_beta(:,:), str_dist_m_beta(:,:,:)
-  integer(c_int), allocatable :: dist_str_alph2(:,:), onv_alph2(:,:), orb_alph2(:,:)
-  integer(c_int), allocatable :: dist_str_beta2(:,:), onv_beta2(:,:), orb_beta2(:,:)
-  integer(c_int), allocatable :: n1x_alph2(:,:), p1x_alph2(:,:), h1x_alph2(:,:)
-  integer(c_int), allocatable :: eq1x_alph2(:,:), sgn1x_alph2(:,:), n1x_m_alph2(:,:), map1x_m_alph2(:,:,:)
-  integer(c_int), allocatable :: n1x_beta2(:,:), p1x_beta2(:,:), h1x_beta2(:,:)
-  integer(c_int), allocatable :: eq1x_beta2(:,:), sgn1x_beta2(:,:), n1x_m_beta2(:,:), map1x_m_beta2(:,:,:)
-!OLD  integer(c_int), allocatable :: n1xr_alph2(:,:), r1xr_alph2(:,:,:), l1xr_alph2(:,:,:), sgn1xr_alph2(:,:,:)
-!OLD  integer(c_int), allocatable :: n1xr_beta2(:,:), r1xr_beta2(:,:,:), l1xr_beta2(:,:,:), sgn1xr_beta2(:,:,:)
+  integer(c_long) :: isub, istr, jstr, ifun, jfun, iel, idet, ndety, mvalc, tmp, ii, iact, jact
+  integer(c_long) :: mval_str, istr_m, istr2, jstr2, idist, jdist, i1x, i1x_m, m_ij, lls, uls, mstra, mstrb
+  integer(c_long) :: max_nstr_m_alph, max_nstr_m_beta
+  integer(c_long), allocatable :: tocc(:), mval_alph2(:), mval_beta2(:)
+  integer(c_long), allocatable :: strmap_m_alph(:,:), str_dist_m_alph(:,:,:)
+  integer(c_long), allocatable :: strmap_m_beta(:,:), str_dist_m_beta(:,:,:)
+  integer(c_long), allocatable :: dist_str_alph2(:,:), onv_alph2(:,:), orb_alph2(:,:)
+  integer(c_long), allocatable :: dist_str_beta2(:,:), onv_beta2(:,:), orb_beta2(:,:)
+  integer(c_long), allocatable :: n1x_alph2(:,:), p1x_alph2(:,:), h1x_alph2(:,:)
+  integer(c_long), allocatable :: eq1x_alph2(:,:), sgn1x_alph2(:,:), n1x_m_alph2(:,:), map1x_m_alph2(:,:,:)
+  integer(c_long), allocatable :: n1x_beta2(:,:), p1x_beta2(:,:), h1x_beta2(:,:)
+  integer(c_long), allocatable :: eq1x_beta2(:,:), sgn1x_beta2(:,:), n1x_m_beta2(:,:), map1x_m_beta2(:,:,:)
+!OLD  integer(c_long), allocatable :: n1xr_alph2(:,:), r1xr_alph2(:,:,:), l1xr_alph2(:,:,:), sgn1xr_alph2(:,:,:)
+!OLD  integer(c_long), allocatable :: n1xr_beta2(:,:), r1xr_beta2(:,:,:), l1xr_beta2(:,:,:), sgn1xr_beta2(:,:,:)
   
-
-!debug
-  integer(c_int) :: it1,it2,it3,lla,ula
-!debug
-
-
   allocate(nstr_alph_beta(1:nstr_beta))
   allocate(nstr_beta_alph(1:nstr_alph))
   allocate(llstr_alph_beta(1:nstr_beta))
@@ -479,64 +473,22 @@ subroutine ormas_madapt_str(mtot)
      nstr_beta_alph(istr2) = tmp
   end do
 
-!debug
 !  write(6, "('# ORMAS: test 4')")
-!  do istr2 = 1, nstr_alph
-!     write(6,"('strA,M,dist,llstrB(A),ulstrB(A): ', 5i10)") &
-!          istr2, &
-!          mval_alph2(istr2), &
-!          dist_str_alph2(1,istr2), &
-!          llstr_beta_alph(istr2), &
-!          llstr_beta_alph(istr2)+nstr_beta_alph(istr2)-1
-!  end do
-!  stop
-!debug
 
   tmp = 0
   ntot_alph_beta = 0
-!##########
   do istr2 = 1, nstr_beta
      ntot_alph_beta(istr2) = tmp - llstr_alph_beta(istr2) + 1
      tmp = tmp + nstr_alph_beta(istr2)
   end do
-!new  do istr2 = 1, nstr_beta
-!new     ntot_alph_beta(istr2) = tmp! + 1
-!new     tmp = tmp + nstr_alph_beta(istr2)
-!new  end do
-!##########
-
   tmp = 0
   ntot_beta_alph = 0
-!##########
   do istr2 = 1, nstr_alph
      ntot_beta_alph(istr2) = tmp - llstr_beta_alph(istr2) + 1
      tmp = tmp + nstr_beta_alph(istr2)
   end do
-!new  do istr2 = 1, nstr_alph
-!new     ntot_beta_alph(istr2) = tmp! + 1
-!new     tmp = tmp + nstr_beta_alph(istr2)
-!new  end do
-!##########
  
-!debug
 !  write(6, "('# ORMAS: test 5')")
-!  it1 = 0
-!  do istr2 = 1, nstr_beta
-!     write(6,"('ntot: ',5i5,'-->',i5,':',i5,'-->',i5)") &
-!          istr2, &
-!          mval_beta(istr2), &
-!          llstr_alph_beta(istr2), &
-!          nstr_alph_beta(istr2), &
-!          ntot_alph_beta(istr2)+llstr_alph_beta(istr2), &
-!          ntot_alph_beta(istr2)+llstr_alph_beta(istr2)+nstr_alph_beta(istr2)-1, &
-!!new          ntot_alph_beta(istr2)+1, &
-!!new          ntot_alph_beta(istr2)+nstr_alph_beta(istr2), &
-!          it1+1, &
-!          it1+nstr_alph_beta(istr2)
-!     it1 = it1 + nstr_alph_beta(istr2)
-!  end do
-!!  stop
-!debug
 
   ! number of M-adapted determinants
   if (.not. cic_old) then
@@ -718,23 +670,6 @@ subroutine ormas_madapt_str(mtot)
 !OLD  deallocate(l1xr_beta2)
 !OLD  deallocate(sgn1xr_beta2)
 
-!  write(6, "('# ORMAS: test 6')")
-!  it1 = 0
-!  do istr = 1, nstr_beta
-!     mstrb = mval_beta(istr)
-!     mstra = mtot-mstrb
-!     idist = dist_str_beta(1,istr)
-!     do jdist = 1, ndist_alph
-!        if (det_allowed(jdist,idist) == 0) cycle
-!        lla = llstr_dist_m_alph(idist,mstra)
-!        ula =  nstr_dist_m_alph(idist,mstra) + lla - 1
-!        it1 = it1 + nstr_dist_m_alph(idist,mstra)
-!        write(6,"('ntot: ',6i5,': ',i5,'-->',i5)") &
-!             istr,mstrb,mstra,idist,jdist,it1, &
-!             ntot_alph_beta(istr)+lla, &
-!             ntot_alph_beta(istr)+ula
-!     end do
-!  end do
 !  stop "STOP for debug @ ormas_madapt_str."
 
 end subroutine ormas_madapt_str

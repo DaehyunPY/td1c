@@ -38,7 +38,7 @@ subroutine hprod_energy_dft(lfield, wfn)
 
   ! 1e operators
   call hprod_tprod_dyn(orb, h1orb)
-  if (PSP) call hprod_projpp(runit, lfield, orb, h1orb)
+  if (PSP) call hprod_projpp(runit, orb, h1orb)
 
   if (igauge == 0) call hprod_zprod_dyn(zfield, orb, h1orb)
   if (igauge == 1) call hprod_pzprod_dyn(zfield, orb, h1orb)

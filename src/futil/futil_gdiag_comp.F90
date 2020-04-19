@@ -5,15 +5,15 @@ subroutine futil_gdiag_comp(dsc, n, a, uleft, uright)
 
   implicit none
   logical, intent(in) :: dsc
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   complex(c_double_complex), intent(inout) :: a(1:n, 1:n)
   complex(c_double_complex), intent(out) :: uleft(1:n, 1:n)
   complex(c_double_complex), intent(out) :: uright(1:n, 1:n)
 
-  integer(c_int) :: info, lwork, i, j, k, len
+  integer(c_long) :: info, lwork, i, j, k, len
   complex(c_double_complex) :: clwork, test
 
-  integer(c_int), allocatable :: index(:)
+  integer(c_long), allocatable :: index(:)
   complex(c_double_complex), allocatable :: tmpa(:, :)
   complex(c_double_complex), allocatable :: eig(:), work(:), vecl(:,:), vecr(:,:), plr(:)
   real(c_double), allocatable :: rwork(:), deig(:)

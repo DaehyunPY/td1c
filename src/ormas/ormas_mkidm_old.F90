@@ -21,9 +21,9 @@ subroutine ormas_mkidm_old(ovlp, cic, dens)
   complex(c_double_complex), allocatable :: cdeta1(:,:)
   complex(c_double_complex), allocatable :: detbc1(:,:)
   complex(c_double_complex), allocatable :: denp(:,:,:)
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
-  integer(c_int) :: ndet, istr, jstr, ifun, jfun, ii, iproc, nproc, maxne2
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
+  integer(c_long) :: ndet, istr, jstr, ifun, jfun, ii, iproc, nproc, maxne2
 
   nproc = util_omp_nproc()
   ndet = nstr_alph * nstr_beta

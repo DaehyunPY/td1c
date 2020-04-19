@@ -8,9 +8,9 @@ real(c_double) function hprod_ene_fcx()
   use mod_const, only : zero, two, quart
 
   implicit none
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
-  integer(c_int) :: iproc, nproc, irad, ilat, llr, ulr
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
+  integer(c_long) :: iproc, nproc, irad, ilat, llr, ulr
   real(c_double) :: etmp1, enep
 
   if (nfcore2 == 0) then

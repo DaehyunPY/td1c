@@ -31,8 +31,8 @@ module mod_const
   logical(c_bool), parameter :: cfalse = .false.
   real(c_double), parameter :: thrwfn = 1.D-15
   real(c_double), parameter :: thrdav = 1.D-12
-  integer(c_int), parameter :: cmf_maxcic = 20
-  integer(c_int), parameter :: maxproc = 256
+  integer(c_long), parameter :: cmf_maxcic = 20
+  integer(c_long), parameter :: maxproc = 256
 
 end module mod_const
 !################################################################################

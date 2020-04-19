@@ -29,9 +29,5 @@ subroutine hprod_v1ext(dofc, zfac, lfield, wfn, hwfn)
      if (dofcx) call hprod_pzprod_fc(zfield, wfn, hwfn)
   end if
 
-!  if (projhigh) then
-!     call hprod_projhigh(hwfn)
-!  end if
-
 end subroutine hprod_v1ext
 !######################################################################

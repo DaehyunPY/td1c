@@ -5,11 +5,11 @@ subroutine util_zcopy(n, x, incx, y, incy)
   use mod_const, only : czero
 
   implicit none
-  integer(c_int), intent(in) :: n, incx, incy
+  integer(c_long), intent(in) :: n, incx, incy
   complex(c_double_complex), intent(in) :: x(1:*)
   complex(c_double_complex), intent(out) :: y(1:n)
 
-  integer(c_int) :: i
+  integer(c_long) :: i
 
   if (incx <  0) stop 'util_zcopy: bad incx.'
   if (incy <= 0) stop 'util_zcopy: bad incy.'
@@ -41,11 +41,11 @@ subroutine util_zscal(n, a, x, incx)
   use mod_const, only : czero
 
   implicit none
-  integer(c_int), intent(in) :: n, incx
+  integer(c_long), intent(in) :: n, incx
   complex(c_double_complex), intent(in) :: a
   complex(c_double_complex), intent(inout) :: x(1:*)
 
-  integer(c_int) :: i
+  integer(c_long) :: i
 
   if (incx <= 0) stop 'util_zscal: bad incx.'
 
@@ -68,12 +68,12 @@ subroutine util_zaxpy(n, a, x, incx, y, incy)
   use mod_const, only : czero
 
   implicit none
-  integer(c_int), intent(in) :: n, incx, incy
+  integer(c_long), intent(in) :: n, incx, incy
   complex(c_double_complex), intent(in) :: a
   complex(c_double_complex), intent(in) :: x(1:*)
   complex(c_double_complex), intent(inout) :: y(1:n)
 
-  integer(c_int) :: i
+  integer(c_long) :: i
 
   if (incx <  0) stop 'util_zaxpy: bad incx.'
   if (incy <= 0) stop 'util_zaxpy: bad incy.'
@@ -104,11 +104,11 @@ complex(c_double_complex) function util_zdotc(n, x, incx, y, incy)
   use mod_const, only : czero
 
   implicit none
-  integer(c_int), intent(in) :: n, incx, incy
+  integer(c_long), intent(in) :: n, incx, incy
   complex(c_double_complex), intent(in) :: x(1:n)
   complex(c_double_complex), intent(in) :: y(1:n)
 
-  integer(c_int) :: i
+  integer(c_long) :: i
   complex(c_double_complex) :: tmp
 
   if (incx /= 1) stop 'util_zdotc: bad incx.'
@@ -131,11 +131,11 @@ complex(c_double_complex) function util_zdotcp(n, a, b)
   use mod_const, only : czero
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   complex(c_double_complex), intent(in) :: a(1:n)
   complex(c_double_complex), intent(in) :: b(1:n)
 
-  integer(c_int) :: i
+  integer(c_long) :: i
   complex(c_double_complex) :: tmp
 
   tmp = czero
@@ -159,11 +159,11 @@ complex(c_double_complex) function util_zdotu(n, x, incx, y, incy)
   use mod_const, only : czero
 
   implicit none
-  integer(c_int), intent(in) :: n, incx, incy
+  integer(c_long), intent(in) :: n, incx, incy
   complex(c_double_complex), intent(in) :: x(1:n)
   complex(c_double_complex), intent(in) :: y(1:n)
 
-  integer(c_int) :: i
+  integer(c_long) :: i
   complex(c_double_complex) :: tmp
 
   if (incx /= 1) stop 'util_zdotu: bad incx.'
@@ -186,11 +186,11 @@ complex(c_double_complex) function util_zdotup(n, a, b)
   use mod_const, only : czero
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   complex(c_double_complex), intent(in) :: a(1:n)
   complex(c_double_complex), intent(in) :: b(1:n)
 
-  integer(c_int) :: i
+  integer(c_long) :: i
   complex(c_double_complex) :: tmp
 
   tmp = czero

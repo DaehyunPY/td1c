@@ -1,15 +1,13 @@
 !###################################################################################
-integer(c_int) function tdcc_spin_fock(s1, s2)
-
-  use, intrinsic :: iso_c_binding
+integer function tdcc_spin_fock(s1, s2)
 
 !  1 : f(p1,q1)
 !  2 : f(p2,q2)
 !  0 : others
 
   implicit none
-  integer(c_int), intent(in) :: s1, s2
-  integer(c_int) :: spin_type
+  integer, intent(in) :: s1, s2
+  integer :: spin_type
 
   if (s1 .ne. s2) then
      spin_type = 0

@@ -10,8 +10,8 @@ subroutine ormas_mkden1_ras(cic, den1)
   complex(c_double_complex) , intent(in) :: cic(1:*)
   complex(c_double_complex) , intent(out) :: den1(1:nact, 1:nact)
 
-  integer(c_int) :: iproc, nproc, iact, jact
-  integer(c_int), external :: util_omp_nproc
+  integer(c_long) :: iproc, nproc, iact, jact
+  integer(c_long), external :: util_omp_nproc
   complex(c_double_complex) , allocatable :: den1p(:,:,:)
 
   if (nact == 0) return
@@ -50,13 +50,13 @@ subroutine ormas_mkden1_ras_bb(cic, den1p, nproc)
   use mod_ormas, only : n1x_m_beta,map1x_m_beta,mval_beta,mmin_alph,mmax_alph
 
   implicit none
-  integer(c_int), intent(in) :: nproc
+  integer(c_long), intent(in) :: nproc
   complex(c_double_complex) , intent(in) :: cic(1:ndetx)
   complex(c_double_complex) , intent(inout) :: den1p(1:nact,1:nact,0:(nproc-1))
 
-  integer(c_int) :: istr,jstr,kstr,i1x,i1x_m,iact,jact,iproc
-  integer(c_int) :: jdist,lla,ula,mvala
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long) :: istr,jstr,kstr,i1x,i1x_m,iact,jact,iproc
+  integer(c_long) :: jdist,lla,ula,mvala
+  integer(c_long), external :: util_omp_iproc
 
 !write(6,"('nstr_beta:  ', i5)") nstr_beta
 !do istr = 1, nstr_beta
@@ -139,13 +139,13 @@ subroutine ormas_mkden1_ras_aa(cic, den1p, nproc)
   use mod_ormas, only : n1x_m_alph,map1x_m_alph,mval_alph,mmin_beta,mmax_beta
 
   implicit none
-  integer(c_int), intent(in) :: nproc
+  integer(c_long), intent(in) :: nproc
   complex(c_double_complex) , intent(in) :: cic(1:ndetx)
   complex(c_double_complex) , intent(inout) :: den1p(1:nact,1:nact,0:(nproc-1))
 
-  integer(c_int) :: istr,jstr,kstr,i1x,i1x_m,iact,jact,iproc
-  integer(c_int) :: idist,jdist,kdist,mvalb,llb,ulb
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long) :: istr,jstr,kstr,i1x,i1x_m,iact,jact,iproc
+  integer(c_long) :: idist,jdist,kdist,mvalb,llb,ulb
+  integer(c_long), external :: util_omp_iproc
 
   !$omp parallel default(shared) private(mvalb,idist,i1x,iact,jact,kstr,kdist,llb,ulb,iproc)
   iproc = util_omp_iproc()

@@ -13,15 +13,15 @@ subroutine h1rat_prod(do_numer, do_denom, lfield, dtime, dimn, dimd, ncoeff, dco
   implicit none
   logical(c_bool), intent(in) :: do_numer, do_denom
   real(c_double), intent(in) :: lfield(9), dtime
-  integer(c_int), intent(in) :: dimn, dimd
+  integer(c_long), intent(in) :: dimn, dimd
   complex(c_double_complex), intent(in) :: ncoeff(0:dimn)
   complex(c_double_complex), intent(in) :: dcoeff1(1:dimd)
-  integer(c_int), intent(in) :: tpiv(1:(nrad-1), 0:lmax1, 1:dimd)
+  integer(c_long), intent(in) :: tpiv(1:(nrad-1), 0:lmax1, 1:dimd)
   complex(c_double_complex), intent(in) :: tinv(1:(3*ndvr+1), 1:(nrad-1), 0:lmax1, 1:dimd)
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:*)
 
   complex(c_double_complex) :: zfac, tfac, tmp
-  integer(c_int) :: idim, ncyc, icyc, ifun, idyn, ldyn
+  integer(c_long) :: idim, ncyc, icyc, ifun, idyn, ldyn
   logical, parameter :: debug = .false.
   real(c_double) :: rmsres, maxres
   logical projfc
@@ -33,7 +33,7 @@ subroutine h1rat_prod(do_numer, do_denom, lfield, dtime, dimn, dimd, ncoeff, dco
   if (projfc) stop 'projfc not supported in h1rat_prod.'
 
   ! initialization
-  call zcopy_omp(ldyn, wfn(1,0,idyn), orb(1,0,idyn))
+  call zcopy_omp(ldyn, wfn(1,0,idyn),  orb(1,0,idyn))
 
   ! numerator
   if (do_numer) then
@@ -81,7 +81,7 @@ subroutine h1rat_prod(do_numer, do_denom, lfield, dtime, dimn, dimd, ncoeff, dco
               zfac = -dcoeff1(idim)
               call zclear_omp(ldyn, h1orb(1,0,idyn))
               call hprod_v1ext(cfalse, zfac, lfield, orb, h1orb);
-              if (PSP) call hprod_projpp(zfac, lfield, orb, h1orb);
+              if (PSP) call hprod_projpp(zfac, orb, h1orb);
      
               ! 1 / (dcoeff0[i] + dcoeff1[i] * H0)
               call zcopy_omp(ldyn, h1orb(1,0,idyn), orb(1,0,idyn));
@@ -95,19 +95,6 @@ subroutine h1rat_prod(do_numer, do_denom, lfield, dtime, dimn, dimd, ncoeff, dco
         end if
      end do
   end if
-
-!  ! numerator
-!  if (do_numer) then
-!!     call zcopy_omp(ldyn, wfn(1,0,idyn), torb(1,0,idyn))
-!     call zcopy_omp(ldyn, orb(1,0,idyn), torb(1,0,idyn))
-!     call zscal_omp(ldyn, ncoeff(0), orb(1,0,idyn))
-!     do idim = 1, dimn
-!        call zclear_omp(ldyn, h1orb(1,0,idyn))
-!        call hprod_h1tot(cfalse, lfield, torb, h1orb)
-!        call zscal2_omp(ldyn, tfac, h1orb(1,0,idyn), torb(1,0,idyn))
-!        call zaxpy_omp(ldyn, ncoeff(idim), torb(1,0,idyn), orb(1,0,idyn))
-!     end do
-!  end if
 
   call zcopy_omp(ldyn, orb(1,0,idyn), wfn(1,0,idyn))
 
@@ -142,14 +129,14 @@ subroutine h1rat_prod_numer(lfield, dtime, dimn, zfactor, ncoeff, win, wout)
 
   implicit none
   real(c_double), intent(in) :: lfield(9), dtime
-  integer(c_int), intent(in) :: dimn
+  integer(c_long), intent(in) :: dimn
   complex(c_double_complex), intent(in) :: zfactor
   complex(c_double_complex), intent(in) :: ncoeff(0:dimn)
   complex(c_double_complex), intent(in) :: win(1:(nrad-1), 0:lmax1, 1:*)
   complex(c_double_complex), intent(inout) :: wout(1:(nrad-1), 0:lmax1, 1:*)
 
   complex(c_double_complex) :: zfac, tfac, tmp
-  integer(c_int) :: idim, ncyc, icyc, ifun, idyn, ldyn
+  integer(c_long) :: idim, ncyc, icyc, ifun, idyn, ldyn
   logical, parameter :: debug = .false.
   real(c_double) :: rmsres, maxres
   logical projfc
@@ -203,11 +190,11 @@ subroutine h1rat_h0inv(tpiv, tinv, wfn)
   use mod_const, only : czero, runit
 
   implicit none
-  integer(c_int), intent(in) :: tpiv(1:(nrad-1), 0:lmax1)
+  integer(c_long), intent(in) :: tpiv(1:(nrad-1), 0:lmax1)
   complex(c_double_complex), intent(in) :: tinv(1:(3*ndvr+1), 1:(nrad-1), 0:lmax1)
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:*)
 
-  integer(c_int) :: ifun, l, dim, ld, info, lll, ull, irad
+  integer(c_long) :: ifun, l, dim, ld, info, lll, ull, irad
   dim = nrad - 1
   ld = 3 * ndvr + 1
   !$omp parallel default(shared) private(lll, ull)
@@ -222,10 +209,6 @@ subroutine h1rat_h0inv(tpiv, tinv, wfn)
   !###########################
   !$omp end parallel
 
-!  if (projhigh) then
-!     call hprod_projhigh(wfn)
-!  end if
-
 end subroutine h1rat_h0inv
 !######################################################################
 subroutine h1rat_h0inv_v2(tpiv, tinv, wfn)
@@ -238,14 +221,14 @@ subroutine h1rat_h0inv_v2(tpiv, tinv, wfn)
   use mod_ormas, only : nfcore, nfun, froz
 
   implicit none
-  integer(c_int), intent(in) :: tpiv(1:(nrad-1), 0:lmax1)
+  integer(c_long), intent(in) :: tpiv(1:(nrad-1), 0:lmax1)
   complex(c_double_complex), intent(in) :: tinv(1:(3*ndvr+1), 1:(nrad-1), 0:lmax1)
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:*)
 
-  integer(c_int) :: ifun, idyn, l, dim, ld, info, lll, ull, nproc, iproc, ndyn
+  integer(c_long) :: ifun, idyn, l, dim, ld, info, lll, ull, nproc, iproc, ndyn
   complex(c_double_complex), allocatable :: wtmp(:,:,:)
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
   dim = nrad - 1
   ld = 3 * ndvr + 1
   nproc = util_omp_nproc()
@@ -282,10 +265,6 @@ subroutine h1rat_h0inv_v2(tpiv, tinv, wfn)
   !$omp end parallel
 
   deallocate(wtmp)
-
-!  if (projhigh) then
-!     call hprod_projhigh(wfn)
-!  end if
 
 end subroutine h1rat_h0inv_v2
 !######################################################################

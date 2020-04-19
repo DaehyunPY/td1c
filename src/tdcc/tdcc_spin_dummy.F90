@@ -1,38 +1,33 @@
 !###################################################################################
-integer(c_int) function tdcc_spin_dummy1(s1, s2)
-
-  use, intrinsic :: iso_c_binding
+integer function tdcc_spin_dummy1(s1, s2)
 
   implicit none
-  integer(c_int), intent(in) :: s1, s2
-  integer(c_int), external :: tdcc_spin_fock
+  integer, intent(in) :: s1, s2
+  integer, external :: tdcc_spin_fock
 
   tdcc_spin_dummy1 = 1
 !  tdcc_spin_dummy1 = tdcc_spin_fock(s1, s2)
 
 end function tdcc_spin_dummy1
 !###################################################################################
-integer(c_int) function tdcc_spin_dummy2(s1, s2, s3, s4)
-
-  use, intrinsic :: iso_c_binding
+integer function tdcc_spin_dummy2(s1, s2, s3, s4)
 
   implicit none
-  integer(c_int), intent(in) :: s1, s2, s3, s4
-  integer(c_int), external :: tdcc_spin_int2x
+  integer, intent(in) :: s1, s2, s3, s4
+  integer, external :: tdcc_spin_int2x
 
   tdcc_spin_dummy2 = 1
 !  tdcc_spin_dummy2 = tdcc_spin_int2x(s1, s2, s3, s4)
 
 end function tdcc_spin_dummy2
 !###################################################################################
-integer(c_int) function tdcc_spin_dummy3(s1, s2, s3, s4, s5, s6)
+integer function tdcc_spin_dummy3(s1, s2, s3, s4, s5, s6)
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas, only : nelact
 
   implicit none
-  integer(c_int), intent(in) :: s1, s2, s3, s4, s5, s6
-  integer(c_int) :: spin_type
+  integer, intent(in) :: s1, s2, s3, s4, s5, s6
+  integer :: spin_type
 
 !  stop 'tdcc_spin_dummy3: NEVER call me!'
   if (nelact(3) < 3) then

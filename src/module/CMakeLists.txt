@@ -14,7 +14,4 @@ add_library(
         mod_ppatom.F90
         mod_cc.F90
         mod_cc2.F90
-        mod_oncvpsp.F90
-        mod_tmpsp.F90
-        mod_op1tr.F90
 )

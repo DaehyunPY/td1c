@@ -11,7 +11,7 @@ real(c_double) function hprod_ene_dft1(orb, horb)
   complex(c_double_complex), intent(in) :: horb(1:nbas, 1:*)
 
   complex(c_double_complex) :: tmp, ene
-  integer(c_int) :: ifun, ibas, llb, ulb
+  integer(c_long) :: ifun, ibas, llb, ulb
 
   ene = czero
   !$omp parallel default(shared) private(llb, ulb, tmp) reduction(+:ene)

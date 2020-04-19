@@ -1,7 +1,6 @@
 !######################################################################
 subroutine tdcc_hcc1(int1e, cic, hcic)
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas, only :nact,lcic
   use mod_cc, only : cc_rank,optcc,fock
 

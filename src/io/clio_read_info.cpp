@@ -14,7 +14,7 @@ void clio::read_info(std::string key, std::string& val) const
   std::stringstream ioss;
 
   key.append(" ");
-  int ind_key;
+  long ind_key;
 
   //  while ( getline(_ifs, line) && line.find(key,0) == std::string::npos ) {}
   while ( getline(_ifs, line) && line.substr(0, key.length()) != key ) {}
@@ -48,7 +48,7 @@ void clio::read_info(std::string key, bool& val) const
   std::stringstream ioss;
 
   key.append(" ");
-  int ind_key;
+  long ind_key;
 
   //  while ( getline(_ifs, line) && line.find(key,0) == std::string::npos ) {}
   while ( getline(_ifs, line) && line.substr(0, key.length()) != key ) {}
@@ -79,7 +79,7 @@ void clio::read_info(std::string key, bool& val) const
   }
 }
 ////////////////////////////////////////////////////////////////////////
-void clio::read_info(std::string key, int& val) const
+void clio::read_info(std::string key, long& val) const
 {
   /* Read an integer val labeled by key from inp. */
 
@@ -90,7 +90,7 @@ void clio::read_info(std::string key, int& val) const
   std::stringstream ioss;
 
   key.append(" ");
-  int ind_key;
+  long ind_key;
 
   //  while ( getline(_ifs, line) && line.find(key,0) == std::string::npos ) {}
   while ( getline(_ifs, line) && line.substr(0, key.length()) != key ) {}
@@ -123,7 +123,7 @@ void clio::read_info(std::string key, double& val) const
   std::stringstream ioss;
 
   key.append(" ");
-  int ind_key;
+  long ind_key;
 
   //  while ( getline(_ifs, line) && line.find(key,0) == std::string::npos ) {}
   while ( getline(_ifs, line) && line.substr(0, key.length()) != key ) {}
@@ -158,7 +158,7 @@ void clio::read_info(std::string key, dcomplex& val) const
   std::stringstream ioss;
 
   key.append(" ");
-  int ind_key;
+  long ind_key;
 
   //  while ( getline(_ifs, line) && line.find(key,0) == std::string::npos ) {}
   while ( getline(_ifs, line) && line.substr(0, key.length()) != key ) {}
@@ -180,7 +180,7 @@ void clio::read_info(std::string key, dcomplex& val) const
   }
 }
 ////////////////////////////////////////////////////////////////////////
-void clio::read_info(std::string key, std::vector<int>& vals) const
+void clio::read_info(std::string key, std::vector<long>& vals) const
 {
   /* Read integer vals labeled by key from inp. */
 
@@ -191,7 +191,7 @@ void clio::read_info(std::string key, std::vector<int>& vals) const
   std::stringstream ioss;
 
   key.append(" ");
-  int ind_key;
+  long ind_key;
 
   //DEBUG
   //  std::cout << "size = " << vals.size() << std::endl;
@@ -206,13 +206,13 @@ void clio::read_info(std::string key, std::vector<int>& vals) const
 
     ioss.str("");
     ioss << line;
-    for (int id = 0; id < vals.size(); id ++) {
+    for (long id = 0; id < vals.size(); id ++) {
       ioss >> vals[id];
       ioss >> trash;
     }
 
 //    line = line.substr(line.find("=") + 1);
-//    for (int id = 0; id < vals.size(); id ++) {
+//    for (long id = 0; id < vals.size(); id ++) {
 //      ioss.str("");
 //      ioss << line.substr(line.find(","));
 //      ioss >> vals[id];
@@ -220,7 +220,7 @@ void clio::read_info(std::string key, std::vector<int>& vals) const
 //    }
 //
     std::cout << "# input-ess " << key.c_str() << " = ";    
-    for (int id = 0; id < vals.size() - 1; id ++) std::cout << vals[id] << ", ";
+    for (long id = 0; id < vals.size() - 1; id ++) std::cout << vals[id] << ", ";
     std::cout << vals[vals.size()-1] << std::endl;
 
   } else {

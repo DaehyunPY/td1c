@@ -15,9 +15,9 @@ subroutine ormas_mkdden1_old(fac, cic, dcic, dden1)
   complex(c_double_complex), intent(in) :: dcic(1:nstr_alph, 1:nstr_beta)
   complex(c_double_complex), intent(inout) :: dden1(1:nact, 1:nact)
 
-  integer(c_int) :: istr, jstr, kstr, i1x_m, i1x, isub, jsub, iact, jact, iproc, nproc
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long) :: istr, jstr, kstr, i1x_m, i1x, isub, jsub, iact, jact, iproc, nproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
   complex(c_double_complex), allocatable :: dden1p(:,:,:)
 
   nproc = util_omp_nproc()

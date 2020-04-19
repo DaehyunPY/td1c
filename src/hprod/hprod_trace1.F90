@@ -16,8 +16,8 @@ complex(c_double_complex) function hprod_trace1(dofc, den1, wfn, pwfn)
 
   complex(c_double_complex) :: ttmp, tval
   complex(c_double_complex), allocatable :: twfn(:,:)
-  integer(c_int) :: llrf, ulrf, llrd, ulrd, ifun, jfun, iact, jact, l, irad
-  integer(c_int) :: rdim
+  integer(c_long) :: llrf, ulrf, llrd, ulrd, ifun, jfun, iact, jact, l, irad
+  integer(c_long) :: rdim
 
   allocate(twfn(1:(nrad-1), 0:lmax1))
 ! Orimo_ECS

@@ -44,6 +44,7 @@ typedef std::vector<std::vector<dcomplex* > > type_orb;
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 static std::string strsprintf(const char* format,...);
+//a function like sprintf, which returns string 
 std::string strsprintf(const char* format,...){
   va_list ap;
   va_start(ap, format);
@@ -171,15 +172,17 @@ class Surff
 {
     
 public:
-  int nprint;
+  long nprint;
   std::string integ_type;
-  int num_krad;
-  int num_kang;
-  int ksize;
-  int norb;
-  int lnum;
-  int mnum;
+  long num_krad;
+  long num_kang;
+  long ksize;
+  long norb;
+  long lnum;
+  long mnum;
+  long mnum_all;
   double norm;
+  bool is_m_resolved;
   std::vector<double> krad;
   std::vector<double> kang;
   std::vector<double> wang;
@@ -199,8 +202,10 @@ public:
 
   std::vector<dcomplex> rhok;
   std::vector<dcomplex> ang_spec;
+  std::vector<dcomplex> ang_spec_m;
   std::vector<double> mom_spec;
   std::vector<double> ene_spec;
+  std::vector<long> m_list;
     
   Integ* integ;
   Surff(const clmpi&, const clio&, const clbas&);
@@ -212,9 +217,10 @@ public:
   void print(const clio&);
   void print_file(const clio&);
   void print_amplitude(const clio&);
+  void print_m_resolved_ang_spec(const clio &IO);
     
 private:
-  int irad_surf;
+  long irad_surf;
   double rrad_surf;
   void init(const clmpi&, const clio&, const clbas&);
   void init_kang(const clmpi&, const clio&);
@@ -223,7 +229,7 @@ private:
   void prop_trap_remove_Q(const clmpi&, const clbas&, const clfield&, std::vector<dcomplex> &tmppes_dt, std::vector<dcomplex> &tmppes);
   void prop_trap_vphase(const clmpi& MPIP, double afield, double time, double dtime);
   void calc_orb(const clbas &Bas, const clwfn &Wfn, 
-	  	int srad, std::vector<dcomplex> &norb, std::vector<dcomplex> &dorb);
+	  	long srad, std::vector<dcomplex> &norb, std::vector<dcomplex> &dorb);
 
   void calc_momentum_spectrum(const clmpi&, const dcomplex*, const clbas&, clhprod &HPW);
   void calc_momentum_spectrum_1e(const clmpi&, const dcomplex*, const clbas&, clhprod &HPW);

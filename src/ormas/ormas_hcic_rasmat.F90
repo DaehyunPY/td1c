@@ -11,7 +11,7 @@ subroutine ormas_hcic_rasmat(int1e, int2e, cic, hcic)
   complex(c_double_complex), intent(in) :: int2e(1:nact, 1:nact, 1:nact, 1:nact)
   complex(c_double_complex), intent(in) :: cic(1:nstr_alph, 1:nstr_beta)
   complex(c_double_complex), intent(inout) :: hcic(1:nstr_alph, 1:nstr_beta)
-  integer(c_int) :: istr,jstr
+  integer(c_long) :: istr,jstr
   complex(c_double_complex), allocatable :: eff1e(:,:), eff2e(:,:,:,:)
 
   allocate(eff1e(1:nact, 1:nact))
@@ -62,11 +62,11 @@ subroutine ormas_hcic_rasmat_bbp(int1e, int2e, cic, hcic)
   complex(c_double_complex), intent(inout) :: hcic(1:nstr_alph, 1:nstr_beta)
 
   complex(c_double_complex), allocatable :: sint(:,:)
-  integer(c_int) :: istr, jstr, kstr, lstr, i1x, j1x, ifun, jfun, kfun, lfun, &
+  integer(c_long) :: istr, jstr, kstr, lstr, i1x, j1x, ifun, jfun, kfun, lfun, &
        & iord, jord, idist, jdist, kdist, ii, lla, ula, llb, ulb, iproc, nproc, &
        & i1x_m, j1x_m, m_ij, m_kl, tsgn
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
 
   nproc = util_omp_nproc()
   allocate(sint(1:nstr_beta, 0:(nproc-1)))
@@ -151,11 +151,11 @@ subroutine ormas_hcic_rasmat_aap(int1e, int2e, cic, hcic)
   complex(c_double_complex), intent(inout) :: hcic(1:nstr_alph, 1:nstr_beta)
 
   complex(c_double_complex), allocatable :: sint(:,:), dcic(:,:)
-  integer(c_int) :: istr, jstr, kstr, lstr, i1x, j1x, ifun, jfun, kfun, lfun, &
+  integer(c_long) :: istr, jstr, kstr, lstr, i1x, j1x, ifun, jfun, kfun, lfun, &
        & iord, jord, idist, jdist, kdist, ii, lla, ula, llb, ulb, iproc, nproc, &
        & i1x_m, j1x_m, m_ij, m_kl, tsgn
-  integer(c_int), external :: util_omp_nproc
-  integer(c_int), external :: util_omp_iproc
+  integer(c_long), external :: util_omp_nproc
+  integer(c_long), external :: util_omp_iproc
 
   !##### Applying the following up-down spin symmetry #####
   !##### leads to LESS stable propagation ! Why ??    #####
@@ -271,8 +271,8 @@ subroutine ormas_hcic_rasmat_abp(int2e, cic, hcic)
   complex(c_double_complex), intent(in) :: int2e(1:nact, 1:nact, 1:nact, 1:nact)
   complex(c_double_complex), intent(in) :: cic(1:nstr_alph, 1:nstr_beta)
   complex(c_double_complex), intent(inout) :: hcic(1:nstr_alph, 1:nstr_beta)
-  integer(c_int) :: istr,jstr,kstr,lstr,ifun,jfun,kfun,lfun,i1x_m,i1x,j1x_m,j1x,m_ij,m_kl
-  integer(c_int) :: idist,jdist,kdist,ldist,lla,ula
+  integer(c_long) :: istr,jstr,kstr,lstr,ifun,jfun,kfun,lfun,i1x_m,i1x,j1x_m,j1x,m_ij,m_kl
+  integer(c_long) :: idist,jdist,kdist,ldist,lla,ula
   complex(c_double_complex) :: tmp
 
   !$omp parallel default(shared) private(m_kl,i1x,ifun,jfun,j1x,kfun,lfun,kstr,lstr,tmp)
@@ -443,7 +443,7 @@ subroutine ormas_hcic_rasmat_effint1e(int1e, int2e, eff1e)
   complex(c_double_complex), intent(in) :: int2e(1:nact, 1:nact, 1:nact, 1:nact)
   complex(c_double_complex), intent(out) :: eff1e(1:nact, 1:nact)
 
-  integer(c_int) :: iact, jact, kact
+  integer(c_long) :: iact, jact, kact
   complex(c_double_complex) :: tmp
 
   do iact = 1, nact
@@ -474,7 +474,7 @@ subroutine ormas_hcic_rasmat_effint2e(int2e, eff2e)
   complex(c_double_complex), intent(in) :: int2e(1:nact, 1:nact, 1:nact, 1:nact)
   complex(c_double_complex), intent(out) :: eff2e(1:nact, 1:nact, 1:nact, 1:nact)
 
-  integer(c_int) :: iact, jact
+  integer(c_long) :: iact, jact
 
   eff2e(1:nact, 1:nact, 1:nact, 1:nact) = int2e(1:nact, 1:nact, 1:nact, 1:nact)
   do iact = 1, nact

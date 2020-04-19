@@ -1,7 +1,6 @@
 !################################################################################
 subroutine tdcc_xact2_solveb(bmat, cic, dcic)
 
-  use, intrinsic :: iso_c_binding
   use mod_control, only : icomp
   use mod_const, only : zero,czero,runit,iunit,chalf
   use mod_ormas, only : nact,nrotaa,rotaa_mapb,iprint
@@ -16,8 +15,8 @@ subroutine tdcc_xact2_solveb(bmat, cic, dcic)
 !td1d  complex(kind(0d0)), intent(in) :: cc2((norb1+1):nact,(norb1+1):nact,1:norb1,1:norb1,1:*)
 !td1d  complex(kind(0d0)), intent(out) :: gcc1(1:norb1,(norb1+1):nact,1:*)
   complex(kind(0d0)) :: tfac,tmp1,tmp2
-  integer(c_int) :: iact,jact,aact,bact,pact,qact,ract
-  integer(c_int) :: h1,h2,p1,p2,irot,jrot,nrota2
+  integer :: iact,jact,aact,bact,pact,qact,ract
+  integer :: h1,h2,p1,p2,irot,jrot,nrota2
   real(kind(0d0)), allocatable :: l1rhs(:,:)
   real(kind(0d0)), allocatable :: l1vec(:,:)
   real(kind(0d0)), allocatable :: amat(:,:,:,:)

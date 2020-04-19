@@ -10,10 +10,10 @@ subroutine adi_t_implicit(tadi, ipiv, wfn)
 
   implicit none
   complex(c_double_complex), intent(in) :: tadi(1:(3*ndvr+1), 1:(nrad-1), 0:lmax1)
-  integer(c_int), intent(in) :: ipiv(1:(nrad-1), 0:lmax1)
+  integer(c_long), intent(in) :: ipiv(1:(nrad-1), 0:lmax1)
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
 
-  integer(c_int) :: ifun, l, dim, ld, info, lll, ull
+  integer(c_long) :: ifun, l, dim, ld, info, lll, ull
   dim = nrad - 1
   ld = 3 * ndvr + 1
 

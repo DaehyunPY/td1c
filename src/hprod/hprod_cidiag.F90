@@ -19,10 +19,10 @@ subroutine hprod_cidiag(wfn, cic)
   real(c_double), external :: hprod_ene_dcore
   complex(c_double_complex), external :: util_zdotc
 
-  integer(c_int) :: idav, jdav, isub, jsub
-  integer(c_int), parameter :: max_dav = 30
+  integer(c_long) :: idav, jdav, isub, jsub
+  integer(c_long), parameter :: max_dav = 30
   real(c_double), parameter :: thr_dav = 1.D-10
-!debug  integer(c_int), parameter :: max_dav = 20
+!debug  integer(c_long), parameter :: max_dav = 20
 !debug  real(c_double), parameter :: thr_dav = 1.D-8
   real(c_double) :: norm
   complex(c_double_complex) :: ovlp
@@ -35,7 +35,7 @@ subroutine hprod_cidiag(wfn, cic)
   call hprod_htot_init
   call hprod_orbin(lfield, wfn, orb, orbg)
   call hprod_tprod_dyn(orb, h0orb)
-  if (PSP) call hprod_projpp(runit, lfield, orb, h0orb)
+  if (PSP) call hprod_projpp(runit, orb, h0orb)
   if (neltot(3) >= 2) then
      if (.not.exact3j) then
         call hprod_mkrho2_dyn

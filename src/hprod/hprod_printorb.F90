@@ -9,7 +9,7 @@ subroutine hprod_printorb(wfn)
 
   implicit none
   complex(c_double_complex), intent(in) :: wfn(1:(nrad-1), 0:lmax1, 1:*)
-  integer(c_int) :: ifun, irad, l
+  integer(c_long) :: ifun, irad, l
 
   do ifun = 1, nfun
      write(6,"('# ifun = ',i5)") ifun
@@ -36,7 +36,7 @@ subroutine hprod_printrho(rho)
 
   implicit none
   complex(c_double_complex), intent(in) :: rho(1:(nrad-1), 0:lmax2, 1:nfun, 1:nfun)
-  integer(c_int) :: ifun, jfun, irad, l
+  integer(c_long) :: ifun, jfun, irad, l
 
   do ifun = 1, nfun
   do jfun = 1, nfun
@@ -65,7 +65,7 @@ subroutine hprod_printrhog(rhog)
 
   implicit none
   complex(c_double_complex), intent(in) :: rhog(1:(nrad-1), 1:nlat, 1:nfun, 1:nfun)
-  integer(c_int) :: ifun, jfun, irad, ilat
+  integer(c_long) :: ifun, jfun, irad, ilat
 
   do ifun = 1, nfun
   do jfun = 1, nfun

@@ -1,11 +1,11 @@
 !################################################################################
-integer(c_int) function util_ifact(n, k)
+integer(c_long) function util_ifact(n, k)
 
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n, k
-  integer(c_int) i, m
+  integer(c_long), intent(in) :: n, k
+  integer(c_long) i, m
 
   m = 1
   do i = n, n - k + 1, -1

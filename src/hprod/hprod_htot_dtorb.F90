@@ -7,7 +7,7 @@ subroutine hprod_htot_dtorb(dtime, orb, h0orb, h1orb, gorb, v2orb, hwfn)
   use mod_sph, only : lmax1
   use mod_rad, only : nrad, wrad, xrad
   use mod_const, only : runit, iunit, zero
-  use mod_control, only : fedvr_normalized, icomp, isplit, istdcis
+  use mod_control, only : fedvr_normalized, icomp, isplit
   use mod_hprod, only : xmat
 
   implicit none
@@ -20,16 +20,9 @@ subroutine hprod_htot_dtorb(dtime, orb, h0orb, h1orb, gorb, v2orb, hwfn)
   complex(c_double_complex), intent(out) :: hwfn(1:(nrad-1), 0:lmax1, 1:nfun)
 
   complex(c_double_complex) :: tfac, h012
-  integer(c_int) :: ifun, jfun, irad, l, llr, ulr
+  integer(c_long) :: ifun, jfun, irad, l, llr, ulr
   complex(c_double_complex), allocatable :: invs(:,:)
   complex(c_double_complex), allocatable :: twfn(:,:,:)
-
-! tdcis-teramura
-  if (istdcis) then
-     call hprod_htot_dtorb_tdcis(dtime, orb, h0orb, h1orb, gorb, v2orb, hwfn)
-     return
-  end if
-! tdcis-teramura
 
   if (icomp == 0) then
      tfac = - runit * dtime

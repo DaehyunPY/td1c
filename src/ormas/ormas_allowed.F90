@@ -1,5 +1,5 @@
 !################################################################################
-integer(c_int) function ormas_allowed(idist_alph, idist_beta)
+integer(c_long) function ormas_allowed(idist_alph, idist_beta)
 
   use, intrinsic :: iso_c_binding
 
@@ -8,10 +8,10 @@ integer(c_int) function ormas_allowed(idist_alph, idist_beta)
   use mod_ormas, only : dist, dist_alph, dist_beta
 
   implicit none
-  integer(c_int), intent(in) :: idist_alph, idist_beta
+  integer(c_long), intent(in) :: idist_alph, idist_beta
 
   logical :: found
-  integer(c_int) :: isub, idist, neld, nelx
+  integer(c_long) :: isub, idist, neld, nelx
 
   ormas_allowed = -1
 
@@ -28,10 +28,7 @@ integer(c_int) function ormas_allowed(idist_alph, idist_beta)
      end if
   end do
 
-! 2019/6/13, commented out
   if (.not. found) stop 'error in ormas_allowed.'
-
-  return
 
 end function ormas_allowed
 !################################################################################

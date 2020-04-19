@@ -6,10 +6,10 @@ subroutine ormas_occvec(nel, norb, istr, arc, occvec)
   use mod_ormas, only : nact
 
   implicit none
-  integer(c_int), intent(in) :: nel, norb, istr
-  integer(c_int), intent(in) :: arc(1:nact, 1:*)
-  integer(c_int), intent(out) :: occvec(1:*)
-  integer(c_int) :: iel, iorb, rest
+  integer(c_long), intent(in) :: nel, norb, istr
+  integer(c_long), intent(in) :: arc(1:nact, 1:*)
+  integer(c_long), intent(out) :: occvec(1:*)
+  integer(c_long) :: iel, iorb, rest
 
   occvec(1:norb) = 0
 
@@ -40,12 +40,12 @@ subroutine ormas_occvec_print(iow, adv, nact, occvec)
   use mod_ormas, only : nsub, lorb_sub
 
   implicit none
-  integer(c_int), intent(in) :: iow
+  integer(c_long), intent(in) :: iow
   logical, intent(in) :: adv
-  integer(c_int), intent(in) :: nact
-  integer(c_int), intent(in) :: occvec(1:nact)
+  integer(c_long), intent(in) :: nact
+  integer(c_long), intent(in) :: occvec(1:nact)
 
-  integer(c_int) :: isub, iorb, occn
+  integer(c_long) :: isub, iorb, occn
 
   call ormas_core_print(iow, .false.)
 !  write(iow, "('|')", advance='no')
@@ -74,9 +74,9 @@ subroutine ormas_core_print(iow, adv)
   use mod_ormas, only : nfcore, ndcore
 
   implicit none
-  integer(c_int), intent(in) :: iow
+  integer(c_long), intent(in) :: iow
   logical, intent(in) :: adv
-  integer(c_int) :: ifun
+  integer(c_long) :: ifun
 
   do ifun = 1, nfcore
      write(iow, "(a1)", advance='no') 'F'

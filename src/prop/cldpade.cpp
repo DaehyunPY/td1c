@@ -13,19 +13,19 @@ cldpade::~cldpade()
 }
 ////////////////////////////////////////////////////////////////////////
 cldpade::cldpade(const clmpi& MPIP, const clio& IO, const clbas& Bas, 
-		 double dtime, dcomplex alpha, int td_type, int split_type)
+		 double dtime, dcomplex alpha, long td_type, long split_type)
 	     
 {
   gen(MPIP, IO, Bas, dtime, alpha, td_type, split_type);
 }
 ////////////////////////////////////////////////////////////////////////
 void cldpade::gen(const clmpi& MPIP, const clio& IO, const clbas& Bas, 
-		  double dtime, dcomplex alpha, int td_type, int split_type)
+		  double dtime, dcomplex alpha, long td_type, long split_type)
 {
   dpade_alpha = alpha;
   dpade_dtime = dtime;
 
-  IO.read_info("h1itr_maxcyc", 20, dpade_maxcyc);
+  IO.read_info("h1itr_maxcyc", (long) 20, dpade_maxcyc);
   IO.read_info("h1itr_thresh", (double) 1.0E-10, dpade_thresh);
   IO.read_info("h1itr_midpt", true, dpade_midpt);
   tpiv.resize((Bas.GRad.nrad - 1) * (Bas.GAng.lmax1 + 1));
@@ -39,7 +39,7 @@ void cldpade::gen(const clmpi& MPIP, const clio& IO, const clbas& Bas,
 //  dpade_coeff0 = d0;
 //  dpade_coeff1 = d1;
 //
-//  IO.read_info("h1itr_maxcyc", 20, dpade_maxcyc);
+//  IO.read_info("h1itr_maxcyc", (long) 20, dpade_maxcyc);
 //  IO.read_info("h1itr_thresh", (double) 1.0E-10, dpade_thresh);
 //  IO.read_info("h1itr_midpt", true, dpade_midpt);
 //

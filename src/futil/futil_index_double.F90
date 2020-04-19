@@ -5,11 +5,11 @@ subroutine futil_index_double(dsc, n, vec, index)
 
   implicit none
   logical, intent(in) :: dsc
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   real(c_double), intent(in) :: vec(1:n)
-  integer(c_int), intent(out) :: index(1:n)
+  integer(c_long), intent(out) :: index(1:n)
 
-  integer(c_int) :: i
+  integer(c_long) :: i
   real(c_double) :: tmp
   real(c_double), parameter :: one = 1.d+0
   real(c_double), allocatable :: vec2(:)

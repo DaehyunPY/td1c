@@ -11,7 +11,7 @@ clfield1::~clfield1()
 {
 }
 //////////////////////////////////////////////////////////////////////////
-void clfield1::gen1(const clmpi& MPIP, const clio& IO, int ifield)
+void clfield1::gen1(const clmpi& MPIP, const clio& IO, long ifield)
 {
   field_num = ifield;
   std::string key;
@@ -121,10 +121,10 @@ void clfield1::gen2(const clmpi& MPIP, const clio& IO, double tshift)
   tleft = tcenter - tau;
   tright = tcenter + tau;
   // DEBUG
-  printf("clfield1: # %5d: tau = %20.10f.\n", field_num, tau);
-  printf("clfield1: # %5d: t_L = %20.10f.\n", field_num, tleft);
-  printf("clfield1: # %5d: t_0 = %20.10f.\n", field_num, tcenter);
-  printf("clfield1: # %5d: t_R = %20.10f.\n", field_num, tright);
+  printf("clfield1: # %5ld: tau = %20.10f.\n", field_num, tau);
+  printf("clfield1: # %5ld: t_L = %20.10f.\n", field_num, tleft);
+  printf("clfield1: # %5ld: t_0 = %20.10f.\n", field_num, tcenter);
+  printf("clfield1: # %5ld: t_R = %20.10f.\n", field_num, tright);
   // DEBUG
 }
 ////////////////////////////////////////////////////////////////////////
@@ -215,13 +215,13 @@ void clfield1::get_value(double t1, double t2, double c1, double c2, double* lfi
 {
   double lfield1[9];
   double lfield2[9];
-  for (int i = 0; i < 9; i++) {
+  for (long i = 0; i < 9; i++) {
     lfield1[i] = ZERO;
     lfield2[i] = ZERO;
   }
   get_value(t1, lfield1);
   get_value(t2, lfield2);
-  for (int i = 0; i < 9; i++) {
+  for (long i = 0; i < 9; i++) {
     lfield[i] += c1 * lfield1[i] + c2 * lfield2[i];
   }
 }
@@ -229,7 +229,7 @@ void clfield1::get_value(double t1, double t2, double c1, double c2, double* lfi
 void clfield1::get_ader_explicit(double time, double* dfield) const
 {
   double tfield[9];
-  for (int i = 0; i < 9; i++) {
+  for (long i = 0; i < 9; i++) {
     tfield[i] = ZERO;
   }
   get_evalue_implicit(time, tfield);
@@ -241,7 +241,7 @@ void clfield1::get_ader_explicit(double time, double* dfield) const
 void clfield1::get_ader_implicit(double time, double* dfield) const
 {
   double tfield[9];
-  for (int i = 0; i < 9; i++) {
+  for (long i = 0; i < 9; i++) {
     tfield[i] = ZERO;
   }
   get_evalue_explicit(time, tfield);
@@ -262,47 +262,35 @@ void clfield1::get_evalue_explicit(double time, double* lfield) const
   } else if (env_type.compare("flat") == 0) {
     lfield[2] += famp * sin(freq * treltl + cep);
   } else if (env_type.compare("trape") == 0) {
-    if (time < tleft || time > tright) {
-      lfield[2] = 0.0;
-    } else {
-      if (cyc < cyc1) {
+    if (cyc < cyc1) {
   	env = cyc / cyc1;
-      } else if (cyc < cyc2) {
+    } else if (cyc < cyc2) {
   	env = ONE;
-      } else if (cyc < cyc3) {
+    } else if (cyc < cyc3) {
   	env = (cyc - cyc3) / (cyc2 - cyc3);
-      }
-      lfield[2] += env * famp * sin(freq * treltl + cep);
     }
+    lfield[2] += env * famp * sin(freq * treltl + cep);
   } else if (env_type.compare("sin2") == 0) {
-    if (time < tleft || time > tright) {
-      lfield[2] = 0.0;
-    } else {
-      env = sin(PI * treltl / (numcyc * period));
-      env = env * env;
-      lfield[2] += env * famp * sin(freq * treltl + cep);
-    }
+    env = sin(PI * treltl / (numcyc * period));
+    env = env * env;
+    lfield[2] += env * famp * sin(freq * treltl + cep);
   } else if (env_type.compare("sin2flat") == 0) {
     double ttime;
     double sin2cyc;
-    if (time < tleft || time > tright) {
-      lfield[2] = 0.0;
-    } else {
-      if (cyc < cyc1) {
-	ttime = treltl;
-	sin2cyc = cyc1 * TWO;
-	env = sin(PI * ttime / (sin2cyc * period));
-	env = env * env;
-      } else if (cyc < cyc2) {
-	env = ONE;
-      } else if (cyc < cyc3) {
-	sin2cyc = (cyc3 - cyc2) * TWO;
-	ttime = treltl - cyc2 * period + (cyc3 - cyc2) * period;
-	env = sin(PI * ttime / (sin2cyc * period));
-	env = env * env;
-      }
-      lfield[2] += env * famp * sin(freq * treltl + cep);
+    if (cyc < cyc1) {
+  	ttime = treltl;
+  	sin2cyc = cyc1 * TWO;
+  	env = sin(PI * ttime / (sin2cyc * period));
+  	env = env * env;
+    } else if (cyc < cyc2) {
+  	env = ONE;
+    } else if (cyc < cyc3) {
+  	sin2cyc = (cyc3 - cyc2) * TWO;
+  	ttime = treltl - cyc2 * period + (cyc3 - cyc2) * period;
+  	env = sin(PI * ttime / (sin2cyc * period));
+  	env = env * env;
     }
+    lfield[2] += env * famp * sin(freq * treltl + cep);
   } else if (env_type.compare("sinc") == 0) {
     double trelt0 = time - tcenter;
     if (std::abs(trelt0) > 1.E-10) {
@@ -334,15 +322,11 @@ void clfield1::get_eder_explicit(double time, double* dfield) const
   } else if (env_type.compare("flat") == 0) {
     dfield[2] += famp * freq * cos(freq * treltl + cep);
   } else if (env_type.compare("sin2") == 0) {
-    if (time < tleft || time > tright) {
-      dfield[2] = 0.0;
-    } else {
-      fac = PI / (numcyc * period);
-      env = sin(fac*treltl);
-      env = env * env;
-      denv = TWO * fac * sin(fac*treltl) * cos(fac*treltl);
-      dfield[2] += famp * (freq * env * cos(freq * treltl + cep) + denv * sin(freq * treltl + cep));
-    }
+    fac = PI / (numcyc * period);
+    env = sin(fac*treltl);
+    env = env * env;
+    denv = TWO * fac * sin(fac*treltl) * cos(fac*treltl);
+    dfield[2] += famp * (freq * env * cos(freq * treltl + cep) + denv * sin(freq * treltl + cep));
   } else {
     double field_now[3];
     double k1, k2, k4;
@@ -478,51 +462,47 @@ void clfield1::get_avalue_explicit(double time, double* lfield) const
   if (env_type.compare("flat") == 0) {
     lfield[2] += famp / freq * sin(freq * treltl + cep);
   } else if (env_type.compare("trape") == 0) {
-    if (time < tleft || time > tright) {
-      lfield[2] = 0.0;
-    } else {
-      if (cyc < cyc1) {
-	env = cyc / cyc1;
-      } else if (cyc < cyc2) {
-	env = ONE;
-      } else if (cyc < cyc3) {
-	env = (cyc - cyc3) / (cyc2 - cyc3);
-      }
-      lfield[2] += env * famp / freq * sin(freq * treltl + cep);
+    if (cyc < cyc1) {
+      env = cyc / cyc1;
+    } else if (cyc < cyc2) {
+      env = ONE;
+    } else if (cyc < cyc3) {
+      env = (cyc - cyc3) / (cyc2 - cyc3);
     }
+    lfield[2] += env * famp / freq * sin(freq * treltl + cep);
   } else if (env_type.compare("sin2") == 0) {
-    if (time < tleft || time > tright) {
-      lfield[2] = 0.0;
-    } else {
-      env = sin(PI * treltl / (numcyc * period));
-      env = env * env;
-      lfield[2] += env * famp / freq * sin(freq * treltl + cep);
-    }
+    env = sin(PI * treltl / (numcyc * period));
+    env = env * env;
+    lfield[2] += env * famp / freq * sin(freq * treltl + cep);
   } else if (env_type.compare("sin2flat") == 0) {
     double ttime;
     double sin2cyc;
-    if (time < tleft || time > tright) {
-      lfield[2] = 0.0;
-    } else {
-      if (cyc < cyc1) {
-	ttime = treltl;
-	sin2cyc = cyc1 * TWO;
-	env = sin(PI * ttime / (sin2cyc * period));
-	env = env * env;
-      } else if (cyc < cyc2) {
-	env = ONE;
-      } else if (cyc < cyc3) {
-	sin2cyc = (cyc3 - cyc2) * TWO;
-	ttime = treltl - cyc2 * period + (cyc3 - cyc2) * period;
-	env = sin(PI * ttime / (sin2cyc * period));
-	env = env * env;
-      }
-      lfield[2] += env * famp / freq * sin(freq * treltl + cep);
+    if (cyc < cyc1) {
+      ttime = treltl;
+      sin2cyc = cyc1 * TWO;
+      env = sin(PI * ttime / (sin2cyc * period));
+      env = env * env;
+    } else if (cyc < cyc2) {
+      env = ONE;
+    } else if (cyc < cyc3) {
+      sin2cyc = (cyc3 - cyc2) * TWO;
+      ttime = treltl - cyc2 * period + (cyc3 - cyc2) * period;
+      env = sin(PI * ttime / (sin2cyc * period));
+      env = env * env;
     }
+    lfield[2] += env * famp / freq * sin(freq * treltl + cep);
   } else if (env_type.compare("gauss") == 0) {
     double trelt0 = time - tcenter;
     env = exp(-trelt0*trelt0/(2*sigma*sigma));
     lfield[2] += env * famp / freq * sin(freq * trelt0 + cep);
+//iwatsu version if (field_num == 1) {
+//iwatsu version   lfield[2] += env * famp / freq * sin(freq * treltl + cep);
+//iwatsu version } else {
+//iwatsu version   //    lfield[2] += env * famp / freq * sin(freq * time + cep);
+//iwatsu version   //    lfield[2] += env * famp / freq * sin(freq * (time+1000.0/24.188843265) + cep);
+//iwatsu version   //    lfield[2] += env * famp / freq * sin(freq * (time+1000.0/24.188843265+231.74006) + cep);
+//iwatsu version   lfield[2] += env * famp / freq * sin(freq * (time-1000.0/24.188843265) + cep);
+//iwatsu version }
   } else {
     std::cout << "clfield1::get_avalue_explicit: bad env_type." << std::endl;
     abort();
@@ -613,14 +593,14 @@ void clfield1::get_avalue_numint(double time, double* lfield) const
   double dstep = time - time_prev[field_num];
 
   double dsmall = TWO*PI/(1239.84190/(800.0*27.2113845))/100000.0; // 100000 cycles for 800 nm pulse
-  int numddt = 1;
+  long numddt = 1;
   while (dstep / numddt > dsmall) {
     numddt *= 10;
   }
   double ddstep = dstep / numddt;
 
   atmp = aval_prev[field_num];
-  for (int istep = 0; istep < numddt; istep ++) {
+  for (long istep = 0; istep < numddt; istep ++) {
     time0 = time_prev[field_num] + istep * ddstep;
     field_now[2] = ZERO;
     get_evalue_explicit(time0, field_now);
@@ -635,7 +615,7 @@ void clfield1::get_avalue_numint(double time, double* lfield) const
   }
   lfield[2] += atmp;
   //debug
-  //  printf("clfield1: %10d%20.10e\n", numddt, ddstep);
+  //  printf("clfield1: %10ld%20.10e\n", numddt, ddstep);
   //  printf("time: %20.10e%20.10e\n", time_prev[field_num], time);
   //  printf("aval: %20.10e%20.10e\n", aval_prev[field_num], atmp);
   //debug

@@ -6,15 +6,15 @@ subroutine util_krylov(dtime, dim, maxcyc, thresh, ntot, norm1, alph, beta, vec,
 
   implicit none
   real(c_double), intent(in) :: dtime, thresh
-  integer(c_int), intent(in) :: dim, maxcyc
-  integer(c_int), intent(out) :: ntot
+  integer(c_long), intent(in) :: dim, maxcyc
+  integer(c_long), intent(out) :: ntot
   real(c_double), intent(out) :: norm1
   real(c_double), intent(out) :: alph(1:maxcyc)
   real(c_double), intent(out) :: beta(1:maxcyc)
   complex(c_double_complex), intent(inout) :: vec(1:dim, 1:*)
   external get_hvec
 
-  integer(c_int) :: icyc, jcyc
+  integer(c_long) :: icyc, jcyc
   real(c_double) :: oores  ! one over residue (1/res)
   real(c_double) :: error  ! error?
   complex(c_double_complex) :: tmp
@@ -107,12 +107,12 @@ real(c_double) function util_krylov_error(nsub, alph, beta, dtime)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: nsub
+  integer(c_long), intent(in) :: nsub
   real(c_double), intent(in) :: alph(1:*)
   real(c_double), intent(in) :: beta(1:*)
   real(c_double), intent(in) :: dtime
 
-  integer(c_int) :: isub
+  integer(c_long) :: isub
   real(c_double) :: error
 
   error = (nsub - 1) * log(dtime)

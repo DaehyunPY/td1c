@@ -16,17 +16,16 @@ subroutine hprod_chkconv(lfield, wfn, cic, ene, grad)
   complex(c_double_complex), allocatable :: hwfn(:)
   complex(c_double_complex), allocatable :: hcic(:)
   complex(c_double_complex) :: cval
-  integer(c_int) :: ifun,iact,jact
+  integer(c_long) :: ifun,iact,jact
 
   allocate(hwfn(1:nbas*nfun))
   allocate(hcic(1:lcic))
 
+!debug  call hprod_energy(lfield, wfn, cic)
+!debug  ene = ene_tot
+
   call hprod_htot(one, lfield, wfn, cic, hwfn, hcic)
   ene = ene_tot
-  !debug
-  !write(6,"('hprod_chkconv: ene = ', f20.10)") ene
-  !debug
-
   call zdotc_omp(lcic, hcic, hcic, cval)
   grad(1) = sqrt(dble(cval)) / lcic
 

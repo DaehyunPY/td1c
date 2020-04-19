@@ -54,7 +54,7 @@ subroutine tdcc_puttcc1(tcc1, cic)
   implicit none
   complex(c_double_complex), intent(in) :: tcc1((norb1+1):nact,1:norb1,1:2)
   complex(c_double_complex), intent(out) :: cic(1:ndetx,1:2)
-  integer(c_int) :: icc,p1,h1,idet
+  integer(c_long) :: icc,p1,h1,idet
 
   do icc = 1, ncc1a
      p1 = p1_cc1a(icc)
@@ -74,7 +74,7 @@ subroutine tdcc_putgcc1(gcc1, cic)
   implicit none
   complex(c_double_complex), intent(in) :: gcc1(1:norb1,(norb1+1):nact,1:2)
   complex(c_double_complex), intent(out) :: cic(1:ndetx,1:2)
-  integer(c_int) :: icc,p1,h1,idet
+  integer(c_long) :: icc,p1,h1,idet
 
   do icc = 1, ncc1a
      p1 = p1_cc1a(icc)
@@ -95,7 +95,7 @@ subroutine tdcc_puttcc2(tcc2, cic)
   implicit none
   complex(c_double_complex), intent(in) :: tcc2((norb1+1):nact,(norb1+1):nact,1:norb1,1:norb1,1:2)
   complex(c_double_complex), intent(out) :: cic(1:ndetx,1:2)
-  integer(c_int) :: icc,p1,p2,h1,h2,idet
+  integer(c_long) :: icc,p1,p2,h1,h2,idet
 
   ! (p+p+|h+h+)
   do icc = 1, ncc2aa
@@ -129,7 +129,7 @@ subroutine tdcc_putgcc2(gcc2, cic)
   implicit none
   complex(c_double_complex), intent(in) :: gcc2(1:norb1,1:norb1,(norb1+1):nact,(norb1+1):nact,1:2)
   complex(c_double_complex), intent(out) :: cic(1:ndetx,1:2)
-  integer(c_int) :: icc,p1,p2,h1,h2,idet
+  integer(c_long) :: icc,p1,p2,h1,h2,idet
 
   ! (h+h+|p+p+)
   do icc = 1, ncc2aa
@@ -156,19 +156,15 @@ end subroutine tdcc_putgcc2
 subroutine tdcc_puttcc3(tcc3, cic)
 
   use, intrinsic :: iso_c_binding
-  use mod_ormas, only : nact,act1_ll,act1_ul,ndetx
+  use mod_ormas, only : nact,ndetx
   use mod_cc, only : norb1,ncc3aaa,ncc3aab,map_cc3aaa,map_cc3aab
   use mod_cc, only : h1_cc3aaa,h2_cc3aaa,h3_cc3aaa,p1_cc3aaa,p2_cc3aaa,p3_cc3aaa
   use mod_cc, only : h1_cc3aab,h2_cc3aab,h3_cc3aab,p1_cc3aab,p2_cc3aab,p3_cc3aab
   implicit none
   complex(c_double_complex), intent(in) :: &
-       tcc3((norb1+1):nact,(norb1+1):nact,(norb1+1):nact,&
-       1:norb1,1:norb1,1:norb1,1:20)
-!  complex(c_double_complex), intent(in) :: &
-!       tcc3((norb1+1):act1_ul,(norb1+1):act1_ul,&
-!       (norb1+1):act1_ul,act1_ll:norb1,act1_ll:norb1,act1_ll:norb1,1:2)
+       tcc3((norb1+1):nact,(norb1+1):nact,(norb1+1):nact,1:norb1,1:norb1,1:norb1,1:2)
   complex(c_double_complex), intent(out) :: cic(1:ndetx,1:2)
-  integer(c_int) :: icc,p1,p2,p3,h1,h2,h3,idet
+  integer(c_long) :: icc,p1,p2,p3,h1,h2,h3,idet
 
   ! (+++|+++)
   do icc = 1, ncc3aaa
@@ -199,19 +195,15 @@ end subroutine tdcc_puttcc3
 subroutine tdcc_putgcc3(gcc3, cic)
 
   use, intrinsic :: iso_c_binding
-  use mod_ormas, only : nact,act1_ll,act1_ul,ndetx
+  use mod_ormas, only : nact,ndetx
   use mod_cc, only : norb1,ncc3aaa,ncc3aab,map_cc3aaa,map_cc3aab
   use mod_cc, only : h1_cc3aaa,h2_cc3aaa,h3_cc3aaa,p1_cc3aaa,p2_cc3aaa,p3_cc3aaa
   use mod_cc, only : h1_cc3aab,h2_cc3aab,h3_cc3aab,p1_cc3aab,p2_cc3aab,p3_cc3aab
   implicit none
   complex(c_double_complex), intent(in) :: &
-       gcc3(1:norb1,1:norb1,1:norb1,&
-       (norb1+1):nact,(norb1+1):nact,(norb1+1):nact,1:2)
-!  complex(c_double_complex), intent(in) :: &
-!       gcc3(act1_ll:norb1,act1_ll:norb1,act1_ll:norb1,&
-!       (norb1+1):act1_ul,(norb1+1):act1_ul,(norb1+1):act1_ul,1:2)
+       gcc3(1:norb1,1:norb1,1:norb1,(norb1+1):nact,(norb1+1):nact,(norb1+1):nact,1:2)
   complex(c_double_complex), intent(out) :: cic(1:ndetx,1:2)
-  integer(c_int) :: icc,p1,p2,p3,h1,h2,h3,idet
+  integer(c_long) :: icc,p1,p2,p3,h1,h2,h3,idet
 
   ! (+++|+++)
   do icc = 1, ncc3aaa

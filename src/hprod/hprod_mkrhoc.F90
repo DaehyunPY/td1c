@@ -9,7 +9,7 @@ subroutine hprod_mkrhoc()
   use mod_const, only : czero, ctwo, two, pi
 
   implicit none
-  integer(c_int) :: llr, ulr, ifun, ilat, irad
+  integer(c_long) :: llr, ulr, ifun, ilat, irad
 
   rho1(1:(nrad-1), 1:nlat) = czero
   if (ncore == 0) return

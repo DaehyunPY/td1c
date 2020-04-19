@@ -6,21 +6,20 @@ subroutine ccd_den1_1(sp1,sp2,i0)
 
 !  i0 ( p1 p2 )_yt + = +1/2 * Sum ( h3 h4 p5 ) * y ( h3 h4 p5 p2 )_y * t ( p5 p1 h3 h4 )_t 0
 
-  use, intrinsic :: iso_c_binding
   use mod_const,only : czero,runit
   use mod_ormas,only : nact
   use mod_cc,only : norb1, g2inp
   use mod_cc,only : t2inp
 
   implicit none
-  integer(c_int),intent(in) :: sp1,sp2
+  integer,intent(in) :: sp1,sp2
   complex(kind(0d0)),intent(inout) :: i0(1:nact,1:nact)
-  integer(c_int) :: p1,p2
-  integer(c_int) :: h3,h4,p5,sh3,sh4,sp5
-  integer(c_int) :: spin_g2inp_1
-  integer(c_int) :: spin_t2inp_2
-  integer(c_int),external :: tdcc_spin_g2inp
-  integer(c_int),external :: tdcc_spin_t2inp
+  integer :: p1,p2
+  integer :: h3,h4,p5,sh3,sh4,sp5
+  integer :: spin_g2inp_1
+  integer :: spin_t2inp_2
+  integer,external :: tdcc_spin_g2inp
+  integer,external :: tdcc_spin_t2inp
   complex(kind(0d0)),parameter :: fact = +1.0d+0 / 2.0d+0 * runit
 
   do sh3 = 1,2
@@ -53,21 +52,20 @@ subroutine ccd_den1_2(sh1,sh2,i0)
 
 !  i0 ( h1 h2 )_yt + = -1/2 * Sum ( h3 p4 p5 ) * y ( h3 h1 p4 p5 )_y * t ( p4 p5 h3 h2 )_t 0
 
-  use, intrinsic :: iso_c_binding
   use mod_const,only : czero,runit
   use mod_ormas,only : nact
   use mod_cc,only : norb1, g2inp
   use mod_cc,only : t2inp
 
   implicit none
-  integer(c_int),intent(in) :: sh1,sh2
+  integer,intent(in) :: sh1,sh2
   complex(kind(0d0)),intent(inout) :: i0(1:nact,1:nact)
-  integer(c_int) :: h1,h2
-  integer(c_int) :: h3,p4,p5,sh3,sp4,sp5
-  integer(c_int) :: spin_g2inp_1
-  integer(c_int) :: spin_t2inp_2
-  integer(c_int),external :: tdcc_spin_g2inp
-  integer(c_int),external :: tdcc_spin_t2inp
+  integer :: h1,h2
+  integer :: h3,p4,p5,sh3,sp4,sp5
+  integer :: spin_g2inp_1
+  integer :: spin_t2inp_2
+  integer,external :: tdcc_spin_g2inp
+  integer,external :: tdcc_spin_t2inp
   complex(kind(0d0)),parameter :: fact = -1.0d+0 / 2.0d+0 * runit
 
   do sh3 = 1,2
@@ -98,7 +96,6 @@ end subroutine ccd_den1_2
 !**********************************************************
 subroutine ccd_den1_main(den)
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact
 
   implicit none

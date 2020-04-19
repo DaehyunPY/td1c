@@ -90,11 +90,11 @@ subroutine hprod_zprod(zfac, wfn, hwfn, llfun, ulfun, llr, ulr)
   use mod_sph, only : lmax1
 
   implicit none
-  integer(c_int), intent(in) :: llfun, ulfun, llr, ulr
+  integer(c_long), intent(in) :: llfun, ulfun, llr, ulr
   complex(c_double_complex), intent(in) :: zfac
   complex(c_double_complex), intent(in) :: wfn(1:(nrad-1), 0:lmax1, 1:*)
   complex(c_double_complex), intent(inout) :: hwfn(1:(nrad-1), 0:lmax1, 1:*)
-  integer(c_int) :: llrp, ulrp
+  integer(c_long) :: llrp, ulrp
 
   !$omp parallel default(shared) private(llrp, ulrp)
   !###########################
@@ -113,13 +113,13 @@ subroutine hprod_zprodp(zfac, wfn, hwfn, llfun, ulfun, llrp, ulrp)
   use mod_bas, only : mval, bas_zfac
 
   implicit none
-  integer(c_int), intent(in) :: llfun, ulfun, llrp, ulrp
+  integer(c_long), intent(in) :: llfun, ulfun, llrp, ulrp
   complex(c_double_complex), intent(in) :: zfac
   complex(c_double_complex), intent(in) :: wfn(1:(nrad-1), 0:lmax1, 1:*)
   complex(c_double_complex), intent(inout) :: hwfn(1:(nrad-1), 0:lmax1, 1:*)
 
   complex(c_double_complex) :: tmp
-  integer(c_int) :: ifun, l, m, irad
+  integer(c_long) :: ifun, l, m, irad
 
   do ifun = llfun, ulfun
      m = mval(ifun)

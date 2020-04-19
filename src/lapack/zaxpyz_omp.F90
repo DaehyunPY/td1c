@@ -4,13 +4,13 @@ subroutine zaxpyz_omp(n, a, x, y, z)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   complex(c_double_complex), intent(in) :: a
   complex(c_double_complex), intent(in) :: x(1:n)
   complex(c_double_complex), intent(in) :: y(1:n)
   complex(c_double_complex), intent(out) :: z(1:n)
 
-  integer(c_int) :: i
+  integer(c_long) :: i
 
 ! use blas
 ! call zaxpy(n, a, x, 1, y, 1)

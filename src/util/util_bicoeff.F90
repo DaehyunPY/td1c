@@ -1,12 +1,12 @@
 !################################################################################
-integer(c_int) function util_bicoeff(n, k)
+integer(c_long) function util_bicoeff(n, k)
 
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n, k
-  integer(c_int), external :: util_ifact
-  integer(c_int) :: kx, num, denom
+  integer(c_long), intent(in) :: n, k
+  integer(c_long), external :: util_ifact
+  integer(c_long) :: kx, num, denom
 
 !old  nk = n - k
 !old  num = util_ifact(n)

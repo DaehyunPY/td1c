@@ -5,11 +5,11 @@ subroutine ormas_orbvec(norb, onv, orb)
   use mod_ormas, only : iprint
 
   implicit none
-  integer(c_int), intent(in) :: norb
-  integer(c_int), intent(in) :: onv(1:*)
-  integer(c_int), intent(out) :: orb(0:*)
+  integer(c_long), intent(in) :: norb
+  integer(c_long), intent(in) :: onv(1:*)
+  integer(c_long), intent(out) :: orb(0:*)
 
-  integer(c_int) :: nel_tot, iorb
+  integer(c_long) :: nel_tot, iorb
 
   nel_tot = 0
   do iorb = 1, norb
@@ -35,9 +35,9 @@ subroutine ormas_orbvec_print(adv, nel, orbvec)
 
   implicit none
   logical, intent(in) :: adv
-  integer(c_int), intent(in) :: nel
-  integer(c_int), intent(in) :: orbvec(1:nel)
-  integer(c_int) :: iel
+  integer(c_long), intent(in) :: nel
+  integer(c_long), intent(in) :: orbvec(1:nel)
+  integer(c_long) :: iel
 
   do iel = 1, ncore - 1
      write(6,"(i2,',')",advance='no') iel

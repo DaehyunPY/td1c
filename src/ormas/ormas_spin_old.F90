@@ -32,9 +32,9 @@ subroutine ormas_spin_old_s2(cic, s2)
 
 !OLD  real(c_double) :: s2p
 !OLD  complex(c_double_complex) :: sgnb, sgna
-!OLD  integer(c_int) :: istr, jstr, kstr, lstr, i1x, ifun, jfun, &
+!OLD  integer(c_long) :: istr, jstr, kstr, lstr, i1x, ifun, jfun, &
 !OLD       & idist, jdist, ii, n1xra, lla, ula, iproc
-!OLD  integer(c_int), external :: util_omp_iproc
+!OLD  integer(c_long), external :: util_omp_iproc
 !OLD
 !OLD!$omp parallel default(shared) private(istr,jstr,kstr,lstr,ii, &
 !OLD!$omp & idist,jdist,i1x,ifun,jfun,sgnb,sgna,lla,ula,s2p,n1xra,iproc) &

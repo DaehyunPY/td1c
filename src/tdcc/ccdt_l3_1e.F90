@@ -7,17 +7,16 @@ subroutine ccdt_l3_1e_1(sh4,sh5,sh6,sp1,sp2,sp3,i0)
 
 ! i0 ( h4 h5 h6 p1 p2 p3 )_yf + = 1 * P( 9 ) * y ( h4 h5 p1 p2 )_y * f ( h6 p3 )_f 0
 
-  use, intrinsic :: iso_c_binding
   use mod_const,only : czero,runit
   use mod_ormas,only : nact
   use mod_cc,only : norb1, g2inp
   use mod_cc,only : fock
 
   implicit none
-  integer(c_int),intent(in) :: sh4,sh5,sh6,sp1,sp2,sp3
+  integer,intent(in) :: sh4,sh5,sh6,sp1,sp2,sp3
   complex(kind(0d0)),intent(inout) :: &
        i0(1:norb1,1:norb1,1:norb1,(norb1+1):nact,(norb1+1):nact,(norb1+1):nact)
-  integer(c_int) :: h4,h5,h6,p1,p2,p3
+  integer :: h4,h5,h6,p1,p2,p3
   complex(kind(0d0)) :: fact_p
   complex(kind(0d0)),allocatable :: i0_perm(:,:,:,:,:,:)
 
@@ -199,16 +198,16 @@ subroutine ccdt_l3_1e_1(sh4,sh5,sh6,sp1,sp2,sp3,i0)
   subroutine ccdt_l3_1e_1_perm(sh4,sh5,sh6,sp1,sp2,sp3,i0)
 
   implicit none
-  integer(c_int),intent(in) :: sh4,sh5,sh6,sp1,sp2,sp3
+  integer,intent(in) :: sh4,sh5,sh6,sp1,sp2,sp3
   complex(kind(0d0)),intent(inout) :: &
        i0(1:norb1,1:norb1,1:norb1,(norb1+1):nact,(norb1+1):nact,(norb1+1):nact)
 
-  integer(c_int) :: h4,h5,h6,p1,p2,p3
-  integer(c_int) :: sdum
-  integer(c_int) :: spin_g2inp
-  integer(c_int) :: spin_fock
-  integer(c_int),external :: tdcc_spin_g2inp
-  integer(c_int),external :: tdcc_spin_fock
+  integer :: h4,h5,h6,p1,p2,p3
+  integer :: sdum
+  integer :: spin_g2inp
+  integer :: spin_fock
+  integer,external :: tdcc_spin_g2inp
+  integer,external :: tdcc_spin_fock
   complex(kind(0d0)),parameter :: fact = 1.0d+0 * runit
 
   do sdum = 1,1
@@ -243,17 +242,16 @@ subroutine ccdt_l3_1e_2(sh4,sh5,sh6,sp1,sp2,sp3,i0)
 
 ! i0 ( h4 h5 h6 p1 p2 p3 )_yf + = -1 * P( 3 ) * Sum ( h7 ) * y ( h4 h5 h7 p1 p2 p3 )_y * f ( h6 h7 )_f 0
 
-  use, intrinsic :: iso_c_binding
   use mod_const,only : czero,runit
   use mod_ormas,only : nact
   use mod_cc,only : norb1, g3inp
   use mod_cc,only : fock
 
   implicit none
-  integer(c_int),intent(in) :: sh4,sh5,sh6,sp1,sp2,sp3
+  integer,intent(in) :: sh4,sh5,sh6,sp1,sp2,sp3
   complex(kind(0d0)),intent(inout) :: &
        i0(1:norb1,1:norb1,1:norb1,(norb1+1):nact,(norb1+1):nact,(norb1+1):nact)
-  integer(c_int) :: h4,h5,h6,p1,p2,p3
+  integer :: h4,h5,h6,p1,p2,p3
   complex(kind(0d0)) :: fact_p
   complex(kind(0d0)),allocatable :: i0_perm(:,:,:,:,:,:)
 
@@ -321,16 +319,16 @@ subroutine ccdt_l3_1e_2(sh4,sh5,sh6,sp1,sp2,sp3,i0)
   subroutine ccdt_l3_1e_2_perm(sh4,sh5,sh6,sp1,sp2,sp3,i0)
 
   implicit none
-  integer(c_int),intent(in) :: sh4,sh5,sh6,sp1,sp2,sp3
+  integer,intent(in) :: sh4,sh5,sh6,sp1,sp2,sp3
   complex(kind(0d0)),intent(inout) :: &
        i0(1:norb1,1:norb1,1:norb1,(norb1+1):nact,(norb1+1):nact,(norb1+1):nact)
 
-  integer(c_int) :: h4,h5,h6,p1,p2,p3
-  integer(c_int) :: h7,sh7
-  integer(c_int) :: spin_g3inp
-  integer(c_int) :: spin_fock
-  integer(c_int),external :: tdcc_spin_g3inp
-  integer(c_int),external :: tdcc_spin_fock
+  integer :: h4,h5,h6,p1,p2,p3
+  integer :: h7,sh7
+  integer :: spin_g3inp
+  integer :: spin_fock
+  integer,external :: tdcc_spin_g3inp
+  integer,external :: tdcc_spin_fock
   complex(kind(0d0)),parameter :: fact = -1.0d+0 * runit
 
   do sh7 = 1,2
@@ -367,17 +365,16 @@ subroutine ccdt_l3_1e_3(sh4,sh5,sh6,sp1,sp2,sp3,i0)
 
 ! i0 ( h4 h5 h6 p1 p2 p3 )_yf + = 1 * P( 3 ) * Sum ( p7 ) * y ( h4 h5 h6 p1 p2 p7 )_y * f ( p7 p3 )_f 0
 
-  use, intrinsic :: iso_c_binding
   use mod_const,only : czero,runit
   use mod_ormas,only : nact
   use mod_cc,only : norb1, g3inp
   use mod_cc,only : fock
 
   implicit none
-  integer(c_int),intent(in) :: sh4,sh5,sh6,sp1,sp2,sp3
+  integer,intent(in) :: sh4,sh5,sh6,sp1,sp2,sp3
   complex(kind(0d0)),intent(inout) :: &
        i0(1:norb1,1:norb1,1:norb1,(norb1+1):nact,(norb1+1):nact,(norb1+1):nact)
-  integer(c_int) :: h4,h5,h6,p1,p2,p3
+  integer :: h4,h5,h6,p1,p2,p3
   complex(kind(0d0)) :: fact_p
   complex(kind(0d0)),allocatable :: i0_perm(:,:,:,:,:,:)
 
@@ -445,16 +442,16 @@ subroutine ccdt_l3_1e_3(sh4,sh5,sh6,sp1,sp2,sp3,i0)
   subroutine ccdt_l3_1e_3_perm(sh4,sh5,sh6,sp1,sp2,sp3,i0)
 
   implicit none
-  integer(c_int),intent(in) :: sh4,sh5,sh6,sp1,sp2,sp3
+  integer,intent(in) :: sh4,sh5,sh6,sp1,sp2,sp3
   complex(kind(0d0)),intent(inout) :: &
        i0(1:norb1,1:norb1,1:norb1,(norb1+1):nact,(norb1+1):nact,(norb1+1):nact)
 
-  integer(c_int) :: h4,h5,h6,p1,p2,p3
-  integer(c_int) :: p7,sp7
-  integer(c_int) :: spin_g3inp
-  integer(c_int) :: spin_fock
-  integer(c_int),external :: tdcc_spin_g3inp
-  integer(c_int),external :: tdcc_spin_fock
+  integer :: h4,h5,h6,p1,p2,p3
+  integer :: p7,sp7
+  integer :: spin_g3inp
+  integer :: spin_fock
+  integer,external :: tdcc_spin_g3inp
+  integer,external :: tdcc_spin_fock
   complex(kind(0d0)),parameter :: fact = 1.0d+0 * runit
 
   do sp7 = 1,2

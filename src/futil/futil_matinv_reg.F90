@@ -4,12 +4,12 @@ subroutine futil_matinv_reg(n, thresh, a, inva)
   use, intrinsic :: iso_c_binding
 
   implicit none
-  integer(c_int), intent(in) :: n
+  integer(c_long), intent(in) :: n
   real(c_double), intent(in) :: thresh
   complex(c_double_complex), intent(in) :: a(1:n, 1:n)
   complex(c_double_complex), intent(out) :: inva(1:n, 1:n)
 
-  integer(c_int) :: ifun, jfun, kfun
+  integer(c_long) :: ifun, jfun, kfun
   complex(c_double_complex) :: diag, invd
   complex(c_double_complex), allocatable :: uvec(:,:)
   complex(c_double_complex), allocatable :: work(:,:)

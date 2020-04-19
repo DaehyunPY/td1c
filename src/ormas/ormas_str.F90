@@ -11,7 +11,7 @@ subroutine ormas_str()
        &  nstr_beta_dist_sub, arc_beta, dist_str_beta, substr_beta, onv_beta, orb_beta
 
   implicit none
-  integer(c_int) :: istr, isub
+  integer(c_long) :: istr, isub
 
   allocate(dist_str_alph(1:2, 1:nstr_alph))
   allocate(dist_str_beta(1:2, 1:nstr_beta))
@@ -88,15 +88,15 @@ subroutine ormas_str_spin(nel_spin, ndist_spin, dist_spin, nstr_spin, &
   use mod_ormas, only : nact, nsub, norb_sub, lorb_sub
 
   implicit none
-  integer(c_int), intent(in) :: nel_spin, ndist_spin, dist_spin(1:nsub, 1:*), &
+  integer(c_long), intent(in) :: nel_spin, ndist_spin, dist_spin(1:nsub, 1:*), &
        & nstr_spin, nstr_spin_dist(1:*), nstr_spin_dist_sub(1:nsub, 1:*), &
        & arc_spin(1:nact, 1:*)
-  integer(c_int), intent(out) :: dist_str_spin(1:2, 1:*), substr_spin(1:nsub, 1:*), &
+  integer(c_long), intent(out) :: dist_str_spin(1:2, 1:*), substr_spin(1:nsub, 1:*), &
        & onv_spin(1:nact, 1:*), orb_spin(0:nel_spin, 1:*)
 
-  integer(c_int) :: nstr_tot, istr, idist, isub, istr_dist, istr_dist_sub, rest, dim
-  integer(c_int) :: nel, norb, llorb, ulorb
-  integer(c_int), allocatable :: tocc(:)
+  integer(c_long) :: nstr_tot, istr, idist, isub, istr_dist, istr_dist_sub, rest, dim
+  integer(c_long) :: nel, norb, llorb, ulorb
+  integer(c_long), allocatable :: tocc(:)
 
   ! string --> distribution map
   nstr_tot = 0

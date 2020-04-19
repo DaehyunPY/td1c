@@ -1,7 +1,5 @@
 !###################################################################################
-integer(c_int) function tdcc_spin_int2x(s1, s2, s3, s4)
-
-  use, intrinsic :: iso_c_binding
+integer function tdcc_spin_int2x(s1, s2, s3, s4)
 
 !  1 : <p1 q1||r1 s1> = +(pq|rs)-(pq|sr)
 !  2 : <p2 q2||r2 s2> = +(pq|rs)-(pq|sr) = 1
@@ -12,8 +10,8 @@ integer(c_int) function tdcc_spin_int2x(s1, s2, s3, s4)
 !  0 : others
 
   implicit none
-  integer(c_int), intent(in) :: s1, s2, s3, s4
-  integer(c_int) :: spin_type
+  integer, intent(in) :: s1, s2, s3, s4
+  integer :: spin_type
 
   if (s1 + s2 .ne. s3 + s4) then
      spin_type = 0

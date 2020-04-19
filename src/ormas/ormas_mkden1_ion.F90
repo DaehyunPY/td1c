@@ -12,7 +12,7 @@ subroutine ormas_mkden1_ion(smat, cic, den1)
   complex(c_double_complex), intent(in) :: cic(1:nstr_alph, 1:nstr_beta)
   complex(c_double_complex), intent(out) :: den1(1:nact, 1:nact)
 
-  integer(c_int) :: iact, jact, kact, lact
+  integer(c_long) :: iact, jact, kact, lact
   complex(c_double_complex), allocatable :: den2(:,:,:,:)
   allocate(den2(1:nact, 1:nact, 1:nact, 1:nact))
 
@@ -53,7 +53,7 @@ subroutine ormas_mkden1_smat(smat, cic, den1)
   complex(c_double_complex), intent(in) :: cic(1:nstr_alph, 1:nstr_beta)
   complex(c_double_complex), intent(out) :: den1(1:nact, 1:nact)
 
-  integer(c_int) :: iact, jact, kact, lact
+  integer(c_long) :: iact, jact, kact, lact
   complex(c_double_complex), allocatable :: den2(:,:,:,:)
   allocate(den2(1:nact, 1:nact, 1:nact, 1:nact))
 

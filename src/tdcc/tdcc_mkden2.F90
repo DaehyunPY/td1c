@@ -1,7 +1,6 @@
 !######################################################################
 subroutine tdcc_mkden2(cic,den2)
 
-  use, intrinsic :: iso_c_binding
   use mod_const,only : czero
   use mod_ormas,only : nact
   use mod_cc,only : norb1,cc_rank,den1s,den2s
@@ -12,7 +11,7 @@ subroutine tdcc_mkden2(cic,den2)
   complex(kind(0d0)),intent(out) :: den2(1:*)
 !#####
 !DEBUG
-integer(c_int) :: p1,p2,q1,q2
+integer :: p1,p2,q1,q2
 !complex(kind(0d0)),allocatable :: den2s_pathak(:,:,:,:,:)
 !DEBUG
 !#####
@@ -85,7 +84,6 @@ end subroutine tdcc_mkden2
 !######################################################################
 subroutine tdcc_mkden2_ref2(den1s,den2s)
 
-  use, intrinsic :: iso_c_binding
   use mod_bas,only : smul
   use mod_const,only : runit
   use mod_ormas,only : nact,den2_abonly
@@ -95,7 +93,7 @@ subroutine tdcc_mkden2_ref2(den1s,den2s)
   complex(kind(0d0)),intent(in) :: den1s(1:nact,1:nact)
   complex(kind(0d0)),intent(inout) :: den2s(1:nact,1:nact,1:nact,1:nact,1:6)
 
-  integer(c_int) :: iact,jact,kact,lact,aact,bact,cact,dact
+  integer :: iact,jact,kact,lact,aact,bact,cact,dact
 
   ! rho^{kl}_{ij}
   ! aaaa part
@@ -266,7 +264,6 @@ end subroutine tdcc_mkden2_ref2
 !######################################################################
 subroutine tdcc_mkden2_full(den2s,den2_noref)
 
-  use, intrinsic :: iso_c_binding
   use mod_bas,only : smul,mval
   use mod_ormas,only : nact,den2_abonly,ncore
   use mod_cc,only : norb1,cc_code,nbiort
@@ -275,10 +272,10 @@ subroutine tdcc_mkden2_full(den2s,den2_noref)
   complex(kind(0d0)),intent(in) :: den2s(1:nact,1:nact,1:nact,1:nact,1:6)
   complex(kind(0d0)),intent(inout) :: den2_noref(1:nact,1:nact,1:nact,1:nact,1:6)
 
-  integer(c_int) :: pact,qact,ract,sact
-  integer(c_int) :: iact,jact,kact,lact
-  integer(c_int) :: aact,bact,cact,dact
-  integer(c_int) :: p1act,p2act,q1act,q2act
+  integer :: pact,qact,ract,sact
+  integer :: iact,jact,kact,lact
+  integer :: aact,bact,cact,dact
+  integer :: p1act,p2act,q1act,q2act
   complex(kind(0d0)) :: tmp
 
   den2_noref = den2s
@@ -386,7 +383,6 @@ end subroutine tdcc_mkden2_full
 !######################################################################
 subroutine tdcc_mkden2_spac2(den2s,den2)
 
-  use, intrinsic :: iso_c_binding
   use mod_const,only : ctwo,chalf
   use mod_ormas,only : nact
   use mod_cc,only : norb1,nbiort
@@ -395,9 +391,9 @@ subroutine tdcc_mkden2_spac2(den2s,den2)
   complex(kind(0d0)),intent(inout) :: den2s(1:nact,1:nact,1:nact,1:nact,1:6)
   complex(kind(0d0)),intent(out) :: den2(1:nact,1:nact,1:nact,1:nact)
 
-  integer(c_int) :: pact,qact,ract,sact
-  integer(c_int) :: iact,jact,kact,lact
-  integer(c_int) :: aact,bact,cact,dact
+  integer :: pact,qact,ract,sact
+  integer :: iact,jact,kact,lact
+  integer :: aact,bact,cact,dact
   complex(kind(0d0)) :: tmp
   complex(kind(0d0)),allocatable :: den2t(:,:,:,:,:)
   complex(kind(0d0)),allocatable :: den2u(:,:,:,:,:)
@@ -595,7 +591,6 @@ end subroutine tdcc_mkden2_spac2
 !######################################################################
 subroutine tdcc_mkden2_spac2_new(den2s,den2)
 
-  use, intrinsic :: iso_c_binding
   use mod_const,only : ctwo,chalf
   use mod_bas,only : mval,smul
   use mod_ormas,only : nact,ncore,nelact
@@ -605,9 +600,9 @@ subroutine tdcc_mkden2_spac2_new(den2s,den2)
   complex(kind(0d0)),intent(in) :: den2s(1:nact,1:nact,1:nact,1:nact,1:6)
   complex(kind(0d0)),intent(out) :: den2(1:nact,1:nact,1:nact,1:nact)
 
-  integer(c_int) :: pact,qact,ract,sact
-  integer(c_int) :: iact,jact,kact,lact
-  integer(c_int) :: aact,bact,cact,dact
+  integer :: pact,qact,ract,sact
+  integer :: iact,jact,kact,lact
+  integer :: aact,bact,cact,dact
   complex(kind(0d0)) :: tmp
 
   ! den2  = 1/2 (den2t + den2t^+)
@@ -687,13 +682,12 @@ subroutine tdcc_mkden2_aaclean(den2)
 
   !antisymmetrize aaaa part of 2RDM
 
-  use, intrinsic :: iso_c_binding
   use mod_ormas,only : nact
 
   implicit none
   complex(kind(0d0)),intent(inout) :: den2(1:nact,1:nact,1:nact,1:nact)
 
-  integer(c_int) :: iact,jact,kact,lact
+  integer :: iact,jact,kact,lact
 
   do iact = 1,nact
      do kact = 1,nact

@@ -8,19 +8,17 @@ subroutine hprod_dipole(lfield, wfn, cic, dip, vel, acc)
   use mod_rad, only : nrad, nradfc, wrad
   use mod_ormas, only : neltot, nfun, nfcore
   use mod_const, only : zero, two, four, czero, runit
-  use mod_control, only : igauge, fedvr_normalized, psp, psp_type
+  use mod_control, only : igauge, fedvr_normalized
   use mod_hprod, only : den1, orb, orbg, h0orb, h1orb, gorb, torb, v2orb
-  use mod_op1tr, only : do_op1tr
 
   implicit none
   real(c_double), intent(in) :: lfield(1:3, 1:3)
   complex(c_double_complex), intent(in) :: wfn(*)
   complex(c_double_complex), intent(in) :: cic(*)
-  real(c_double), external :: hprod_trace1_pp
   complex(c_double_complex), external :: hprod_trace1
   real(c_double), intent(out) :: dip(1:3), vel(1:3), acc(1:3)
 
-  integer(c_int) :: ifun, l, irad, llr, ulr
+  integer(c_long) :: ifun, l, irad, llr, ulr
   real(c_double) :: vcorr1, vcorr2, acorr1, acorr2
   complex(c_double_complex) :: tmp, vcorr1p, acorr1p
 !
@@ -32,7 +30,7 @@ subroutine hprod_dipole(lfield, wfn, cic, dip, vel, acc)
 !  torb            ! scratch
 ! v2orb            ! scratch
 ! 
-  if (nfcore > 0 .or. (psp.and.(psp_type < 2.or.psp_type > 4))) then
+  if (nfcore > 0) then
      ! g-fock vector
      if (.true.) then
         call hprod_gfock(lfield, wfn, cic)
@@ -54,28 +52,15 @@ subroutine hprod_dipole(lfield, wfn, cic, dip, vel, acc)
   call hprod_pzprod_all(runit, orb, h1orb)
   call hprod_azprod_all(runit, orb, v2orb)
 
-  if (do_op1tr) then
-     call hprod_op1tr_orbin(lfield,den1,orb,h0orb,h1orb,v2orb)
-  end if
-
   ! add iX term for velocity gauge case
-  if ((nfcore > 0.or.(psp.and.(psp_type < 2.or.psp_type > 4))).and.igauge == 1) then
-     call zaxpy_omp(nbas*nfun, lfield(3, 2), h0orb, gorb)
-  end if
+  if (nfcore > 0 .and. igauge == 1) call zaxpy_omp(nbas*nfun, lfield(3, 2), h0orb, gorb)
 
   ! Ehrenfest formulus
   dip(1) = dble(hprod_trace1(.true., den1, orb, h0orb))
   vel(1) = dble(hprod_trace1(.true., den1, orb, h1orb))
-  if (igauge == 1) vel(1) = vel(1) + lfield(3, 3)*neltot(3)
-  acc(1) = dble(hprod_trace1(.true., den1, orb, v2orb)) - lfield(3, 2)*neltot(3)
-
-
-  ! Nonlocal PP contribution
-  if (psp .and. (psp_type < 2 .or. psp_type > 4)) then
-     !vel(1) = vel(1) + hprod_trace1_pp(.true., lfield, den1, orb, h0orb)
-     !acc(1) = acc(1) + hprod_trace1_pp(.true., lfield, den1, orb, h1orb)
-     call hprod_ppop1(lfield, den1, orb, h0orb, h1orb, gorb, vel(1), acc(1))
-  end if
+  acc(1) = dble(hprod_trace1(.true., den1, orb, v2orb))
+  if (igauge == 1) vel(1) = vel(1) + lfield(3, 3) * neltot(3)
+  acc(1) = acc(1) - lfield(3, 2) * neltot(3)
 
   ! first correction term
   vcorr1 = zero
@@ -125,13 +110,13 @@ subroutine hprod_dipole(lfield, wfn, cic, dip, vel, acc)
      acorr2 = - two * aimag(hprod_trace1(.true., den1, h1orb, gorb))
   end if
 
-  dip(2) = 0d0
-  vel(2) = vcorr1 + vcorr2
-  acc(2) = acorr1 + acorr2
+  dip(2) = dip(1)
+  vel(2) = vel(1) + vcorr1
+  acc(2) = acc(1) + acorr1
 
-  dip(3) = dip(1) + dip(2)
-  vel(3) = vel(1) + vel(2)
-  acc(3) = acc(1) + acc(2)
+  dip(3) = dip(1)
+  vel(3) = vel(1) + vcorr1 + vcorr2
+  acc(3) = acc(1) + acorr1 + acorr2
 !OLD
 !OLD if (igauge == 1) acc_exp = acc_exp - two * nfcore * lfield(3, 2)
 !OLD

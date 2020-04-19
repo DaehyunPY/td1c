@@ -8,13 +8,6 @@ subroutine hprod_set_wfn0(wfn, cic, v2xfc_type)
   use mod_const, only : zero, czero
   use mod_hprod, only : orb0, cic0, v2xfc, projhigh
   use mod_ormas, only : nfun, lcic, nfcore, nfcore2
-! tdcis-teramura
-  use mod_control, only : istdcis
-  use mod_rad, only : xrad
-  use mod_ormas, only : thrdet
-  use mod_hprod, only : ridm_tdcis
-  use mod_hprod, only : tdcis_eig, v2ang0, orb0rot, orb0rotg, h0orb0, orb, orbg, v2ang
-! tdcis-teramura
 
   implicit none
   complex(c_double_complex), intent(in) :: wfn(1:*)
@@ -22,73 +15,7 @@ subroutine hprod_set_wfn0(wfn, cic, v2xfc_type)
   character(*), intent(in) :: v2xfc_type
 
   character(len=256) :: fname
-  integer(c_int) :: irad, nrad0
-
-! tdcis-teramura
-  integer(c_int) :: ifun
-  real(c_double) :: lfield0(1:3,1:3), R0
-  complex(c_double_complex) :: ovlpin(1:nfun, 1:nfun)
-  complex(c_double_complex), external :: util_det
-! tdcis-teramura
-
-  call zcopy_omp(nbas*nfun, wfn, orb0)
-  call zcopy_omp(lcic, cic, cic0)
-
-! tdcis-teramura
-  if (istdcis) then
-     ! GS energy
-     lfield0 = 0d0
-     call hprod_orbene(lfield0, wfn, cic, tdcis_eig)
-     write(6, "('hprod_set_wfn0: tdcis_eig:') ")
-     write(6, "(f20.10)") tdcis_eig(1:nfun)
-
-!debug
-!     stop 'here 1'
-!debug
-
-     ! locality
-     R0 = 20d0
-     call hprod_mkovlp(R0, orb0, orb0, ovlpin)
-     write(6, "('hprod_set_wfn0: det_S0 = ', 2es20.10)") util_det(nfun, thrdet , ovlpin)
-
-     ! debug
-     ridm_tdcis = czero
-     call hprod_mkovlp(xrad(nrad), orb0, orb0, ridm_tdcis)
-     write(6 , "('hprod_set_wfn0: debug ')") 
-     do ifun = 1, nfun
-        write(6 , "(4es20.10)") ridm_tdcis(ifun, ifun), ovlpin(ifun, ifun)
-     end do
-     ! debug
-
-     ! orb0rot
-     call hprod_orbin_tdcis(lfield0)
-     orb = orb0rot
-     orbg = orb0rotg
-
-     ! h0orb0 
-     call hprod_tprod_all(orb0rot, h0orb0)
-     
-     ! v2ang0
-     call hprod_mkrho2_tdcis_init
-     call hprod_mkv2mf_tdcis_init
-     v2ang0 = v2ang
-
-!debug
-!     stop 'here 2'
-!debug
-
-     ! debug
-     ! call util_print_vec(osize, h0orb0, 'setwfn.h0orb0')
-     ! call util_print_vec(osize, orb, 'setwfn.cis.orb')
-     ! call util_print_vec(osize, orb0, 'setwfn.cis.orb0')
-     ! call util_print_vec(osize, orb0rot, 'setwfn.cis.orb0rot')
-     ! call util_print_vec(v2size, v2ang0, 'setwfn.cis.v2ang')
-     ! stop
-     ! debug
-  end if
-  ! call util_print_vec(osize, orb0, 'setwfn.orb0')
-  ! stop
-! tdcis-teramura
+  integer(c_long) :: irad, nrad0
 
 !NEW
   if (projhigh) then
@@ -96,6 +23,9 @@ subroutine hprod_set_wfn0(wfn, cic, v2xfc_type)
   end if
 !  stop 'for debug after hprod_getprojhigh'
 !NEW
+
+  call zcopy_omp(nbas*nfun, wfn, orb0)
+  call zcopy_omp(lcic, cic, cic0)
 
   if (nfcore2 > 0 .and. trim(v2xfc_type) == "read") then
      fname = trim(name)//".v2xfc"
@@ -122,10 +52,6 @@ subroutine hprod_set_wfn0(wfn, cic, v2xfc_type)
      end do
      close(unit=1)
   end if
-
-!debug
-!  stop 'here 3'
-!debug
 
 end subroutine hprod_set_wfn0
 !#######################################################################
@@ -230,7 +156,7 @@ subroutine hprod_mkrhofc(orb, rhofc)
   implicit none
   complex(c_double_complex), intent(in) :: orb(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: rhofc(1:(nrad-1))
-  integer(c_int) :: llr, ulr, ifun, irad
+  integer(c_long) :: llr, ulr, ifun, irad
   real(c_double) :: lfac
 
   rhofc(1:(nrad-1)) = czero
@@ -264,7 +190,7 @@ subroutine hprod_mkrhofc_ecs(orb, rhofc)
   implicit none
   complex(c_double_complex), intent(in) :: orb(1:(nrad-1), 0:lmax1, 1:nfun)
   complex(c_double_complex), intent(out) :: rhofc(1:(nrad-1))
-  integer(c_int) :: llr, ulr, ifun, irad, dim
+  integer(c_long) :: llr, ulr, ifun, irad, dim
   real(c_double) :: lfac
 
   rhofc(1:(nrad-1)) = czero
@@ -302,7 +228,7 @@ subroutine hprod_v2fc_xlda(v2xfc)
 
   real(c_double) :: lfac
   complex(c_double_complex) :: rho
-  integer(c_int) :: llr, ulr, ifun, irad
+  integer(c_long) :: llr, ulr, ifun, irad
 
   v2xfc(1:(nrad-1)) = czero
   if (nfcore2 == 0) return
@@ -342,7 +268,7 @@ subroutine hprod_mkv2jfc(rhofc, v2jfc)
 
   real(c_double) :: tmpr, tmpi
   real(c_double), allocatable :: rrho2(:,:)
-  integer(c_int) :: dim, irad, ld, info
+  integer(c_long) :: dim, irad, ld, info
 
   v2jfc(1:(nrad-1)) = czero
   if (nfcore == 0) return
@@ -399,11 +325,11 @@ subroutine hprod_mkv2jfc_ecs(rhofc, v2jfc)
 
   real(c_double) :: tmpr, tmpi
   real(c_double), allocatable :: rrho2(:,:)
-  integer(c_int) :: dim, irad, ld, info
+  integer(c_long) :: dim, irad, ld, info
 
 ! Orimo_ECS
   complex(c_double_complex) :: charge
-  integer(c_int) :: dimbc
+  integer(c_long) :: dimbc
 ! Sato  dimbc = min(dim, irad_ecs-1)
 ! Orimo_ECS
 
@@ -469,9 +395,9 @@ subroutine hprod_v2xfc_opt1(orbg, v2xfc)
   complex(c_double_complex), intent(in) :: orbg(1:(nrad-1), 1:nlat, 1:nfun)
   complex(c_double_complex), intent(inout) :: v2xfc(1:(nrad-1))
 
-  integer(c_int) :: llfun, ulfun
-  integer(c_int), external :: util_omp_iproc
-  integer(c_int) :: iproc, lll, ull, ifun, jfun, ilat, irad
+  integer(c_long) :: llfun, ulfun
+  integer(c_long), external :: util_omp_iproc
+  integer(c_long) :: iproc, lll, ull, ifun, jfun, ilat, irad
   complex(c_double_complex) :: optfac
   complex(c_double_complex) :: eigx, eigy, eigxp, eigyp
   complex(c_double_complex), allocatable :: xwfn(:,:,:), ywfn(:,:,:)
@@ -571,11 +497,11 @@ subroutine hprod_v2xfc_opt2(cic, orbg, v2xfc)
   complex(c_double_complex), intent(in) :: orbg(1:(nrad-1), 1:nlat, 1:nfun)
   complex(c_double_complex), intent(inout) :: v2xfc(1:(nrad-1))
 
-  integer(c_int) :: llfun, ulfun
-  integer(c_int), external :: util_omp_iproc
-  integer(c_int) :: iproc, lll, ull, ilat, irad
-  integer(c_int) :: ifun, jfun, kfun, lfun
-  integer(c_int) :: iact, jact, kact, lact
+  integer(c_long) :: llfun, ulfun
+  integer(c_long), external :: util_omp_iproc
+  integer(c_long) :: iproc, lll, ull, ilat, irad
+  integer(c_long) :: ifun, jfun, kfun, lfun
+  integer(c_long) :: iact, jact, kact, lact
   complex(c_double_complex) :: optfac, klkl, klkx
   complex(c_double_complex), allocatable :: xwfn(:,:,:), ywfn(:,:,:)
   complex(c_double_complex), allocatable :: kintx(:,:), kintl(:,:)
@@ -804,7 +730,7 @@ subroutine hprod_v2fc_enefc(enefc)
   implicit none
   real(c_double), intent(out) :: enefc
 ! real(c_double), external :: hprod_ene_fcx
-  integer(c_int) :: ifun, irad, l
+  integer(c_long) :: ifun, irad, l
   complex(c_double_complex) :: tmp
 
   h0orb(1:nradfc, 0:lmax1, 1:nfcore) = czero
@@ -877,14 +803,14 @@ subroutine hprod_v2fc_xkli(v2xfc)
   implicit none
   complex(c_double_complex), intent(out) :: v2xfc(1:(nrad-1))
 
-  integer(c_int) :: llfun, ulfun
-  integer(c_int) :: lll, ull, ifun, jfun, ilat, irad, nvar, ivar, jvar
+  integer(c_long) :: llfun, ulfun
+  integer(c_long) :: lll, ull, ifun, jfun, ilat, irad, nvar, ivar, jvar
   real(c_double), parameter :: small = 1.D-15
   real(c_double), parameter :: fourpi = four * pi
   complex(c_double_complex) :: errsla, esum1_sla, esum2_sla
   complex(c_double_complex) :: errkli, esum1_kli, esum2_kli
   complex(c_double_complex) :: tmp, lfac, slawfn, kliwfn
-  integer(c_int), allocatable :: ind_map(:)
+  integer(c_long), allocatable :: ind_map(:)
   complex(c_double_complex), allocatable :: dtot(:), dens(:,:)
   complex(c_double_complex), allocatable :: xsla(:), xkli(:)
   complex(c_double_complex), allocatable :: eigsla(:), eigexx(:), eigkli(:), amat(:,:)

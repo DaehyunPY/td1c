@@ -11,14 +11,14 @@ subroutine dpade_cnic(isplit, igauge, icomp, iprojfc, lfield, dtime, alpha, &
   use mod_const, only : zero, half, czero, iunit, runit
 
   implicit none
-  integer(c_int), intent(in) :: isplit, igauge, icomp, iprojfc, maxcyc, tpiv(1:*)
+  integer(c_long), intent(in) :: isplit, igauge, icomp, iprojfc, maxcyc, tpiv(1:*)
   real(c_double), intent(in) :: lfield(9), dtime, thresh
   complex(c_double_complex), intent(in) :: alpha
   complex(c_double_complex), intent(in) :: tinv(1:*)
   complex(c_double_complex), intent(inout) :: wfn(1:(nrad-1), 0:lmax1, 1:nfun)
 
   complex(c_double_complex) :: zfac, zfac2, zfield, tmp
-  integer(c_int) :: ncyc, icyc, ifun, irad, l, size1, sized
+  integer(c_long) :: ncyc, icyc, ifun, irad, l, size1, sized
   logical, parameter :: debug = .true.
   real(c_double) :: rmsres, maxres
   logical projfc

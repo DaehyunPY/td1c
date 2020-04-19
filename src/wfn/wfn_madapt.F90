@@ -10,7 +10,7 @@ subroutine wfn_madapt(cic)
 
   implicit none
   complex(c_double_complex), intent(inout) :: cic(1:lcic)
-  integer(c_int) :: istr, jstr, idet
+  integer(c_long) :: istr, jstr, idet
 
   if (nact == 0) return
   !#### no longer needed
