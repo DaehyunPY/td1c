@@ -1,0 +1,29 @@
+add_library(
+    util STATIC
+        util.cpp
+        util_blas.F90
+        util_get_labs.cpp
+        util_get_dabs.cpp
+        util_get_cabs.cpp
+        util_expax.F90
+        util_det.F90
+        util_ifact.F90
+        util_bicoeff.F90
+        util_trimat.F90
+        util_window.F90
+        util_fact.F90
+        util_3j000.F90
+        util_omp_disp.F90
+        util_omp_nproc.F90
+        util_omp_iproc.F90
+        util_omp_gather.F90
+        util_matout.F90
+        util_krylov.F90
+        util_arnoldi.F90
+        util_svd.F90
+        util_youla.F90
+        util_diag.F90
+        util_print_vec.F90
+        util_matinv_reg.F90
+        util_gmatinv.F90
+)
