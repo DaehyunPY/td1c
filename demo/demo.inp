@@ -1,0 +1,53 @@
+job_type = init
+iprint = 1
+nprint_dip = -1
+nprint_ene = -1
+nprint_ion = -1
+print_orb = true
+print_orb_nstep = 100
+
+znuc = 10
+smul = 1
+ltot = 0
+mtot = 0
+nela = 5
+nelb = 5
+
+guess_type = card
+guess_rad_type = slater
+
+nfun = 9
+nblock = 1
+type_block = 1
+nfun_block = 9
+type_dft = 0
+fock_diag = false
+thradfc = 1.0E-15
+
+orbital:
+    1   0    0  1
+    2   0    0  1
+    2   1   -1  1
+    2   1    0  1
+    2   1   +1  1
+    3   0    0  1
+    3   1   -1  1
+    3   1    0  1
+    3   1   +1  1
+
+lmax1 = 3
+lmax2 = 6
+lconst = false
+
+nfe = 10
+grid:
+    0   40  23  10
+
+prop_type = etdrk2
+oorot_type = 0
+split_type = 1
+h1itr_maxcyc = 30
+h1itr_thresh = 1.0E-12
+init_dstep = -1.0
+init_tolene = 1.0E-15
+init_maxcyc = 1000000

@@ -1,2 +1,5 @@
 /build
 /include/*.mod
+/demo/*
+!/demo/*.inp
+!/demo/*.sh
