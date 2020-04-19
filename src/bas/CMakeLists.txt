@@ -1,0 +1,33 @@
+add_library(
+    bas SHARED
+        clbas.cpp
+        bas_bind.F90
+        bas_sph2ang1.F90
+        bas_ang2sph1.F90
+        bas_sph2ang2.F90
+        bas_ang2sph2.F90
+        bas_gen_alph.F90
+        bas_gen_pmat.F90
+        bas_gen_kmat.F90
+        bas_gen_tmat.F90
+        bas_gen_d2ll.F90
+        bas_gen_zfac.F90
+        bas_gen_pzfac.F90
+        bas_gen_azfac.F90
+        bas_gen_d2fac.F90
+        bas_pp_init.F90
+        bas_pp_final.F90
+        bas_pp_hgh.F90
+        bas_pp_trailneeds.F90
+        bas_pp_trailneeds_num.F90
+        bas_pp_oncvpsp.F90
+        bas_pp_tmpsp.F90
+        bas_pp_genkb.F90
+        bas_sph2ang2_ecs.F90
+        bas_ang2sph2_ecs.F90
+        bas_gen_d1mat.F90
+)
+target_link_libraries(
+    bas PUBLIC
+        OpenMP::OpenMP_Fortran
+)
