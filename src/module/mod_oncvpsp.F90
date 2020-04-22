@@ -32,7 +32,8 @@ module mod_oncvpsp
 
     character(len=256) :: line
     character(len=256) :: sdum
-    integer(c_int) :: irad, l, iproj, lloc, nrad, nlast
+    integer(c_int) :: irad, l, iproj, lloc, nlast
+    integer(fgsl_size_t) :: nrad
     real(c_double), allocatable :: rad(:),proj(:,:,:),vloc(:)
     integer(fgsl_int) :: tmp_status
 

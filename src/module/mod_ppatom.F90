@@ -74,7 +74,8 @@ module mod_ppatom
     type(fgsl_spline), intent(out) :: vs_spline1,vp_spline1,vloc_spline1,sfun_spline1,pfun_spline1
     !-----
     character(len=256) :: sdum
-    integer(c_int) :: irad, nrad, nlast
+    integer(c_int) :: irad, nlast
+    integer(fgsl_size_t) :: nrad
     real(c_double), allocatable :: rad(:)
     real(c_double), allocatable :: ppot(:,:)
     real(c_double), allocatable :: pwfn(:,:)

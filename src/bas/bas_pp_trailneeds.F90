@@ -50,10 +50,10 @@ subroutine bas_pp_gen_trailneeds()
   subroutine TrailNeeds_getV(rad,V)
     implicit none
     !--------------------------------------------------------------------
-    real(kind(0d0)),value :: rad
-    real(kind(0d0)),intent(out) :: V(0:2)
+    real(c_double), value :: rad
+    real(c_double), intent(out) :: V(0:2)
     !--------------------------------------------------------------------
-    real(kind(0d0)) :: tay
+    real(c_double) :: tay
     V(0) = Par(1,1,0)       *exp(-Par(1,2,0)*rad**2) &
          + Par(2,1,0)       *exp(-Par(2,2,0)*rad**2) &
          + Par(3,1,0)*rad   *exp(-Par(3,2,0)*rad**2) &
@@ -96,8 +96,8 @@ subroutine bas_pp_gen_trailneeds()
   subroutine TrailNeeds_getParHF(label,Par)
     implicit none
     !--------------------------------------------------------------------
-    integer(8), value :: label
-    real(kind(0d0)), intent(out) :: Par(1:8,1:2,0:2)
+    integer(c_int), value :: label
+    real(c_double), intent(out) :: Par(1:8,1:2,0:2)
     !--------------------------------------------------------------------
     if (label == 1) then
        !Vd
@@ -471,8 +471,8 @@ subroutine bas_pp_gen_trailneeds()
   subroutine TrailNeeds_getParDF(label,Par)
     implicit none
     !--------------------------------------------------------------------
-    integer(8), value :: label
-    real(kind(0d0)), intent(out) :: Par(1:8,1:2,0:2)
+    integer(c_int), value :: label
+    real(c_double), intent(out) :: Par(1:8,1:2,0:2)
     !--------------------------------------------------------------------
     if (label == 1) then
        !Vd         

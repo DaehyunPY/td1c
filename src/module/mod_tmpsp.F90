@@ -31,7 +31,8 @@ module mod_tmpsp
     integer(c_int) :: A
 
     character(len=256) :: sdum
-    integer(c_int) :: irad, l, nrad, nlast, lmaxt
+    integer(c_int) :: irad, l, nlast, lmaxt
+    integer(fgsl_size_t) :: nrad
     real(c_double) :: norm1,norm2,delv,delr
     real(c_double), allocatable :: rad(:),pwfn(:,:),vloc(:,:),proj(:,:),proj2(:)
     integer(fgsl_int) :: tmp_status
